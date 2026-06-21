@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Briefcase, MapPin, DollarSign, Calendar, MessageSquare, ArrowUpRight } from "lucide-react";
+import {  MapPin, DollarSign, MessageSquare, ArrowUpRight } from "lucide-react";
 
 export default function Careers() {
   const openings = [

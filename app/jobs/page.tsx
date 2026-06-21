@@ -6,13 +6,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Search, 
   MapPin, 
-  Briefcase, 
+   
   Grid, 
   List, 
-  MessageSquare,
   AlertCircle,
   Clock,
-  DollarSign,
   BriefcaseBusiness
 } from "lucide-react";
 import { dummyJobs, dummyUser, Job } from "@/lib/dummy-data";
@@ -27,23 +25,19 @@ function JobsListContent() {
   const [selectedType, setSelectedType] = useState("All");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
-  // Get unique filter values from dummy data
   const types = ["All", ...Array.from(new Set(dummyJobs.map(job => job.type)))];
 
-  // Auto-apply trigger if the URL contains ?apply=JOB-ID
-  useEffect(() => {
-    const applyJobId = searchParams.get("apply");
-    if (applyJobId) {
-      const job = dummyJobs.find(j => j.id === applyJobId);
-      if (job) {
-        handleWhatsAppApply(job);
-        // Clear query parameter from address bar
-        router.replace("/jobs");
-      }
+ useEffect(() => {
+  const applyJobId = searchParams.get("apply");
+  if (applyJobId) {
+    const job = dummyJobs.find(j => j.id === applyJobId);
+    if (job) {
+      handleWhatsAppApply(job);
+      router.replace("/jobs");
     }
-  }, [searchParams]);
+  }
+}, [searchParams, router]);
 
-  // Handle WhatsApp apply message formatting
   const handleWhatsAppApply = (job: Job) => {
     const adminPhone = "919999999999";
     const text = `Hi JobMate! I want to apply for the job "${job.title}" (ID: ${job.id}) at ${job.company}. My name is ${dummyUser.name}. Please review my application.`;

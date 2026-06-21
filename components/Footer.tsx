@@ -1,6 +1,4 @@
-import { BriefcaseBusiness } from "lucide-react";
 import Link from "next/link";
-// import { Briefcase, Twitter, Linkedin, Facebook, Instagram } from "lucide-react";
 
 export default function Footer() {
   const footerLinks = [

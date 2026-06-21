@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Users, Building, ShieldCheck, Target, MapPin, Award } from "lucide-react";
+import { Users, ShieldCheck, Target, MapPin, Award } from "lucide-react";
 
 export default function About() {
   const values = [
@@ -32,10 +32,15 @@ export default function About() {
     visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 15 },
-    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } },
-  };
+  // Replace your itemVariants with this:
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring" as const, stiffness: 100 },
+  },
+};
 
   return (
     <div className="bg-brand-bg min-h-screen font-body overflow-hidden py-12 md:py-20">

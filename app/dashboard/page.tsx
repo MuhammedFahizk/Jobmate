@@ -2,23 +2,22 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  User, 
-  Mail, 
-  Phone, 
-  Code, 
-  Briefcase, 
-  Upload, 
-  Check, 
+import {
+  User,
+  Mail,
+  Phone,
+  Code,
+  Upload,
+  Check,
   AlertTriangle,
   CheckCircle2,
   FileText,
   Trash2,
   Plus,
   ArrowUpRight,
-  BriefcaseBusiness
+  BriefcaseBusiness,
 } from "lucide-react";
-import { dummyUser, dummyApplications, dummyJobs, Job } from "@/lib/dummy-data";
+import { dummyUser, dummyApplications } from "@/lib/dummy-data";
 
 export default function Dashboard() {
   // Local states initialized from dummy data
@@ -26,14 +25,16 @@ export default function Dashboard() {
   const [newSkill, setNewSkill] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
-  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
-  const [applications, setApplications] = useState(dummyApplications);
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">(
+    "idle",
+  );
 
-  // Toggle demo function to flip payment status on the fly
+  const [applications] = useState(dummyApplications);
+  
   const togglePaymentStatus = () => {
-    setProfile(prev => ({
+    setProfile((prev) => ({
       ...prev,
-      paymentStatus: prev.paymentStatus === "pending" ? "paid" : "pending"
+      paymentStatus: prev.paymentStatus === "pending" ? "paid" : "pending",
     }));
   };
 
@@ -52,9 +53,9 @@ export default function Dashboard() {
     if (e.key === "Enter" && newSkill.trim()) {
       e.preventDefault();
       if (!profile.skills.includes(newSkill.trim())) {
-        setProfile(prev => ({
+        setProfile((prev) => ({
           ...prev,
-          skills: [...prev.skills, newSkill.trim()]
+          skills: [...prev.skills, newSkill.trim()],
         }));
       }
       setNewSkill("");
@@ -65,9 +66,9 @@ export default function Dashboard() {
     e.preventDefault();
     if (newSkill.trim()) {
       if (!profile.skills.includes(newSkill.trim())) {
-        setProfile(prev => ({
+        setProfile((prev) => ({
           ...prev,
-          skills: [...prev.skills, newSkill.trim()]
+          skills: [...prev.skills, newSkill.trim()],
         }));
       }
       setNewSkill("");
@@ -76,9 +77,9 @@ export default function Dashboard() {
 
   // Remove Skill Tag
   const handleRemoveSkill = (skillToRemove: string) => {
-    setProfile(prev => ({
+    setProfile((prev) => ({
       ...prev,
-      skills: prev.skills.filter(s => s !== skillToRemove)
+      skills: prev.skills.filter((s) => s !== skillToRemove),
     }));
   };
 
@@ -88,13 +89,13 @@ export default function Dashboard() {
       const file = e.target.files[0];
       setUploading(true);
       setUploadProgress(10);
-      
+
       const interval = setInterval(() => {
-        setUploadProgress(prev => {
+        setUploadProgress((prev) => {
           if (prev >= 100) {
             clearInterval(interval);
             setUploading(false);
-            setProfile(p => ({ ...p, resumeName: file.name }));
+            setProfile((p) => ({ ...p, resumeName: file.name }));
             return 100;
           }
           return prev + 30;
@@ -132,7 +133,6 @@ export default function Dashboard() {
   return (
     <div className="min-h-[calc(100vh-64px)] bg-brand-bg py-12 px-6">
       <div className="max-w-[680px] mx-auto flex flex-col gap-8">
-        
         {/* DEMO TOOLBAR: Small utility to swap status easily */}
         <div className="flex items-center justify-between p-3.5 rounded-card bg-brand-accent-light/50 border border-brand-accent/30 shadow-sm">
           <span className="font-body text-xs font-semibold text-brand-accent-dark flex items-center gap-1.5">
@@ -147,7 +147,7 @@ export default function Dashboard() {
         </div>
 
         {/* 1. HEADER CARD */}
-        <motion.div 
+        <motion.div
           className="bg-brand-surface p-6 sm:p-8 rounded-card border border-brand-border shadow-card flex flex-col sm:flex-row items-center justify-between gap-6"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -169,12 +169,16 @@ export default function Dashboard() {
 
           {/* Payment Status Badge */}
           <div>
-            <span className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-pill font-body text-xs font-semibold uppercase tracking-wider border ${
-              profile.paymentStatus === "paid"
-                ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                : "bg-amber-50 text-amber-700 border-amber-200"
-            }`}>
-              <span className={`w-2 h-2 rounded-full ${profile.paymentStatus === "paid" ? "bg-emerald-500" : "bg-amber-500 animate-pulse"}`} />
+            <span
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-pill font-body text-xs font-semibold uppercase tracking-wider border ${
+                profile.paymentStatus === "paid"
+                  ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                  : "bg-amber-50 text-amber-700 border-amber-200"
+              }`}
+            >
+              <span
+                className={`w-2 h-2 rounded-full ${profile.paymentStatus === "paid" ? "bg-emerald-500" : "bg-amber-500 animate-pulse"}`}
+              />
               Payment: {profile.paymentStatus}
             </span>
           </div>
@@ -192,23 +196,33 @@ export default function Dashboard() {
               transition={{ duration: 0.2 }}
             >
               <div className="flex items-start gap-3">
-                <AlertTriangle className="text-amber-600 flex-shrink-0 mt-0.5" size={20} strokeWidth={1.5} />
+                <AlertTriangle
+                  className="text-amber-600 flex-shrink-0 mt-0.5"
+                  size={20}
+                  strokeWidth={1.5}
+                />
                 <div>
                   <h3 className="font-display font-semibold text-amber-900 text-sm">
                     Placement Consulting Payment Required
                   </h3>
                   <p className="font-body text-xs text-amber-700 mt-1 leading-relaxed">
-                    To activate your candidate status and enable direct placement matching services, please pay the mock service charge of <strong>₹499</strong> to the UPI ID below.
+                    To activate your candidate status and enable direct
+                    placement matching services, please pay the mock service
+                    charge of <strong>₹499</strong> to the UPI ID below.
                   </p>
                 </div>
               </div>
-              
+
               <div className="bg-white/80 p-3 rounded-card-sm border border-amber-200/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                 <div>
-                  <span className="font-body text-[10px] text-amber-600 uppercase tracking-wider font-semibold block">UPI Address</span>
-                  <span className="font-display font-semibold text-brand-text text-sm">JobMate@upi</span>
+                  <span className="font-body text-[10px] text-amber-600 uppercase tracking-wider font-semibold block">
+                    UPI Address
+                  </span>
+                  <span className="font-display font-semibold text-brand-text text-sm">
+                    JobMate@upi
+                  </span>
                 </div>
-                <button 
+                <button
                   onClick={handleWhatsAppPaymentNotify}
                   className="w-full sm:w-auto font-body font-medium flex items-center justify-center gap-1.5 bg-whatsapp hover:bg-[#1ebe5b] text-white text-xs px-4 py-2.5 rounded-pill shadow-sm transition-all duration-200 hover:-translate-y-0.5"
                 >
@@ -229,13 +243,19 @@ export default function Dashboard() {
               exit={{ opacity: 0, scale: 0.98 }}
               transition={{ duration: 0.2 }}
             >
-              <CheckCircle2 className="text-emerald-600 flex-shrink-0 mt-0.5" size={20} strokeWidth={1.5} />
+              <CheckCircle2
+                className="text-emerald-600 flex-shrink-0 mt-0.5"
+                size={20}
+                strokeWidth={1.5}
+              />
               <div>
                 <h3 className="font-display font-semibold text-emerald-950 text-sm">
                   Candidate Consulting Active
                 </h3>
                 <p className="font-body text-xs text-emerald-700 mt-1 leading-relaxed">
-                  Your profile has been verified and placement matching is fully active. Our team is forwarding your qualifications directly to hiring partners.
+                  Your profile has been verified and placement matching is fully
+                  active. Our team is forwarding your qualifications directly to
+                  hiring partners.
                 </p>
               </div>
             </motion.div>
@@ -243,7 +263,7 @@ export default function Dashboard() {
         </AnimatePresence>
 
         {/* 3. PROFILE DETAILS FORM */}
-        <motion.div 
+        <motion.div
           className="bg-brand-surface p-6 sm:p-8 rounded-card border border-brand-border shadow-card"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -261,11 +281,16 @@ export default function Dashboard() {
                   Full Name
                 </label>
                 <div className="relative">
-                  <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
+                  <User
+                    size={16}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted"
+                  />
                   <input
                     type="text"
                     value={profile.name}
-                    onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                    onChange={(e) =>
+                      setProfile({ ...profile, name: e.target.value })
+                    }
                     className="w-full pl-9 pr-4 py-2.5 rounded-card-sm border border-brand-border bg-brand-surface text-brand-text font-body text-sm focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all duration-200"
                   />
                 </div>
@@ -277,11 +302,16 @@ export default function Dashboard() {
                   Email Address
                 </label>
                 <div className="relative">
-                  <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
+                  <Mail
+                    size={16}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted"
+                  />
                   <input
                     type="email"
                     value={profile.email}
-                    onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+                    onChange={(e) =>
+                      setProfile({ ...profile, email: e.target.value })
+                    }
                     className="w-full pl-9 pr-4 py-2.5 rounded-card-sm border border-brand-border bg-brand-surface text-brand-text font-body text-sm focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all duration-200"
                   />
                 </div>
@@ -293,11 +323,16 @@ export default function Dashboard() {
                   Phone Number
                 </label>
                 <div className="relative">
-                  <Phone size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
+                  <Phone
+                    size={16}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted"
+                  />
                   <input
                     type="tel"
                     value={profile.phone}
-                    onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
+                    onChange={(e) =>
+                      setProfile({ ...profile, phone: e.target.value })
+                    }
                     className="w-full pl-9 pr-4 py-2.5 rounded-card-sm border border-brand-border bg-brand-surface text-brand-text font-body text-sm focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all duration-200"
                   />
                 </div>
@@ -309,10 +344,15 @@ export default function Dashboard() {
                   Experience
                 </label>
                 <div className="relative">
-                  <BriefcaseBusiness size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
+                  <BriefcaseBusiness
+                    size={16}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted"
+                  />
                   <select
                     value={profile.experience}
-                    onChange={(e) => setProfile({ ...profile, experience: e.target.value })}
+                    onChange={(e) =>
+                      setProfile({ ...profile, experience: e.target.value })
+                    }
                     className="w-full pl-9 pr-4 py-2.5 rounded-card-sm border border-brand-border bg-brand-surface text-brand-text font-body text-sm focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all duration-200"
                   >
                     <option value="Internship">Internship / Entry Level</option>
@@ -330,10 +370,13 @@ export default function Dashboard() {
               <label className="font-body text-xs font-semibold text-brand-text uppercase tracking-wider">
                 Skills & Technologies (Press Enter to Add)
               </label>
-              
+
               <div className="flex gap-2">
                 <div className="relative flex-grow">
-                  <Code size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
+                  <Code
+                    size={16}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted"
+                  />
                   <input
                     type="text"
                     placeholder="e.g. React, Python, Figma"
@@ -355,7 +398,9 @@ export default function Dashboard() {
               {/* Tag chip Container */}
               <div className="flex flex-wrap gap-2 mt-2 p-3 bg-brand-bg rounded-card-sm border border-brand-border min-h-[50px]">
                 {profile.skills.length === 0 ? (
-                  <span className="font-body text-xs text-brand-muted italic self-center">No skills listed yet.</span>
+                  <span className="font-body text-xs text-brand-muted italic self-center">
+                    No skills listed yet.
+                  </span>
                 ) : (
                   profile.skills.map((skill) => (
                     <span
@@ -389,15 +434,21 @@ export default function Dashboard() {
                   onChange={handleFileChange}
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
-                
+
                 {uploading ? (
                   <div className="flex flex-col items-center gap-2">
                     <div className="w-8 h-8 rounded-full border-4 border-brand-accent-light border-t-brand-accent animate-spin" />
-                    <span className="font-body text-xs text-brand-muted">Simulating Upload {uploadProgress}%</span>
+                    <span className="font-body text-xs text-brand-muted">
+                      Simulating Upload {uploadProgress}%
+                    </span>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center gap-2">
-                    <Upload size={24} className="text-brand-accent" strokeWidth={1.5} />
+                    <Upload
+                      size={24}
+                      className="text-brand-accent"
+                      strokeWidth={1.5}
+                    />
                     <span className="font-body text-sm font-semibold text-brand-text">
                       Upload new resume
                     </span>
@@ -412,14 +463,19 @@ export default function Dashboard() {
               {profile.resumeName && (
                 <div className="flex items-center justify-between p-3.5 bg-brand-surface rounded-card-sm border border-brand-border">
                   <div className="flex items-center gap-2 min-w-0">
-                    <FileText size={18} className="text-brand-accent flex-shrink-0" />
+                    <FileText
+                      size={18}
+                      className="text-brand-accent flex-shrink-0"
+                    />
                     <span className="font-body text-xs font-semibold text-brand-text truncate">
                       {profile.resumeName}
                     </span>
                   </div>
                   <button
                     type="button"
-                    onClick={() => setProfile(p => ({ ...p, resumeName: "" }))}
+                    onClick={() =>
+                      setProfile((p) => ({ ...p, resumeName: "" }))
+                    }
                     className="text-brand-muted hover:text-error transition-colors p-1"
                   >
                     <Trash2 size={16} />
@@ -451,7 +507,7 @@ export default function Dashboard() {
         </motion.div>
 
         {/* 4. APPLICATIONS TABLE */}
-        <motion.div 
+        <motion.div
           className="bg-brand-surface p-6 sm:p-8 rounded-card border border-brand-border shadow-card"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -473,12 +529,23 @@ export default function Dashboard() {
               </thead>
               <tbody className="divide-y divide-brand-border font-body text-sm text-brand-text">
                 {applications.map((app) => (
-                  <tr key={app.id} className="hover:bg-brand-bg/40 transition-colors">
-                    <td className="py-3.5 pr-4 font-semibold text-brand-text">{app.jobTitle}</td>
-                    <td className="py-3.5 pr-4 text-brand-muted">{app.company}</td>
-                    <td className="py-3.5 pr-4 text-brand-muted">{app.appliedDate}</td>
+                  <tr
+                    key={app.id}
+                    className="hover:bg-brand-bg/40 transition-colors"
+                  >
+                    <td className="py-3.5 pr-4 font-semibold text-brand-text">
+                      {app.jobTitle}
+                    </td>
+                    <td className="py-3.5 pr-4 text-brand-muted">
+                      {app.company}
+                    </td>
+                    <td className="py-3.5 pr-4 text-brand-muted">
+                      {app.appliedDate}
+                    </td>
                     <td className="py-3.5 text-right">
-                      <span className={`inline-block px-2.5 py-0.5 rounded-pill text-[10px] font-semibold border ${getStatusStyle(app.status)}`}>
+                      <span
+                        className={`inline-block px-2.5 py-0.5 rounded-pill text-[10px] font-semibold border ${getStatusStyle(app.status)}`}
+                      >
                         {app.status}
                       </span>
                     </td>

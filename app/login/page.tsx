@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Briefcase, Mail, Lock, ArrowRight, BriefcaseBusiness } from "lucide-react";
+import {  Mail, Lock, ArrowRight, BriefcaseBusiness } from "lucide-react";
 
 export default function Login() {
   const router = useRouter();

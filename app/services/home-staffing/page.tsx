@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { 
   HeartHandshake, 
@@ -102,7 +101,7 @@ export default function HomeStaffing() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } },
+    visible: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 100 } },
   };
 
   const handleWhatsAppChat = (customText?: string) => {

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Menu, X, User, BriefcaseBusiness, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { dummyUser } from "@/lib/dummy-data";
 import { motion, AnimatePresence } from "framer-motion";
 

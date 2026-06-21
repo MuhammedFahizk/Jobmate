@@ -3,14 +3,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, TargetAndTransition } from "framer-motion";
 import { 
   ArrowRight, 
   CheckCircle, 
   Shield, 
   Zap, 
   MessageSquare, 
-  MapPin, 
   ChevronDown, 
   Star,
   Users,
@@ -97,7 +96,7 @@ export default function Home() {
       name: "Sreelakshmi R.",
       role: "Admin Executive — Thrissur",
       avatar: "/images/profile1.png",
-      text: "Very professional service. They clearly understood what kind of role I was looking for and didn't push random openings. Highly recommend for anyone in Kerala looking seriously.",
+      text: "Very professional service. They clearly understood what kind of role I was looking for and didn&apos;t push random openings. Highly recommend for anyone in Kerala looking seriously.",
       rating: 5,
     },
     {
@@ -126,17 +125,17 @@ export default function Home() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } },
+    visible: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 100 } },
   };
 
-  const cardHoverEffect = {
-    y: -4,
-    boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
-    transition: { duration: 0.2, ease: "easeInOut" }
-  };
+ const cardHoverEffect: TargetAndTransition = {
+  y: -4,
+  boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+  transition: { duration: 0.2, ease: "easeInOut" as const },
+};
 
   const handleWhatsAppChat = () => {
-    const message = encodeURIComponent(`Hi JobMate! I'm interested in finding a job. My name is ${dummyUser.name}.`);
+    const message = encodeURIComponent(`Hi JobMate! I&apos;m interested in finding a job. My name is ${dummyUser.name}.`);
     window.open(`https://wa.me/919999999999?text=${message}`, "_blank");
   };
 
@@ -379,14 +378,14 @@ export default function Home() {
             <div>
               <span className="font-body font-semibold text-brand-accent uppercase tracking-wider text-xs block mb-2">Who We Are</span>
               <h2 className="font-display text-3xl font-bold text-brand-text tracking-tight leading-snug">
-                Kerala's Trusted Job Consulting Partner
+                Kerala&apos;s Trusted Job Consulting Partner
               </h2>
             </div>
             <p className="font-body text-brand-muted text-sm leading-relaxed">
               JobMate is a Kerala-based recruitment consultancy helping job seekers across Kochi, Thrissur, Kozhikode, and Thiruvananthapuram connect directly with employers — without the usual wait. We work across industries including IT, sales, accounts, admin, and skilled trades.
             </p>
             <p className="font-body text-brand-muted text-sm leading-relaxed">
-              We don't just share your CV and disappear. Our team stays involved from first application to final offer, making sure candidates are matched to roles that genuinely fit their skills and expectations.
+              We don&apos;t just share your CV and disappear. Our team stays involved from first application to final offer, making sure candidates are matched to roles that genuinely fit their skills and expectations.
             </p>
             <div className="flex flex-col gap-3 mt-2">
               {["Free registration for all candidates", "Direct employer connections, no middlemen", "WhatsApp-first — apply the way you already communicate"].map((point) => (
@@ -408,7 +407,7 @@ export default function Home() {
         <div className="max-w-[1200px] mx-auto">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
             <div>
-              <span className="font-body font-semibold text-brand-accent uppercase tracking-wider text-xs block mb-2">What's Available</span>
+              <span className="font-body font-semibold text-brand-accent uppercase tracking-wider text-xs block mb-2">What&apos;s Available</span>
               <h2 className="font-display text-3xl font-bold text-brand-text tracking-tight">Employment Opportunities</h2>
               <p className="font-body text-brand-muted text-sm mt-2 max-w-md">Browse openings across industries. New listings added every week from verified Kerala employers.</p>
             </div>
@@ -479,7 +478,7 @@ export default function Home() {
 
           <div className="text-center mt-12">
             <Link href="/register" className="inline-flex items-center gap-2 font-body font-medium bg-brand-accent hover:bg-brand-accent-dark text-white px-8 py-3.5 rounded-pill shadow-card transition-all duration-200 hover:-translate-y-0.5">
-              Start Now — It's Free <ArrowRight size={16} />
+              Start Now — It&apos;s Free <ArrowRight size={16} />
             </Link>
           </div>
         </div>
@@ -510,7 +509,7 @@ export default function Home() {
                 </div>
 
                 <p className="font-body text-sm text-brand-muted leading-relaxed flex-1">
-                  "{t.text}"
+                  &lsquo;{t.text}&lsquo;
                 </p>
 
                 {/* Stars */}
