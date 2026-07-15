@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { Inter, Fraunces, IBM_Plex_Mono } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/contexts/AuthProvider";
@@ -9,14 +9,20 @@ import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400", "500", "600"],
   variable: "--font-inter",
 });
 
-const plusJakarta = Plus_Jakarta_Sans({
+const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["600", "700"],
-  variable: "--font-plus-jakarta",
+  weight: ["400", "600"],
+  variable: "--font-fraunces",
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["500"],
+  variable: "--font-ibm-plex",
 });
 
 export const metadata: Metadata = {
@@ -32,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${plusJakarta.variable} bg-background text-foreground min-h-screen flex flex-col antialiased font-body`}
+        className={`${inter.variable} ${fraunces.variable} ${ibmPlexMono.variable} bg-background text-foreground min-h-screen flex flex-col antialiased font-body`}
       >
         <ConfirmModalProvider>
           <ToastProvider>

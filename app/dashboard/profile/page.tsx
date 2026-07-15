@@ -96,6 +96,11 @@ export default function ProfilePage() {
       error('Name required', 'Please enter your full name.');
       return;
     }
+    const phoneTrimmed = form.phone.trim();
+    if (phoneTrimmed && !/^[6-9]\d{9}$/.test(phoneTrimmed)) {
+      error('Invalid Phone', 'Please provide a valid 10-digit Indian mobile number.');
+      return;
+    }
     setSaving(true);
     try {
       await userService.updateProfile({

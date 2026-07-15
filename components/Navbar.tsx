@@ -43,7 +43,7 @@ export default function Navbar() {
         : "bg-white border-b border-transparent"
         }`}
     >
-      <div className="maax-w-7xl mx-auto h-full px-12 flex items-center justify-between">
+      <div className="maax-w-7xl mx-auto h-full px-4  md:px-12 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
           <div className="w-10 h-10 rounded-card-sm bg-primary-500 flex items-center justify-center text-white transition-transform duration-300 group-hover:scale-105 flex-shrink-0">

@@ -56,8 +56,9 @@ const config: Config = {
         "gradient-secondary": "var(--gradient-secondary)",
       },
       fontFamily: {
-        display: ["var(--font-plus-jakarta)", "sans-serif"],
+        display: ["var(--font-fraunces)", "serif"],
         body: ["var(--font-inter)", "sans-serif"],
+        mono: ["var(--font-ibm-plex)", "monospace"],
       },
       borderRadius: {
         card: "16px",
