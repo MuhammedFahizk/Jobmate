@@ -29,8 +29,10 @@ export interface UserProfile {
   paymentStatus: 'pending' | 'paid';
   skills: string[];
   experience: string;
+  isVerified: boolean;
   resumeName: string;
 }
+
 
 // Feel free to toggle paymentStatus between 'pending' and 'paid' to preview dashboard states!
 export const dummyUser: UserProfile = {
@@ -41,8 +43,10 @@ export const dummyUser: UserProfile = {
   paymentStatus: "pending", // Change to 'paid' to test the paid view
   skills: ["React", "Next.js", "Tailwind CSS", "TypeScript", "Framer Motion", "UI Design"],
   experience: "2+ Years",
+  isVerified: false,        // Change to true to test the verified state
   resumeName: "Michael_Darwin_Resume.pdf",
 };
+
 
 export const dummyJobs: Job[] = [
   {
@@ -55,7 +59,7 @@ export const dummyJobs: Job[] = [
     status: "active",
     skills: ["Figma", "Design Systems", "UI Design", "Prototyping"],
     salary: "₹18,0,000 - ₹24,00,000 / year",
-    logoBg: "bg-purple-100 text-purple-600",
+    logoBg: "bg-secondary-100 text-secondary-700",
     description: "Lead the design system effort for our enterprise platform. Create delightful user flows and visual assets."
   },
   {
@@ -68,7 +72,7 @@ export const dummyJobs: Job[] = [
     status: "active",
     skills: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
     salary: "₹12,0,000 - ₹18,0,000 / year",
-    logoBg: "bg-blue-100 text-blue-600",
+    logoBg: "bg-primary-100 text-primary-700",
     description: "Build rapid, SEO-optimized web applications with Next.js 14 and Tailwind CSS. Ensure smooth animations and high performance."
   },
   {
@@ -120,7 +124,7 @@ export const dummyJobs: Job[] = [
     status: "active",
     skills: ["Google Analytics", "Ahrefs", "Keyword Research", "Copywriting"],
     salary: "₹30,000 - ₹50,000 / month",
-    logoBg: "bg-teal-100 text-teal-600",
+    logoBg: "bg-teal-400 text-teal-100",
     description: "Audit client websites, propose optimizations, and draft copy aimed at elevating ranking positions on search engines."
   },
   {
@@ -133,7 +137,7 @@ export const dummyJobs: Job[] = [
     status: "active",
     skills: ["Figma", "UI Design", "Visual Arts"],
     salary: "₹25,000 / month",
-    logoBg: "bg-indigo-100 text-indigo-600",
+    logoBg: "bg-primary-100 text-primary-700",
     description: "Assist senior designers in building web page templates, mobile screens, and social media post designs."
   },
   {
@@ -146,7 +150,7 @@ export const dummyJobs: Job[] = [
     status: "active",
     skills: ["Agile", "Jira", "User Stories", "Analytics"],
     salary: "₹14,0,000 - ₹18,0,000 / year",
-    logoBg: "bg-orange-100 text-orange-600",
+    logoBg: "bg-accent-400/20 text-accent-500",
     description: "Manage product backlog, draft user stories, and sync with engineering to execute sprint goals for flow-optimization features."
   }
 ];

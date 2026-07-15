@@ -1,29 +1,38 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { motion } from "framer-motion";
-import {  Mail, Lock, ArrowRight, BriefcaseBusiness } from "lucide-react";
+import { Mail, Lock, ArrowRight, BriefcaseBusiness } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, type LoginPayload } from "@/lib/validation/auth.schema";
+import { FormField } from "@/components/form/FormField";
+import { FormError } from "@/components/form/FormError";
 
 export default function Login() {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const { login, isSubmitting, error } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    // Mock login delay
-    setTimeout(() => {
-      router.push("/dashboard");
-    }, 800);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginPayload>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = async (data: LoginPayload) => {
+    try {
+      await login(data);
+      // useAuth's login() already redirects to /dashboard on success
+    } catch {
+      // error is already captured in `error` below
+    }
   };
 
   return (
     <div className="min-h-[calc(100vh-64px)] flex items-center justify-center bg-brand-bg px-6 py-12">
-      
+
       {/* Blurred decorative background blobs */}
       <div className="absolute left-[35%] top-[25%] w-[300px] h-[300px] rounded-full bg-brand-accent-light/30 blur-[80px] pointer-events-none -z-10" />
 
@@ -48,57 +57,53 @@ export default function Login() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          {/* Email field */}
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="email" className="font-body text-xs font-semibold text-brand-text uppercase tracking-wider">
-              Email Address
-            </label>
-            <div className="relative">
-              <Mail size={16} strokeWidth={1.5} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
-              <input
-                id="email"
-                type="email"
-                required
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-9 pr-4 py-2.5 rounded-card-sm border border-brand-border bg-brand-surface text-brand-text font-body text-sm placeholder-brand-muted focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all duration-200"
-              />
-            </div>
-          </div>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
+          <FormField
+            id="email"
+            label="Email Address"
+            icon={<Mail size={16} strokeWidth={1.5} />}
+            error={errors.email}
+          >
+            <input
+              id="email"
+              type="email"
+              autoComplete="email"
+              placeholder="you@example.com"
+              {...register("email")}
+              className="w-full pl-9 pr-4 py-2.5 rounded-card-sm border border-brand-border bg-brand-surface text-brand-text font-body text-sm placeholder-brand-muted focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all duration-200"
+            />
+          </FormField>
 
-          {/* Password field */}
-          <div className="flex flex-col gap-1.5">
-            <div className="flex justify-between items-center">
-              <label htmlFor="password" className="font-body text-xs font-semibold text-brand-text uppercase tracking-wider">
-                Password
-              </label>
+          <FormField
+            id="password"
+            label="Password"
+            icon={<Lock size={16} strokeWidth={1.5} />}
+            error={errors.password}
+            extraHeaderAction={
               <a href="#" className="font-body text-xs text-brand-accent hover:text-brand-accent-dark hover:underline">
                 Forgot Password?
               </a>
-            </div>
-            <div className="relative">
-              <Lock size={16} strokeWidth={1.5} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
-              <input
-                id="password"
-                type="password"
-                required
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-9 pr-4 py-2.5 rounded-card-sm border border-brand-border bg-brand-surface text-brand-text font-body text-sm placeholder-brand-muted focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all duration-200"
-              />
-            </div>
-          </div>
+            }
+          >
+            <input
+              id="password"
+              type="password"
+              autoComplete="current-password"
+              placeholder="••••••••"
+              {...register("password")}
+              className="w-full pl-9 pr-4 py-2.5 rounded-card-sm border border-brand-border bg-brand-surface text-brand-text font-body text-sm placeholder-brand-muted focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all duration-200"
+            />
+          </FormField>
+
+          <FormError message={error?.message} />
 
           {/* Submit button */}
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isSubmitting}
             className="w-full mt-2 font-body font-medium bg-brand-accent hover:bg-brand-accent-dark disabled:bg-brand-accent/70 text-white py-3 rounded-pill shadow-sm transition-all duration-200 flex items-center justify-center gap-2 hover:-translate-y-0.5"
           >
-            {isLoading ? (
+            {isSubmitting ? (
               <div className="w-5 h-5 rounded-full border-2 border-white border-t-transparent animate-spin" />
             ) : (
               <>

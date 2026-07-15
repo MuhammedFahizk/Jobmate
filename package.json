@@ -2,6 +2,7 @@
   "name": "jobmate",
   "version": "0.1.0",
   "private": true,
+  "module": "commonjs",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,11 +10,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.4.0",
+    "axios": "^1.18.1",
     "framer-motion": "^12.40.0",
     "lucide-react": "^1.21.0",
     "next": "14.2.35",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-hook-form": "^7.81.0",
+    "zod": "^4.4.3",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@types/node": "^20",

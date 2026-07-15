@@ -51,18 +51,18 @@ export default function FAQ() {
   };
 
   return (
-    <div className="bg-brand-bg min-h-screen font-body overflow-hidden py-12 md:py-20">
+    <div className="bg-background min-h-screen font-body overflow-hidden py-12 md:py-20">
       <div className="max-w-[800px] mx-auto px-6">
         
         {/* Header */}
         <div className="text-center flex flex-col items-center gap-6 mb-16">
-          <span className="inline-flex px-3 py-1.5 rounded-pill bg-brand-accent-light text-brand-accent-dark text-xs font-semibold uppercase tracking-wider shadow-sm">
+          <span className="inline-flex px-3 py-1.5 rounded-pill bg-primary-100 text-primary-700 text-xs font-semibold uppercase tracking-wider shadow-sm">
             Help Center
           </span>
-          <h1 className="font-display text-4xl font-bold tracking-tight text-brand-text">
+          <h1 className="font-display text-4xl font-bold tracking-tight text-foreground">
             Frequently Asked Questions
           </h1>
-          <p className="font-body text-base text-brand-muted max-w-lg leading-relaxed">
+          <p className="font-body text-base text-muted max-w-lg leading-relaxed">
             Find answers to commonly asked questions about registration, fees, background checks, and home care placements.
           </p>
         </div>
@@ -77,26 +77,26 @@ export default function FAQ() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.05 }}
-                className="bg-brand-surface border border-brand-border rounded-card overflow-hidden transition-all duration-200"
+                className="bg-white border border-border rounded-card overflow-hidden transition-all duration-200"
               >
                 <button
                   onClick={() => toggleAccordion(idx)}
-                  className="w-full flex items-center justify-between p-6 text-left hover:bg-brand-bg/40 focus:outline-none transition-colors duration-150"
+                  className="w-full flex items-center justify-between p-6 text-left hover:bg-background/40 focus:outline-none transition-colors duration-150"
                 >
                   <div className="flex items-center gap-4 min-w-0 pr-4">
-                    <div className="w-10 h-10 rounded-card-sm bg-brand-accent-light text-brand-accent-dark flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 rounded-card-sm bg-primary-100 text-primary-700 flex items-center justify-center flex-shrink-0">
                       <faq.icon size={18} strokeWidth={1.5} />
                     </div>
                     <div className="min-w-0">
-                      <span className="font-body text-[9px] uppercase tracking-wider font-semibold text-brand-accent-dark block mb-1">
+                      <span className="font-body text-[9px] uppercase tracking-wider font-semibold text-primary-700 block mb-1">
                         {faq.category}
                       </span>
-                      <h3 className="font-display font-semibold text-brand-text text-sm sm:text-base leading-tight">
+                      <h3 className="font-display font-semibold text-foreground text-sm sm:text-base leading-tight">
                         {faq.question}
                       </h3>
                     </div>
                   </div>
-                  <div className="text-brand-muted flex-shrink-0">
+                  <div className="text-muted flex-shrink-0">
                     {isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                   </div>
                 </button>
@@ -110,7 +110,7 @@ export default function FAQ() {
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden"
                     >
-                      <div className="p-6 pt-0 pl-16 border-t border-brand-border/40 font-body text-xs sm:text-sm text-brand-muted leading-relaxed">
+                      <div className="p-6 pt-0 pl-16 border-t border-border/40 font-body text-xs sm:text-sm text-muted leading-relaxed">
                         {faq.answer}
                       </div>
                     </motion.div>

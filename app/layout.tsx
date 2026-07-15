@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { AuthProvider } from "@/contexts/AuthProvider";
+import { ToastProvider } from "@/components/ui/Toast";
+import { ConfirmModalProvider } from "@/components/ui/ConfirmModal";
 import "./globals.css";
 
 const inter = Inter({
@@ -29,13 +32,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${plusJakarta.variable} bg-brand-bg text-brand-text min-h-screen flex flex-col antialiased font-body`}
+        className={`${inter.variable} ${plusJakarta.variable} bg-background text-foreground min-h-screen flex flex-col antialiased font-body`}
       >
-        <Navbar />
-        <main className="flex-grow pt-16">
-          {children}
-        </main>
-        <Footer />
+        <ConfirmModalProvider>
+          <ToastProvider>
+            <AuthProvider>
+              <Navbar />
+              <main className="flex-grow pt-16">
+                {children}
+              </main>
+              <Footer />
+            </AuthProvider>
+          </ToastProvider>
+        </ConfirmModalProvider>
       </body>
     </html>
   );

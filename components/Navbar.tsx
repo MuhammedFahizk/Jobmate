@@ -4,41 +4,49 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { dummyUser } from "@/lib/dummy-data";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuthStore } from "@/lib/store/authStore";
+
+/** Derive up-to-2-letter initials from a display name. */
+function getInitials(name: string): string {
+  return name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase() ?? "")
+    .join("");
+}
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isServicesHovered, setIsServicesHovered] = useState(false);
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    window.addEventListener("scroll", handleScroll);
-    
-    // Simple state tracking: if path is /dashboard, consider logged in for visual purposes
-    setIsLoggedIn(pathname.startsWith("/dashboard"));
+  // ── Real auth state from Zustand store ──────────────────────────────────
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const user = useAuthStore((s) => s.user);
+  const avatarInitials = user ? getInitials(user.name) : "";
+  const firstName = user?.name.trim().split(/\s+/)[0] ?? "";
 
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [pathname]);
+  }, []);
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 h-16 transition-all duration-300 ${
-        isScrolled
-          ? "bg-brand-surface/80 backdrop-blur-md border-b border-brand-border shadow-card"
-          : "bg-brand-surface border-b border-transparent"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 h-16 transition-all duration-300 ${isScrolled
+        ? "bg-white/80 backdrop-blur-md border-b border-border shadow-card"
+        : "bg-white border-b border-transparent"
+        }`}
     >
-      <div className="max-w-[1200px] mx-auto h-full px-6 flex items-center justify-between">
+      <div className="maax-w-7xl mx-auto h-full px-12 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-card-sm bg-brand-accent flex items-center justify-center text-white transition-transform duration-300 group-hover:scale-105 flex-shrink-0">
+          <div className="w-10 h-10 rounded-card-sm bg-primary-500 flex items-center justify-center text-white transition-transform duration-300 group-hover:scale-105 flex-shrink-0">
             <svg viewBox="0 0 100 100" className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="50,5 90,28 90,72 50,95 10,72 10,28" />
               <polygon points="50,28 72,40 72,60 50,72 28,60 28,40" />
@@ -48,11 +56,11 @@ export default function Navbar() {
             </svg>
           </div>
           <div className="flex flex-col">
-            <span className="font-display font-bold text-lg leading-none tracking-tight text-brand-text flex items-center gap-1.5">
+            <span className="font-display font-bold text-lg leading-none tracking-tight text-foreground flex items-center gap-1.5">
               JOBMATE
-              <span className="text-[10px] font-semibold bg-brand-accent-light text-brand-accent-dark px-1.5 py-0.5 rounded">M CUBE</span>
+              <span className="text-[10px] font-semibold bg-primary-100 text-primary-700 px-1.5 py-0.5 rounded">M CUBE</span>
             </span>
-            <span className="font-body text-[9px] uppercase tracking-wider font-semibold text-brand-muted leading-none mt-1">
+            <span className="font-body text-[9px] uppercase tracking-wider font-semibold text-muted leading-none mt-1">
               The optimal solution for employment
             </span>
           </div>
@@ -62,17 +70,15 @@ export default function Navbar() {
         <nav className="hidden md:flex items-center gap-8">
           <Link
             href="/"
-            className={`font-body font-medium text-sm transition-colors duration-200 hover:text-brand-accent ${
-              pathname === "/" ? "text-brand-accent" : "text-brand-muted"
-            }`}
+            className={`font-body font-medium text-sm transition-colors duration-200 hover:text-primary-500 ${pathname === "/" ? "text-primary-500" : "text-muted"
+              }`}
           >
             Home
           </Link>
           <Link
             href="/jobs"
-            className={`font-body font-medium text-sm transition-colors duration-200 hover:text-brand-accent ${
-              pathname.startsWith("/jobs") ? "text-brand-accent" : "text-brand-muted"
-            }`}
+            className={`font-body font-medium text-sm transition-colors duration-200 hover:text-primary-500 ${pathname.startsWith("/jobs") ? "text-primary-500" : "text-muted"
+              }`}
           >
             Jobs
           </Link>
@@ -84,9 +90,8 @@ export default function Navbar() {
             onMouseLeave={() => setIsServicesHovered(false)}
           >
             <button
-              className={`flex items-center gap-1 font-body font-medium text-sm transition-colors duration-200 hover:text-brand-accent focus:outline-none ${
-                pathname.startsWith("/services") ? "text-brand-accent" : "text-brand-muted"
-              }`}
+              className={`flex items-center gap-1 font-body font-medium text-sm transition-colors duration-200 hover:text-primary-500 focus:outline-none ${pathname.startsWith("/services") ? "text-primary-500" : "text-muted"
+                }`}
             >
               <span>Services</span>
               <ChevronDown size={14} className={`transition-transform duration-200 ${isServicesHovered ? "rotate-180" : ""}`} />
@@ -99,21 +104,21 @@ export default function Navbar() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute top-full left-1/2 -translate-x-1/2 w-64 bg-brand-surface border border-brand-border rounded-card shadow-card-hover py-3 z-50"
+                  className="absolute top-full left-1/2 -translate-x-1/2 w-64 bg-white border border-border rounded-card shadow-card-hover py-3 z-50"
                 >
                   <Link
                     href="/services/job-consulting"
-                    className="flex flex-col px-4 py-2.5 hover:bg-brand-bg transition-colors duration-150"
+                    className="flex flex-col px-4 py-2.5 hover:bg-background transition-colors duration-150"
                   >
-                    <span className="font-display font-semibold text-sm text-brand-text">Job Consulting</span>
-                    <span className="font-body text-[10px] text-brand-muted">Kerala Job Placement via WhatsApp</span>
+                    <span className="font-display font-semibold text-sm text-foreground">Job Consulting</span>
+                    <span className="font-body text-[10px] text-muted">Kerala Job Placement via WhatsApp</span>
                   </Link>
                   <Link
                     href="/services/home-staffing"
-                    className="flex flex-col px-4 py-2.5 hover:bg-brand-bg transition-colors duration-150"
+                    className="flex flex-col px-4 py-2.5 hover:bg-background transition-colors duration-150"
                   >
-                    <span className="font-display font-semibold text-sm text-brand-text">Home Staffing</span>
-                    <span className="font-body text-[10px] text-brand-muted">Verified Home Nurses & Domestic Staff</span>
+                    <span className="font-display font-semibold text-sm text-foreground">Home Staffing</span>
+                    <span className="font-body text-[10px] text-muted">Verified Home Nurses & Domestic Staff</span>
                   </Link>
                 </motion.div>
               )}
@@ -122,7 +127,7 @@ export default function Navbar() {
 
           <Link
             href="/#about"
-            className="font-body font-medium text-sm transition-colors duration-200 hover:text-brand-accent text-brand-muted"
+            className="font-body font-medium text-sm transition-colors duration-200 hover:text-primary-500 text-muted"
           >
             About
           </Link>
@@ -130,29 +135,29 @@ export default function Navbar() {
 
         {/* Action Buttons */}
         <div className="hidden md:flex items-center gap-4">
-          {isLoggedIn ? (
+          {isAuthenticated ? (
             <Link
               href="/dashboard"
-              className="flex items-center gap-2 px-4 py-2 rounded-pill bg-brand-surface-2 border border-brand-border hover:bg-brand-accent-light/50 transition-colors duration-200"
+              className="flex items-center gap-2 px-4 py-2 rounded-pill bg-primary-50 border border-border hover:bg-primary-100/50 transition-colors duration-200"
             >
-              <div className="w-6 h-6 rounded-full bg-brand-accent text-white text-xs font-semibold flex items-center justify-center font-display">
-                {dummyUser.avatarInitials}
+              <div className="w-6 h-6 rounded-full bg-primary-500 text-white text-xs font-semibold flex items-center justify-center font-display">
+                {avatarInitials}
               </div>
-              <span className="font-body text-sm font-medium text-brand-text">
-                Dashboard
+              <span className="font-body text-sm font-medium text-foreground">
+                {firstName}
               </span>
             </Link>
           ) : (
             <>
               <Link
                 href="/login"
-                className="font-body font-medium text-sm text-brand-muted hover:text-brand-accent transition-colors duration-200"
+                className="font-body font-medium text-sm text-muted hover:text-primary-500 transition-colors duration-200"
               >
                 Sign In
               </Link>
               <Link
                 href="/register"
-                className="font-body font-medium text-sm bg-brand-accent hover:bg-brand-accent-dark text-white px-5 py-2.5 rounded-pill shadow-sm transition-all duration-200 hover:scale-102"
+                className="font-body font-medium text-sm bg-primary-500 hover:bg-primary-600 text-white px-5 py-2.5 rounded-pill shadow-sm transition-all duration-200 hover:scale-102"
               >
                 Get Started
               </Link>
@@ -163,7 +168,7 @@ export default function Navbar() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="md:hidden p-2 rounded-card-sm text-brand-muted hover:text-brand-text hover:bg-brand-bg transition-colors duration-200"
+          className="md:hidden p-2 rounded-card-sm text-muted hover:text-foreground hover:bg-background transition-colors duration-200"
           aria-label="Toggle menu"
         >
           {isMobileMenuOpen ? <X size={24} strokeWidth={1.5} /> : <Menu size={24} strokeWidth={1.5} />}
@@ -172,19 +177,19 @@ export default function Navbar() {
 
       {/* Mobile Navigation Drawer */}
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-16 left-0 right-0 bg-brand-surface border-b border-brand-border shadow-card-hover p-6 flex flex-col gap-6 animate-in fade-in slide-in-from-top duration-200">
+        <div className="md:hidden absolute top-16 left-0 right-0 bg-white border-b border-border shadow-card-hover p-6 flex flex-col gap-6 animate-in fade-in slide-in-from-top duration-200">
           <nav className="flex flex-col gap-4">
             <Link
               href="/"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="font-body font-medium text-base text-brand-muted hover:text-brand-accent transition-colors duration-200"
+              className="font-body font-medium text-base text-muted hover:text-primary-500 transition-colors duration-200"
             >
               Home
             </Link>
             <Link
               href="/jobs"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="font-body font-medium text-base text-brand-muted hover:text-brand-accent transition-colors duration-200"
+              className="font-body font-medium text-base text-muted hover:text-primary-500 transition-colors duration-200"
             >
               Jobs
             </Link>
@@ -193,31 +198,31 @@ export default function Navbar() {
             <div className="flex flex-col">
               <button
                 onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
-                className="flex items-center justify-between font-body font-medium text-base text-brand-muted hover:text-brand-accent transition-colors duration-200 text-left py-1"
+                className="flex items-center justify-between font-body font-medium text-base text-muted hover:text-primary-500 transition-colors duration-200 text-left py-1"
               >
                 <span>Services</span>
                 <ChevronDown size={16} className={`transition-transform duration-200 ${isMobileServicesOpen ? "rotate-180" : ""}`} />
               </button>
-              
+
               <AnimatePresence>
                 {isMobileServicesOpen && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    className="overflow-hidden pl-4 flex flex-col gap-3 mt-2 border-l border-brand-border"
+                    className="overflow-hidden pl-4 flex flex-col gap-3 mt-2 border-l border-border"
                   >
                     <Link
                       href="/services/job-consulting"
                       onClick={() => { setIsMobileMenuOpen(false); setIsMobileServicesOpen(false); }}
-                      className="font-body text-sm font-medium text-brand-muted hover:text-brand-accent transition-colors py-0.5"
+                      className="font-body text-sm font-medium text-muted hover:text-primary-500 transition-colors py-0.5"
                     >
                       Job Consulting
                     </Link>
                     <Link
                       href="/services/home-staffing"
                       onClick={() => { setIsMobileMenuOpen(false); setIsMobileServicesOpen(false); }}
-                      className="font-body text-sm font-medium text-brand-muted hover:text-brand-accent transition-colors py-0.5"
+                      className="font-body text-sm font-medium text-muted hover:text-primary-500 transition-colors py-0.5"
                     >
                       Home Staffing
                     </Link>
@@ -229,39 +234,39 @@ export default function Navbar() {
             <Link
               href="/#about"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="font-body font-medium text-base text-brand-muted hover:text-brand-accent transition-colors duration-200"
+              className="font-body font-medium text-base text-muted hover:text-primary-500 transition-colors duration-200"
             >
               About
             </Link>
           </nav>
-          
-          <hr className="border-brand-border" />
-          
+
+          <hr className="border-border" />
+
           <div className="flex flex-col gap-3">
-            {isLoggedIn ? (
+            {isAuthenticated ? (
               <Link
                 href="/dashboard"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center justify-center gap-2 w-full py-3 rounded-pill bg-brand-surface-2 border border-brand-border font-body font-medium text-brand-text"
+                className="flex items-center justify-center gap-2 w-full py-3 rounded-pill bg-primary-50 border border-border font-body font-medium text-foreground"
               >
-                <div className="w-6 h-6 rounded-full bg-brand-accent text-white text-xs font-semibold flex items-center justify-center">
-                  {dummyUser.avatarInitials}
+                <div className="w-6 h-6 rounded-full bg-primary-500 text-white text-xs font-semibold flex items-center justify-center">
+                  {avatarInitials}
                 </div>
-                <span>Dashboard</span>
+                <span>{firstName}</span>
               </Link>
             ) : (
               <>
                 <Link
                   href="/login"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full py-3 text-center rounded-pill font-body font-medium text-brand-muted hover:bg-brand-bg transition-colors duration-200"
+                  className="w-full py-3 text-center rounded-pill font-body font-medium text-muted hover:bg-background transition-colors duration-200"
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/register"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full py-3 text-center rounded-pill bg-brand-accent hover:bg-brand-accent-dark text-white font-body font-medium shadow-sm transition-colors duration-200"
+                  className="w-full py-3 text-center rounded-pill bg-primary-500 hover:bg-primary-600 text-white font-body font-medium shadow-sm transition-colors duration-200"
                 >
                   Get Started
                 </Link>

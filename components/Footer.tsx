@@ -23,13 +23,13 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-brand-text text-white pt-16 pb-12 border-t border-brand-text/20">
+    <footer className="bg-foreground text-white pt-16 pb-12 border-t border-foreground/20">
       <div className="max-w-[1200px] mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Logo and About Column */}
           <div className="md:col-span-2 flex flex-col gap-6">
             <Link href="/" className="flex items-center gap-3 self-start group">
-              <div className="w-10 h-10 rounded-card-sm bg-brand-accent flex items-center justify-center text-white transition-transform duration-300 group-hover:scale-105 flex-shrink-0">
+              <div className="w-10 h-10 rounded-card-sm bg-primary-500 flex items-center justify-center text-white transition-transform duration-300 group-hover:scale-105 flex-shrink-0">
                 <svg viewBox="0 0 100 100" className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round">
                   <polygon points="50,5 90,28 90,72 50,95 10,72 10,28" />
                   <polygon points="50,28 72,40 72,60 50,72 28,60 28,40" />
@@ -48,7 +48,7 @@ export default function Footer() {
                 </span>
               </div>
             </Link>
-            <p className="font-body text-brand-muted text-sm max-w-sm leading-relaxed text-slate-300">
+            <p className="font-body text-muted text-sm max-w-sm leading-relaxed text-slate-300">
               Connecting premium talent with the fastest-growing companies in Kerala and globally. Powered by M Cube Services, NIT Kattangal.
             </p>
             {/* Social Icons */}
@@ -79,7 +79,7 @@ export default function Footer() {
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="font-body text-sm text-slate-300 hover:text-brand-accent transition-colors duration-200"
+                      className="font-body text-sm text-slate-300 hover:text-primary-500 transition-colors duration-200"
                     >
                       {link.name}
                     </Link>
@@ -95,8 +95,8 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400 font-body">
           <span>&copy; {new Date().getFullYear()} JobMate. All rights reserved.</span>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-brand-accent transition-colors duration-200">Terms of Service</a>
-            <a href="#" className="hover:text-brand-accent transition-colors duration-200">Cookie Settings</a>
+            <a href="#" className="hover:text-primary-500 transition-colors duration-200">Terms of Service</a>
+            <a href="#" className="hover:text-primary-500 transition-colors duration-200">Cookie Settings</a>
           </div>
         </div>
       </div>
