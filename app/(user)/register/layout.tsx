@@ -3,5 +3,5 @@ import type { ReactNode } from 'react';
 import { GuestRoute } from '@/components/GuestRoute';
 
 export default function RegisterLayout({ children }: { children: ReactNode }) {
-  return <GuestRoute>{children}</GuestRoute>;
+  return <GuestRoute role="candidate" redirectTo="/dashboard">{children}</GuestRoute>;
 }

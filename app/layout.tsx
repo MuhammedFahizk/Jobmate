@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Inter, Fraunces, IBM_Plex_Mono } from "next/font/google";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { AuthProvider } from "@/contexts/AuthProvider";
 import { ToastProvider } from "@/components/ui/Toast";
 import { ConfirmModalProvider } from "@/components/ui/ConfirmModal";
@@ -30,6 +28,8 @@ export const metadata: Metadata = {
   description: "A candidate-facing platform to apply for top jobs easily via WhatsApp.",
 };
 
+// Just <html>, <body>, and app-wide providers. No nav, no chrome — that's
+// owned per-section by app/(user)/layout.tsx and app/mc-ops/(admin)/layout.tsx.
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -42,17 +42,10 @@ export default function RootLayout({
       >
         <ConfirmModalProvider>
           <ToastProvider>
-            <AuthProvider>
-              <Navbar />
-              <main className="flex-grow pt-16">
-                {children}
-              </main>
-              <Footer />
-            </AuthProvider>
+            <AuthProvider>{children}</AuthProvider>
           </ToastProvider>
         </ConfirmModalProvider>
       </body>
     </html>
   );
 }
-

@@ -13,11 +13,20 @@
 
 import apiClient from '@/lib/api/client';
 import { useAuthStore, type AuthUser } from '@/lib/store/authStore';
-import { RegisterPayload, LoginPayload } from '@/lib/validation/auth.schema';
 
 // ── Payload / response shapes ─────────────────────────────────────────────────
 
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
 
+export interface RegisterPayload {
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+}
 
 export interface AuthResponse {
   accessToken: string;
@@ -59,6 +68,19 @@ export const authService = {
     } finally {
       useAuthStore.getState().clearAuth();
     }
+  },
+
+  /**
+   * POST /auth/admin/login
+   * Backend rejects (401, generic "incorrect email or password" — same
+   * message as a bad password, to avoid revealing that a non-admin
+   * account exists) unless the account's role is 'admin'. No token is
+   * ever issued to a non-admin caller, even momentarily.
+   */
+  adminLogin: async (payload: LoginPayload): Promise<AuthUser> => {
+    const { data } = await apiClient.post<AuthResponse>('/auth/admin/login', payload);
+    useAuthStore.getState().setAuth(data.accessToken, data.data.user);
+    return data.data.user;
   },
 
   /**

@@ -1,13 +1,20 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // components/DashboardShell.tsx
 // The persistent shell that wraps every /dashboard/* page:
-//   • ProtectedRoute gate
+//   • ProtectedRoute gate (role="candidate" — see fix note below)
 //   • Profile header card (avatar, name, email, sign-out button)
 //   • Sidebar nav on desktop / pill tabs on mobile
 //   • Content slot ({children}) for the active sub-page
 //   • Quick-link strip at the bottom
 //
-// Sign-out uses useConfirm + useToast for a consistent UX.
+// Used ONCE, at the candidate dashboard layout level — NOT per-page.
+// Individual pages (profile, applications, ...) use SectionShell for
+// their own title bar; SectionShell has no auth logic of its own.
+//
+// FIX: role="candidate" added to the ProtectedRoute call below. Without
+// it, ProtectedRoute only checked isAuthenticated — any valid session,
+// admin included, passed. An admin logged in at /mc-ops/login could
+// freely browse /dashboard/profile, /dashboard/applications, etc.
 // ─────────────────────────────────────────────────────────────────────────────
 'use client';
 
@@ -26,7 +33,7 @@ import type { ReactNode } from 'react';
 
 import { useAuthStore } from '@/lib/store/authStore';
 import { useAuth } from '@/hooks/useAuth';
-import { ProtectedRoute } from '@/components/ProtectedRoute';
+import ProtectedRoute from '@/components/ProtectedRoute';
 import { useConfirm } from '@/components/ui/ConfirmModal';
 import { useToast } from '@/components/ui/Toast';
 
@@ -241,7 +248,7 @@ function ShellInner({ children }: { children: ReactNode }) {
 
 export function DashboardShell({ children }: { children: ReactNode }) {
   return (
-    <ProtectedRoute>
+    <ProtectedRoute role="candidate">
       <ShellInner>{children}</ShellInner>
     </ProtectedRoute>
   );

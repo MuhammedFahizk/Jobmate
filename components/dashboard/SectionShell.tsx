@@ -1,34 +1,47 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // components/dashboard/SectionShell.tsx
-// Shared card wrapper used by every dashboard sub-page.
-// Provides the white card, section title, description, and content slot.
+// Purely presentational — title, optional description, optional
+// right-aligned actions slot, content area. NO auth logic here.
+//
+// This is shared by BOTH sides of the app:
+//   - candidate dashboard pages (app/(user)/dashboard/*)
+//   - admin pages (app/mc-ops/(admin)/*, e.g. AdminCandidatesPage)
+//
+// The previous version of this file had `<ProtectedRoute role="candidate">`
+// wrapped around its children — that's what broke every admin page using
+// it: an admin session doesn't have role "candidate", so loading any
+// admin page that used SectionShell (e.g. Candidates) silently redirected
+// the admin away. Auth gating belongs at the LAYOUT level (once per
+// route group), not inside a title-bar component used many times per
+// page. See:
+//   - components/DashboardShell.tsx → ProtectedRoute role="candidate"
+//     (wraps the whole candidate dashboard, once)
+//   - components/layouts/AdminLayout/index.tsx → ProtectedRoute role="admin"
+//     (wraps the whole admin panel, once)
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { ReactNode } from 'react';
 
 interface SectionShellProps {
-  title: string;
-  description: string;
+  title: ReactNode;
+  description?: string;
+  actions?: ReactNode;
   children: ReactNode;
-  /** Optional extra className for the outer card */
-  className?: string;
 }
 
-export function SectionShell({
-  title,
-  description,
-  children,
-  className = '',
-}: SectionShellProps) {
+export function SectionShell({ title, description, actions, children }: SectionShellProps) {
   return (
-    <div
-      className={`bg-white rounded-card border border-border shadow-card p-6 sm:p-8 ${className}`}
-    >
-      <div className="mb-6 pb-5 border-b border-border">
-        <h2 className="font-display font-bold text-lg text-foreground">{title}</h2>
-        <p className="font-body text-xs text-muted mt-0.5">{description}</p>
+    <section className="flex flex-col gap-5">
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div>
+          <h1 className="text-lg font-semibold text-foreground">{title}</h1>
+          {description && (
+            <p className="text-sm text-muted mt-0.5">{description}</p>
+          )}
+        </div>
+        {actions && <div className="flex items-center gap-2">{actions}</div>}
       </div>
       {children}
-    </div>
+    </section>
   );
 }

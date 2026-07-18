@@ -24,6 +24,7 @@ export interface AuthUser {
     category?: string;
     resumeLink?: string;
     bio?: string;
+    role: 'candidate' | 'admin';
 }
 
 interface AuthState {

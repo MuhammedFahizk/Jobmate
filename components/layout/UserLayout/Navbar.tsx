@@ -24,16 +24,8 @@ export default function Navbar() {
   const [isServicesHovered, setIsServicesHovered] = useState(false);
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
 
-  // ── Real auth state from Zustand store ──────────────────────────────────
-  // FIX: gate on role === 'candidate', not just isAuthenticated. An
-  // authenticated ADMIN browsing the public site was previously shown
-  // the candidate profile chip (their name/initials, linking to
-  // /dashboard) — this is the public/candidate nav, not the admin's
-  // space, so an admin session should render exactly like a logged-out
-  // visitor here (Sign In / Get Started), not like a logged-in candidate.
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const user = useAuthStore((s) => s.user);
-  const isCandidate = isAuthenticated && user?.role === 'candidate';
   const avatarInitials = user ? getInitials(user.name) : "";
   const firstName = user?.name.trim().split(/\s+/)[0] ?? "";
 
@@ -142,7 +134,7 @@ export default function Navbar() {
 
         {/* Action Buttons */}
         <div className="hidden md:flex items-center gap-4">
-          {isCandidate ? (
+          {isAuthenticated ? (
             <Link
               href="/dashboard"
               className="flex items-center gap-2 px-4 py-2 rounded-pill bg-primary-50 border border-border hover:bg-primary-100/50 transition-colors duration-200"
@@ -250,7 +242,7 @@ export default function Navbar() {
           <hr className="border-border" />
 
           <div className="flex flex-col gap-3">
-            {isCandidate ? (
+            {isAuthenticated ? (
               <Link
                 href="/dashboard"
                 onClick={() => setIsMobileMenuOpen(false)}

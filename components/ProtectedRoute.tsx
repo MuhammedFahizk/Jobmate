@@ -1,50 +1,78 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // components/ProtectedRoute.tsx
-// The real auth gate (middleware.ts can't see the Path-scoped cookie — see
-// AUTH_FLOW.md). This reads the in-memory Zustand store instead, which is
-// populated either by a successful login/register or by AuthProvider's
-// silent /auth/refresh call on mount.
+// Default export, `role`-aware. Used by both:
+//   - components/DashboardShell.tsx (role="candidate")
+//   - components/layouts/AdminLayout/index.tsx (role="admin")
 //
-// Usage — wrap a protected layout or page:
-//   export default function DashboardLayout({ children }) {
-//     return <ProtectedRoute>{children}</ProtectedRoute>;
-//   }
+// FIX — redirect-loop bug: a wrong-role but AUTHENTICATED user (e.g. an
+// admin hitting a candidate route) previously fell back to the generic
+// /login fallback, same as a fully logged-out visitor. /login is guarded
+// by GuestRoute, which — seeing a valid session — bounced them straight
+// back to /dashboard, which bounced them back to /login, forever.
 //
-// Waits for `isInitializing` to resolve before deciding anything, so a
-// returning user with a valid refresh cookie doesn't get bounced to
-// /login during the brief window before the silent refresh completes.
+// Fix: distinguish "not logged in at all" (→ the appropriate login page)
+// from "logged in, wrong role" (→ that user's OWN home, never /login).
+// An authenticated admin hitting a candidate-only route now goes straight
+// to /mc-ops/admin-dashboard, not through /login at all.
 // ─────────────────────────────────────────────────────────────────────────────
 
 'use client';
 
-import { useEffect, type ReactNode } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/store/authStore';
 
-export function ProtectedRoute({ children }: { children: ReactNode }) {
-    const router = useRouter();
-    const pathname = usePathname();
-    const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
-    const isInitializing = useAuthStore((s) => s.isInitializing);
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+  /** If set, the authenticated user's `role` must match this value. */
+  role?: 'candidate' | 'admin';
+  /** Where to send unauthenticated users. Wrong-role users go to their own home instead — see homeForRole. */
+  redirectTo?: string;
+}
 
-    useEffect(() => {
-        if (!isInitializing && !isAuthenticated) {
-            router.replace(`/login?redirect=${encodeURIComponent(pathname)}`);
-        }
-    }, [isInitializing, isAuthenticated, pathname, router]);
+function homeForRole(r?: 'candidate' | 'admin') {
+  if (r === 'admin') return '/mc-ops/admin-dashboard';
+  if (r === 'candidate') return '/dashboard';
+  return '/login';
+}
 
-    // Still waiting on the silent refresh — don't flash "logged out" UI.
-    if (isInitializing) {
-        return (
-            <div className="flex min-h-[50vh] items-center justify-center">
-                <div className="h-6 w-6 animate-spin rounded-full border-2 border-brand-accent border-t-transparent" />
-            </div>
-        );
+export default function ProtectedRoute({
+  children,
+  role,
+  redirectTo,
+}: ProtectedRouteProps) {
+  const router = useRouter();
+  const { isAuthenticated, isInitializing, user } = useAuthStore();
+
+  const notLoggedIn = !isAuthenticated;
+  const wrongRole = isAuthenticated && role !== undefined && user?.role !== role;
+
+  // Not logged in at all → the login page for this section.
+  // Logged in but wrong role → THEIR OWN home, never /login (this is
+  // what breaks the loop — a wrong-role user never touches a page
+  // guarded by GuestRoute, so there's nothing to bounce back from).
+  const fallback = wrongRole
+    ? homeForRole(user?.role)
+    : redirectTo ?? (role === 'admin' ? '/mc-ops/login' : '/login');
+
+  useEffect(() => {
+    if (isInitializing) return;
+    if (notLoggedIn || wrongRole) {
+      router.replace(fallback);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isInitializing, notLoggedIn, wrongRole]);
 
-    if (!isAuthenticated) {
-        return null; // redirect above is already in flight
-    }
+  if (isInitializing || notLoggedIn || wrongRole) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-3 text-muted">
+          <div className="h-5 w-5 rounded-full border-2 border-border border-t-primary-500 animate-spin" />
+          <span className="text-sm">Checking access…</span>
+        </div>
+      </div>
+    );
+  }
 
-    return <>{children}</>;
+  return <>{children}</>;
 }
