@@ -308,6 +308,13 @@ export interface Application {
   status: 'Applied' | 'Reviewing' | 'Interviewing' | 'Accepted' | 'Rejected';
 }
 
+export interface ApplicationStatus {
+  Applied: 0,
+  Reviewing: 1,
+  Interviewing: 2,
+  Accepted: 3,
+  Rejected: 4
+}
 export interface UserProfile {
   name: string;
   email: string;

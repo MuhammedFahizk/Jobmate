@@ -33,7 +33,7 @@ export default function AdminTopbar() {
   const toast = useToast();
 
   const handleLogout = () => {
-    authService.adminLogout();
+    authService.logout();
     toast.info('Logged out.');
     router.replace('/mc-ops/login');
   };

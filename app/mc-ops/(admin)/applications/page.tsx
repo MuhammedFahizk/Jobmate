@@ -1,19 +1,17 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { SectionShell } from '@/components/dashboard/SectionShell';
-import DataTable, { StatusBadge, type DataTableColumn } from '@/components/admin/DataTable';
+'use client'
+import DataTable, { DataTableColumn, StatusBadge } from "@/components/admin/DataTable";
+import { SectionShell } from "@/components/dashboard/SectionShell";
+import { useToast } from "@/components/ui/Toast";
 import {
   listApplications,
   updateApplicationStatus,
-  type Application,
-  type ApplicationStatus,
+  type AdminApplication,
+  type AdminApplicationStatus,
 } from '@/lib/dummy-data';
-import { useToast } from '@/components/ui/Toast';
+import { useEffect, useState } from "react";
+const STATUS_OPTIONS: AdminApplicationStatus[] = ['pending', 'reviewed', 'shortlisted', 'rejected', 'accepted'];
 
-const STATUS_OPTIONS: ApplicationStatus[] = ['pending', 'reviewed', 'shortlisted', 'rejected', 'accepted'];
-
-const TONE: Record<ApplicationStatus, 'neutral' | 'positive' | 'warning' | 'negative'> = {
+const TONE: Record<AdminApplicationStatus, 'neutral' | 'positive' | 'warning' | 'negative'> = {
   pending: 'neutral',
   reviewed: 'warning',
   shortlisted: 'positive',
@@ -23,9 +21,9 @@ const TONE: Record<ApplicationStatus, 'neutral' | 'positive' | 'warning' | 'nega
 
 export default function AdminApplicationsPage() {
   const toast = useToast();
-  const [applications, setApplications] = useState<Application[]>([]);
+  const [applications, setApplications] = useState<AdminApplication[]>([]);
   const [loading, setLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState<ApplicationStatus | 'all'>('all');
+  const [statusFilter, setStatusFilter] = useState<AdminApplicationStatus | 'all'>('all');
 
   const load = () => {
     setLoading(true);
@@ -37,7 +35,7 @@ export default function AdminApplicationsPage() {
 
   useEffect(load, []);
 
-  const handleStatusChange = async (id: string, status: ApplicationStatus) => {
+  const handleStatusChange = async (id: string, status: AdminApplicationStatus) => {
     await updateApplicationStatus(id, status);
     toast.success('Application status updated.');
     load();
@@ -45,7 +43,7 @@ export default function AdminApplicationsPage() {
 
   const filtered = statusFilter === 'all' ? applications : applications.filter((a) => a.status === statusFilter);
 
-  const columns: DataTableColumn<Application>[] = [
+  const columns: DataTableColumn<AdminApplication>[] = [
     { key: 'candidateName', header: 'Candidate', render: (a) => <span className="font-medium">{a.candidateName}</span> },
     { key: 'jobTitle', header: 'Job' },
     { key: 'appliedAt', header: 'Applied' },
@@ -66,7 +64,7 @@ export default function AdminApplicationsPage() {
       render: (a) => (
         <select
           value={a.status}
-          onChange={(e) => handleStatusChange(a.id, e.target.value as ApplicationStatus)}
+          onChange={(e) => handleStatusChange(a.id, e.target.value as AdminApplicationStatus)}
           className="border border-border rounded-md px-2 py-1 text-[12px] text-foreground"
           onClick={(e) => e.stopPropagation()}
         >
@@ -87,7 +85,7 @@ export default function AdminApplicationsPage() {
       actions={
         <select
           value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value as ApplicationStatus | 'all')}
+          onChange={(e) => setStatusFilter(e.target.value as AdminApplicationStatus | 'all')}
           className="border border-border rounded-md px-2.5 py-1.5 text-[13px] text-foreground"
         >
           <option value="all">All statuses</option>

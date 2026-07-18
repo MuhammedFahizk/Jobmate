@@ -4,22 +4,24 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { SectionShell } from '@/components/dashboard/SectionShell';
-import { getJobById, updateJob, closeJob, getApplicationsForJob, type Job } from '@/lib/dummy-data';
+import { getJobById, updateJob, closeJob, getApplicationsForJob, type AdminJob } from '@/lib/dummy-data';
 import { useToast } from '@/components/ui/Toast';
 
 const inputClass =
   'border border-border rounded-md px-3 py-1.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary-300 w-full';
 
 export default function AdminJobDetailPage() {
-  const { id } = useParams<{ id: string }>();
+  const params = useParams<{ id: string }>();
+  const id = Array.isArray(params.id) ? params.id[0] : params.id;
   const router = useRouter();
   const toast = useToast();
 
-  const [job, setJob] = useState<Job | null | undefined>(undefined);
+  const [job, setJob] = useState<AdminJob | null | undefined>(undefined);
   const [saving, setSaving] = useState(false);
   const [applicantCount, setApplicantCount] = useState(0);
 
   useEffect(() => {
+    if (!id) return;
     const found = getJobById(id);
     setJob(found ?? null);
     if (found) setApplicantCount(getApplicationsForJob(found.id).length);
@@ -38,7 +40,8 @@ export default function AdminJobDetailPage() {
     );
   }
 
-  const update = (field: keyof Job, value: string) => setJob((j) => (j ? { ...j, [field]: value } : j));
+  const update = (field: keyof Pick<AdminJob, 'title' | 'company' | 'category' | 'type' | 'location' | 'salary' | 'description'>, value: string) =>
+    setJob((j) => (j ? { ...j, [field]: value } : j));
 
   const save = async () => {
     setSaving(true);

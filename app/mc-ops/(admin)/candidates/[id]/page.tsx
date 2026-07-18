@@ -10,20 +10,22 @@ import {
   getApplicationsForCandidate,
   verifyCandidate,
   type Candidate,
-  type Application,
+  type AdminApplication,
 } from '@/lib/dummy-data';
 import { useToast } from '@/components/ui/Toast';
 
 export default function AdminCandidateDetailPage() {
-  const { id } = useParams<{ id: string }>();
+  const params = useParams<{ id: string }>();
+  const id = Array.isArray(params.id) ? params.id[0] : params.id;
   const router = useRouter();
   const toast = useToast();
 
   const [candidate, setCandidate] = useState<Candidate | null | undefined>(undefined);
-  const [applications, setApplications] = useState<Application[]>([]);
+  const [applications, setApplications] = useState<AdminApplication[]>([]);
   const [verifying, setVerifying] = useState(false);
 
   useEffect(() => {
+    if (!id) return;
     const found = getCandidateById(id);
     setCandidate(found ?? null);
     if (found) setApplications(getApplicationsForCandidate(found.id));

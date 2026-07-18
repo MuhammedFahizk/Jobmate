@@ -7,11 +7,9 @@ import { useState } from 'react';
 import { Lock, Eye, EyeOff, Check, ShieldCheck } from 'lucide-react';
 import { useToast } from '@/components/ui/Toast';
 import { useConfirm } from '@/components/ui/ConfirmModal';
-import { SectionShell } from '@/components/dashboard/SectionShell';
 import { userService } from '@/lib/services/user.service';
 import type { ApiError } from '@/lib/api/types';
 import { useRouter } from 'next/navigation';
-import { DashboardShell } from '@/components/dashboard/Dashboardshell';
 
 // ── Styles ─────────────────────────────────────────────────────────────────────
 const INPUT =

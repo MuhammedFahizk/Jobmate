@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
@@ -12,7 +12,6 @@ import {
   ChevronRight,
   ArrowRight,
   Clock,
-  FileDigit,
   HashIcon,
 } from "lucide-react";
 import { dummyJobs, dummyUser, Job } from "@/lib/dummy-data";
@@ -21,7 +20,6 @@ const JOBS_PER_PAGE = 5;
 
 function JobsListContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedType, setSelectedType] = useState("All");

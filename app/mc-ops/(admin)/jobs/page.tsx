@@ -5,12 +5,12 @@ import { useRouter } from 'next/navigation';
 import { Plus, X } from 'lucide-react';
 import { SectionShell } from '@/components/dashboard/SectionShell';
 import DataTable, { StatusBadge, type DataTableColumn } from '@/components/admin/DataTable';
-import { listJobs, createJob, closeJob, type Job } from '@/lib/dummy-data';
+import { listJobs, createJob, closeJob, type AdminJob } from '@/lib/dummy-data';
 import { useToast } from '@/components/ui/Toast';
 
 const JOB_TYPES = ['Full-time', 'Part-time', 'Contract', 'Gig'] as const;
 
-function NewJobModal({ onClose, onCreated }: { onClose: () => void; onCreated: (job: Job) => void }) {
+function NewJobModal({ onClose, onCreated }: { onClose: () => void; onCreated: (job: AdminJob) => void }) {
   const toast = useToast();
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
@@ -122,7 +122,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 export default function AdminJobsPage() {
   const router = useRouter();
   const toast = useToast();
-  const [jobs, setJobs] = useState<Job[]>([]);
+  const [jobs, setJobs] = useState<AdminJob[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -142,7 +142,7 @@ export default function AdminJobsPage() {
     load();
   };
 
-  const columns: DataTableColumn<Job>[] = [
+  const columns: DataTableColumn<AdminJob>[] = [
     { key: 'title', header: 'Title', render: (j) => <span className="font-medium">{j.title}</span> },
     { key: 'company', header: 'Company' },
     { key: 'category', header: 'Category' },

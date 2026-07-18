@@ -3,15 +3,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { motion, TargetAndTransition } from "framer-motion";
-import { 
-  ArrowRight, 
-  CheckCircle, 
-  Shield, 
-  Zap, 
-  MessageSquare, 
-  ChevronDown, 
-  Star,
+import { motion } from "framer-motion";
+import {
+  ArrowRight,
+  CheckCircle,
+  Shield,
+  Zap,
+  ChevronDown,
   Users,
   Building2,
   TrendingUp,
@@ -19,7 +17,6 @@ import {
   UserCheck,
   Briefcase,
   PhoneCall,
-  Quote
 } from "lucide-react";
 import { dummyJobs, dummyUser } from "@/lib/dummy-data";
 
@@ -128,11 +125,11 @@ export default function Home() {
     visible: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 100 } },
   };
 
- const cardHoverEffect: TargetAndTransition = {
-  y: -4,
-  boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
-  transition: { duration: 0.2, ease: "easeInOut" as const },
-};
+  //  const cardHoverEffect: TargetAndTransition = {
+  //   y: -4,
+  //   boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+  //   transition: { duration: 0.2, ease: "easeInOut" as const },
+  // };
 
   const handleWhatsAppChat = () => {
     const message = encodeURIComponent(`Hi JobMate! I&apos;m interested in finding a job. My name is ${dummyUser.name}.`);
@@ -285,7 +282,7 @@ export default function Home() {
               View All Jobs <ArrowRight size={16} className="transform transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {latestJobs.map((job, idx) => (
               <motion.div key={job.id} className="bg-white border border-border rounded-[14px] p-6 pb-5 relative overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-card-hover transition-all duration-300" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.4, delay: idx * 0.1 }}>
@@ -293,21 +290,21 @@ export default function Home() {
                 <div className="font-mono text-[10px] text-muted tracking-[0.06em] text-right mb-4 uppercase">
                   JM-JOB-00{idx + 1}
                 </div>
-                
+
                 <div className="flex justify-between items-start mb-4">
                   <div className={`w-10 h-10 rounded-lg border-[1.5px] border-primary-500 ${job.logoBg} font-display font-semibold text-sm flex items-center justify-center -rotate-3`}>{job.company.substring(0, 1)}</div>
                   <span className="inline-block px-2.5 py-1 rounded-pill bg-primary-50 text-primary-700 font-mono text-[9px] font-semibold tracking-wider uppercase border border-border/50">{job.type}</span>
                 </div>
-                
+
                 <h3 className="font-display font-semibold text-[17px] mb-1 leading-tight">{job.title}</h3>
                 <span className="font-body text-[12px] text-muted block mb-4">{job.company} • {job.location}</span>
-                
+
                 <div className="flex flex-wrap gap-1.5 mb-8">
                   {job.skills.map((skill) => (
                     <span key={skill} className="px-2 py-0.5 rounded-card-sm bg-background text-muted font-body text-[10px] border border-border">{skill}</span>
                   ))}
                 </div>
-                
+
                 <div className="pt-3.5 mt-auto flex items-center justify-between z-10">
                   <span className="font-mono text-[10px] text-primary-500 tracking-[0.04em] uppercase">{job.salary.split(' / ')[0]}</span>
                   <Link href={`/jobs?apply=${job.id}`} className="font-body text-[11px] font-semibold text-foreground hover:text-primary-600 transition-colors">
@@ -338,14 +335,14 @@ export default function Home() {
               <motion.div key={feat.title} className="bg-white border border-border rounded-[14px] p-6 pb-5 relative overflow-hidden flex flex-col" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 * (idx + 1) }}>
                 <div className="absolute left-0 right-0 bottom-[46px] h-0 border-t-[1.5px] border-dashed border-border pointer-events-none" />
                 <div className="font-mono text-[10px] text-muted tracking-[0.06em] text-right mb-4">{feat.code}</div>
-                
+
                 <div className="w-[38px] h-[38px] rounded-lg border-[1.5px] border-primary-500 text-primary-700 flex items-center justify-center font-display font-semibold text-base mb-3.5 -rotate-3 bg-primary-50">
                   {feat.stamp}
                 </div>
-                
+
                 <h3 className="font-display font-semibold text-[17px] mb-2">{feat.title}</h3>
                 <p className="text-[13px] text-muted leading-[1.6] mb-7">{feat.desc}</p>
-                
+
                 <div className="font-mono text-[10px] text-primary-500 tracking-[0.04em] pt-3.5 mt-auto">
                   {feat.foot}
                 </div>
@@ -360,7 +357,7 @@ export default function Home() {
       {/* ─── 4. ABOUT (HOME VERSION) ─── */}
       <section className="bg-background py-10 px-6">
         <div className="max-w-[960px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          
+
           <motion.div
             className="relative"
             initial={{ opacity: 0, x: -30 }}
@@ -486,7 +483,7 @@ export default function Home() {
               Start Now — It&apos;s Free <ArrowRight size={14} />
             </Link>
           </div>
-          
+
           <div className="relative my-16 border-t-[1.5px] border-dashed border-border before:content-[''] before:absolute before:-top-[7px] before:-left-[7px] before:w-3.5 before:h-3.5 before:rounded-full before:bg-background before:border-[1.5px] before:border-border after:content-[''] after:absolute after:-top-[7px] after:-right-[7px] after:w-3.5 after:h-3.5 after:rounded-full after:bg-background after:border-[1.5px] after:border-border" />
         </div>
       </section>
@@ -509,22 +506,22 @@ export default function Home() {
                 transition={{ delay: 0.1 * idx }}
               >
                 <div className="hidden md:block absolute left-0 top-5 bottom-5 w-0 border-l-[1.5px] border-dashed border-border" />
-                
+
                 <span className="font-display text-[44px] leading-[0.8] text-primary-500 shrink-0 md:ml-2 mt-2 md:mt-0">&ldquo;</span>
-                
+
                 <div className="flex-1 w-full">
                   <p className="font-display text-[16px] leading-[1.55] text-foreground mb-4">
                     {t.text}
                   </p>
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-3">
                     <div className="flex items-center gap-3">
-                       <div className="relative w-8 h-8 rounded border border-border overflow-hidden bg-primary-50 flex-shrink-0 grayscale opacity-80">
-                         <Image src={t.avatar} alt={t.name} fill className="object-cover" />
-                       </div>
-                       <div>
-                         <div className="text-[13px] font-semibold font-body">{t.name}</div>
-                         <div className="text-[11px] text-muted font-body">{t.role}</div>
-                       </div>
+                      <div className="relative w-8 h-8 rounded border border-border overflow-hidden bg-primary-50 flex-shrink-0 grayscale opacity-80">
+                        <Image src={t.avatar} alt={t.name} fill className="object-cover" />
+                      </div>
+                      <div>
+                        <div className="text-[13px] font-semibold font-body">{t.name}</div>
+                        <div className="text-[11px] text-muted font-body">{t.role}</div>
+                      </div>
                     </div>
                     <span className="font-mono text-[10px] text-muted tracking-wider uppercase">JM-PLC-0{231 + idx}</span>
                   </div>
