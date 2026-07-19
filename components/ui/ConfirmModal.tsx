@@ -26,15 +26,15 @@ import {
   type ReactNode,
 } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2, AlertTriangle, Info, X } from 'lucide-react';
+import { Trash2, AlertTriangle, Info, X, FileX } from 'lucide-react';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-export type ConfirmVariant = 'danger' | 'warning' | 'info';
 
+export type ConfirmVariant = 'danger' | 'warning' | 'info' | 'discard';
 export interface ConfirmOptions {
   title: string;
-  description?: string;
+  description?: ReactNode;
   confirmLabel?: string;
   cancelLabel?: string;
   /** Visual style. Default: 'danger' */
@@ -47,9 +47,14 @@ interface ConfirmState extends ConfirmOptions {
 
 // ── Variant styles ─────────────────────────────────────────────────────────────
 
+
 const VARIANT: Record<
   ConfirmVariant,
-  { iconBg: string; icon: ReactNode; btn: string }
+  {
+    iconBg: string;
+    icon: ReactNode;
+    btn: string;
+  }
 > = {
   danger: {
     iconBg: 'bg-rose-100 text-rose-600',
@@ -66,8 +71,12 @@ const VARIANT: Record<
     icon: <Info size={18} />,
     btn: 'bg-primary-500 hover:bg-primary-600 text-white',
   },
+  discard: {
+    iconBg: 'bg-orange-100 text-orange-600',
+    icon: <FileX size={18} />,
+    btn: 'bg-orange-500 hover:bg-orange-600 text-white',
+  },
 };
-
 // ── Context ──────────────────────────────────────────────────────────────────
 
 type ConfirmFn = (opts: ConfirmOptions) => Promise<boolean>;

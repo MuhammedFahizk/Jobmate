@@ -13,6 +13,7 @@
 
 import apiClient from '@/lib/api/client';
 import { useAuthStore, type AuthUser } from '@/lib/store/authStore';
+let refreshInFlight: Promise<AuthUser> | null = null;
 
 // ── Payload / response shapes ─────────────────────────────────────────────────
 
@@ -93,8 +94,18 @@ export const authService = {
    * an error worth surfacing to the user.
    */
   refresh: async (): Promise<AuthUser> => {
-    const { data } = await apiClient.post<AuthResponse>('/auth/refresh');
-    useAuthStore.getState().setAuth(data.accessToken, data.data.user);
-    return data.data.user;
+    if (refreshInFlight) return refreshInFlight;
+
+    refreshInFlight = apiClient
+      .post<AuthResponse>('/auth/refresh')
+      .then(({ data }) => {
+        useAuthStore.getState().setAuth(data.accessToken, data.data.user);
+        return data.data.user;
+      })
+      .finally(() => {
+        refreshInFlight = null;
+      });
+
+    return refreshInFlight;
   },
 };

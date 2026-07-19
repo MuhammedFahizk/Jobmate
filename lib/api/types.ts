@@ -20,7 +20,7 @@ export interface ApiResponse<T> {
 export interface PaginatedResponse<T> {
   success: boolean;
   message: string;
-  data: T[];
+  data: T;
   total: number;
   page: number;
   limit: number;
@@ -45,10 +45,20 @@ export interface PaginationParams {
   limit?: number;
 }
 
-export interface JobFilters extends PaginationParams {
+export interface JobFilters {
+  page?: number;
+  limit?: number;
+  sort?: string;              // '-createdAt' | 'createdAt' | 'title' | 'salary.min' | '-salary.min'
+  search?: string;            // matches title, company, location
   category?: string;
   type?: string;
-  location?: string;
-  search?: string;
-  status?: 'active' | 'closed';
+  experienceRequired?: string;
+  isFeatured?: boolean;
+  isActive?: boolean;
+  tags?: string;              // comma-separated; backend splits
+  salaryMin?: number;
+  salaryMax?: number;
+  dateFrom?: string;          // ISO date
+  dateTo?: string;            // ISO date
 }
+

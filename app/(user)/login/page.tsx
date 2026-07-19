@@ -1,16 +1,26 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { Mail, Lock, ArrowRight, BriefcaseBusiness } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, type LoginPayload } from "@/lib/validation/auth.schema";
-import { FormField } from "@/components/form/FormField";
-import { FormError } from "@/components/form/FormError";
+import { Suspense } from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { Mail, Lock, ArrowRight, BriefcaseBusiness } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { loginSchema, type LoginPayload } from '@/lib/validation/auth.schema';
+import { FormField } from '@/components/form/FormField';
+import { FormError } from '@/components/form/FormError';
 
-export default function Login() {
+function LoginForm() {
+  const searchParams = useSearchParams();
+  // Guard against open-redirect: only allow same-site paths (must start with
+  // a single '/', not '//' which browsers treat as protocol-relative).
+  const rawRedirect = searchParams.get('redirect');
+  const redirectTo = rawRedirect && rawRedirect.startsWith('/') && !rawRedirect.startsWith('//')
+    ? rawRedirect
+    : undefined;
+
   const { login, isSubmitting, error } = useAuth();
 
   const {
@@ -23,8 +33,9 @@ export default function Login() {
 
   const onSubmit = async (data: LoginPayload) => {
     try {
-      await login(data);
-      // useAuth's login() already redirects to /dashboard on success
+      // Pass the intended destination through so useAuth can redirect there
+      // instead of always going to /dashboard.
+      await login(data, { redirectTo });
     } catch {
       // error is already captured in `error` below
     }
@@ -32,8 +43,6 @@ export default function Login() {
 
   return (
     <div className="min-h-[calc(100vh-64px)] flex items-center justify-center bg-brand-bg px-6 py-12">
-
-      {/* Blurred decorative background blobs */}
       <div className="absolute left-[35%] top-[25%] w-[300px] h-[300px] rounded-full bg-brand-accent-light/30 blur-[80px] pointer-events-none -z-10" />
 
       <motion.div
@@ -42,34 +51,31 @@ export default function Login() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
-        {/* Card border accent line */}
         <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-brand-accent-dark to-brand-accent" />
 
         <div className="flex flex-col items-center mb-8">
           <div className="w-12 h-12 rounded-card-sm bg-brand-accent flex items-center justify-center text-white mb-4">
             <BriefcaseBusiness size={24} strokeWidth={1.5} />
           </div>
-          <h1 className="font-display text-2xl font-bold text-brand-text">
-            Welcome Back
-          </h1>
+          <h1 className="font-display text-2xl font-bold text-brand-text">Welcome Back</h1>
           <p className="font-body text-sm text-brand-muted mt-1 text-center">
             Sign in to manage your applications and find new opportunities
           </p>
+          {redirectTo && (
+            <p className="font-body text-xs text-brand-accent mt-2 text-center">
+              You&apos;ll be returned to where you left off after signing in.
+            </p>
+          )}
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
-          <FormField
-            id="email"
-            label="Email Address"
-            icon={<Mail size={16} strokeWidth={1.5} />}
-            error={errors.email}
-          >
+          <FormField id="email" label="Email Address" icon={<Mail size={16} strokeWidth={1.5} />} error={errors.email}>
             <input
               id="email"
               type="email"
               autoComplete="email"
               placeholder="you@example.com"
-              {...register("email")}
+              {...register('email')}
               className="w-full pl-9 pr-4 py-2.5 rounded-card-sm border border-brand-border bg-brand-surface text-brand-text font-body text-sm placeholder-brand-muted focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all duration-200"
             />
           </FormField>
@@ -90,14 +96,13 @@ export default function Login() {
               type="password"
               autoComplete="current-password"
               placeholder="••••••••"
-              {...register("password")}
+              {...register('password')}
               className="w-full pl-9 pr-4 py-2.5 rounded-card-sm border border-brand-border bg-brand-surface text-brand-text font-body text-sm placeholder-brand-muted focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all duration-200"
             />
           </FormField>
 
           <FormError message={error?.message} />
 
-          {/* Submit button */}
           <button
             type="submit"
             disabled={isSubmitting}
@@ -115,12 +120,20 @@ export default function Login() {
         </form>
 
         <div className="mt-8 text-center text-sm font-body text-brand-muted border-t border-brand-border pt-6">
-          New to JobMate?{" "}
+          New to JobMate?{' '}
           <Link href="/register" className="font-semibold text-brand-accent hover:text-brand-accent-dark hover:underline">
             Create an Account
           </Link>
         </div>
       </motion.div>
     </div>
+  );
+}
+
+export default function Login() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
   );
 }

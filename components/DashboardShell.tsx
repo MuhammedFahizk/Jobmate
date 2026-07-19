@@ -52,7 +52,7 @@ function getInitials(name: string) {
 
 const NAV = [
   { href: '/dashboard/profile', label: 'Profile', Icon: User },
-  { href: '/dashboard/applications', label: 'Applications', Icon: BriefcaseBusiness },
+  // { href: '/dashboard/applications', label: 'Applications', Icon: BriefcaseBusiness },
   { href: '/dashboard/security', label: 'Security', Icon: ShieldCheck },
 ] as const;
 
