@@ -28,24 +28,24 @@ export default function Privacy() {
   ];
 
   return (
-    <div className="bg-brand-bg min-h-screen font-body py-12 md:py-20">
+    <div className="bg-background min-h-screen font-body py-12 md:py-20">
       <div className="max-w-[800px] mx-auto px-6 flex flex-col gap-12">
         
         {/* Header */}
         <div className="text-center flex flex-col items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-brand-accent-light text-brand-accent-dark flex items-center justify-center mb-2">
+          <div className="w-12 h-12 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center mb-2">
             <ShieldAlert size={24} strokeWidth={1.5} />
           </div>
-          <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-brand-text">
+          <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
             Privacy Policy
           </h1>
-          <p className="font-body text-xs sm:text-sm text-brand-muted max-w-md mt-1 leading-relaxed">
+          <p className="font-body text-xs sm:text-sm text-muted max-w-md mt-1 leading-relaxed">
             Effective Date: June 20, 2026. This policy explains how JOBMATE (M Cube Services) handles candidate and client files.
           </p>
         </div>
 
         {/* Introduction Card */}
-        <div className="bg-brand-surface p-6 sm:p-8 rounded-card border border-brand-border shadow-sm font-body text-xs sm:text-sm text-brand-muted leading-relaxed flex flex-col gap-3">
+        <div className="bg-white p-6 sm:p-8 rounded-card border border-border shadow-sm font-body text-xs sm:text-sm text-muted leading-relaxed flex flex-col gap-3">
           <p>
             Welcome to JOBMATE. We operate placement consulting services based at <strong>NIT Kattangal, Kozhikode</strong> under the parent company name <strong>M Cube Services</strong>. We value the trust you place in us when sharing your resume and home nurse staffing requirements.
           </p>
@@ -63,16 +63,16 @@ export default function Privacy() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.05 }}
-              className="bg-brand-surface p-6 rounded-card border border-brand-border shadow-sm flex gap-4"
+              className="bg-white p-6 rounded-card border border-border shadow-sm flex gap-4"
             >
-              <div className="w-10 h-10 rounded-card-sm bg-brand-accent-light text-brand-accent-dark flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 rounded-card-sm bg-primary-100 text-primary-700 flex items-center justify-center flex-shrink-0">
                 <p.icon size={20} strokeWidth={1.5} />
               </div>
               <div className="flex flex-col gap-1">
-                <h3 className="font-display font-semibold text-brand-text text-base">
+                <h3 className="font-display font-semibold text-foreground text-base">
                   {p.title}
                 </h3>
-                <p className="font-body text-xs sm:text-sm text-brand-muted leading-relaxed">
+                <p className="font-body text-xs sm:text-sm text-muted leading-relaxed">
                   {p.description}
                 </p>
               </div>
@@ -81,9 +81,9 @@ export default function Privacy() {
         </div>
 
         {/* Bottom Contact note */}
-        <div className="text-center font-body text-xs text-brand-muted mt-4 border-t border-brand-border/60 pt-8">
+        <div className="text-center font-body text-xs text-muted mt-4 border-t border-border/60 pt-8">
           Have privacy questions? Reach out to M Cube Services Compliance Officer at{" "}
-          <a href="mailto:mcubeservicesclt@gmail.com" className="font-semibold text-brand-accent hover:text-brand-accent-dark hover:underline">
+          <a href="mailto:mcubeservicesclt@gmail.com" className="font-semibold text-primary-500 hover:text-primary-700 hover:underline">
             mcubeservicesclt@gmail.com
           </a>{" "}
           or visit NIT Kattangal corporate office.

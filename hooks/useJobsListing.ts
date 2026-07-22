@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { jobsService } from '@/lib/services/jobs.service';
 import type { AdminJob } from '@/lib/types/job.type';
-import { useAuth } from '@/hooks/useAuth'; // ← ADJUST to your actual auth hook
+import { useAuth } from '@/hooks/useAuth';
 
 export const JOBS_PER_PAGE = 6;
 const SEARCH_DEBOUNCE_MS = 400;
@@ -23,7 +23,6 @@ export interface JobFiltersState {
     type: string[];
     experienceRequired: string;
     isFeatured: string;
-    tags: string;
     salaryMin: string;
     salaryMax: string;
     dateFrom: string;
@@ -33,21 +32,34 @@ export interface JobFiltersState {
 
 export const EMPTY_FILTERS: JobFiltersState = {
     search: '', category: '', type: [], experienceRequired: '', isFeatured: '',
-    tags: '', salaryMin: '', salaryMax: '', dateFrom: '', dateTo: '', sort: SORT_OPTIONS[0].value,
+    salaryMin: '', salaryMax: '', dateFrom: '', dateTo: '', sort: SORT_OPTIONS[0].value,
 };
 
 export function useJobsListing() {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    const { isAuthenticated } = useAuth(); // ← ADJUST to your actual auth hook's shape
+    const { isAuthenticated } = useAuth();
 
-    const [filters, setFilters] = useState<JobFiltersState>(EMPTY_FILTERS);
-    const [searchInput, setSearchInput] = useState('');
+    const page = Number(searchParams.get('page')) || 1;
+
+    const filters = useMemo<JobFiltersState>(() => ({
+        search: searchParams.get('search') || '',
+        category: searchParams.get('category') || '',
+        type: searchParams.getAll('type'),
+        experienceRequired: searchParams.get('experienceRequired') || '',
+        isFeatured: searchParams.get('isFeatured') || '',
+        salaryMin: searchParams.get('salaryMin') || '',
+        salaryMax: searchParams.get('salaryMax') || '',
+        dateFrom: searchParams.get('dateFrom') || '',
+        dateTo: searchParams.get('dateTo') || '',
+        sort: searchParams.get('sort') || SORT_OPTIONS[0].value,
+    }), [searchParams]);
+
+    const [searchInput, setSearchInput] = useState(filters.search);
 
     const [jobs, setJobs] = useState<AdminJob[]>([]);
     const [total, setTotal] = useState(0);
-    const [page, setPage] = useState(1);
     const [initialLoading, setInitialLoading] = useState(true);
     const [isFetching, setIsFetching] = useState(false);
     const [error, setError] = useState(false);
@@ -56,13 +68,23 @@ export function useJobsListing() {
 
     const totalPages = Math.max(1, Math.ceil(total / JOBS_PER_PAGE));
 
+    // Keep search input in sync with URL changes (e.g. back button)
+    useEffect(() => {
+        setSearchInput(filters.search);
+    }, [filters.search]);
+
     useEffect(() => {
         const handle = setTimeout(() => {
-            setFilters((f) => (f.search === searchInput ? f : { ...f, search: searchInput }));
-            setPage(1);
+            if (searchInput !== filters.search) {
+                const params = new URLSearchParams(searchParams.toString());
+                if (searchInput) params.set('search', searchInput);
+                else params.delete('search');
+                params.set('page', '1');
+                router.push(`${pathname}?${params.toString()}`, { scroll: false });
+            }
         }, SEARCH_DEBOUNCE_MS);
         return () => clearTimeout(handle);
-    }, [searchInput]);
+    }, [searchInput, filters.search, pathname, router, searchParams]);
 
     const load = useCallback(() => {
         setIsFetching(true);
@@ -78,7 +100,6 @@ export function useJobsListing() {
                 ...(filters.type.length ? { type: filters.type.join(',') } : {}),
                 ...(filters.experienceRequired ? { experienceRequired: filters.experienceRequired } : {}),
                 ...(filters.isFeatured ? { isFeatured: filters.isFeatured === 'true' } : {}),
-                ...(filters.tags ? { tags: filters.tags } : {}),
                 ...(filters.salaryMin ? { salaryMin: Number(filters.salaryMin) } : {}),
                 ...(filters.salaryMax ? { salaryMax: Number(filters.salaryMax) } : {}),
                 ...(filters.dateFrom ? { dateFrom: filters.dateFrom } : {}),
@@ -97,7 +118,6 @@ export function useJobsListing() {
 
     useEffect(load, [load]);
 
-    // Deep-link ?apply=<id|slug> — now also drives the post-login resume flow.
     useEffect(() => {
         const applyId = searchParams.get('apply');
         if (!applyId || jobs.length === 0) return;
@@ -107,13 +127,9 @@ export function useJobsListing() {
 
         setSelectedJob(job);
 
-        // If the user just came back from login with ?apply=<slug>&resume=1,
-        // and they're now authenticated, fire the WhatsApp apply immediately
-        // instead of making them click "Apply Now" again.
         const shouldResume = searchParams.get('resume') === '1';
         if (shouldResume && isAuthenticated) {
             openWhatsApp(job);
-            // Clean the resume flag out of the URL so a refresh doesn't re-fire it.
             const params = new URLSearchParams(searchParams.toString());
             params.delete('resume');
             router.replace(`${pathname}?${params.toString()}`);
@@ -129,37 +145,69 @@ export function useJobsListing() {
         }
     }, [jobs]);
 
+    const updateURL = useCallback((newParams: URLSearchParams) => {
+        router.push(`${pathname}?${newParams.toString()}`, { scroll: false });
+    }, [pathname, router]);
+
     const updateFilter = useCallback(<K extends keyof JobFiltersState>(key: K, value: JobFiltersState[K]) => {
-        setFilters((f) => ({ ...f, [key]: value }));
-        setPage(1);
-    }, []);
+        const params = new URLSearchParams(searchParams.toString());
+        if (Array.isArray(value)) {
+            params.delete(key);
+            value.forEach(v => params.append(key, v));
+        } else if (value) {
+            params.set(key, value as string);
+        } else {
+            params.delete(key);
+        }
+        params.set('page', '1');
+        updateURL(params);
+    }, [searchParams, updateURL]);
 
     const toggleTypeFilter = useCallback((value: string) => {
-        setFilters((f) => ({
-            ...f,
-            type: f.type.includes(value) ? f.type.filter((t) => t !== value) : [...f.type, value],
-        }));
-        setPage(1);
-    }, []);
+        const params = new URLSearchParams(searchParams.toString());
+        const currentTypes = params.getAll('type');
+        params.delete('type');
+        const newTypes = currentTypes.includes(value) ? currentTypes.filter(t => t !== value) : [...currentTypes, value];
+        newTypes.forEach(t => params.append('type', t));
+        params.set('page', '1');
+        updateURL(params);
+    }, [searchParams, updateURL]);
 
     const activeFilterCount = useMemo(
         () =>
             [
                 filters.category, filters.type.length ? 'type' : '', filters.experienceRequired,
-                filters.isFeatured, filters.tags, filters.salaryMin, filters.salaryMax,
+                filters.isFeatured, filters.salaryMin, filters.salaryMax,
                 filters.dateFrom, filters.dateTo,
             ].filter(Boolean).length,
         [filters],
     );
 
     const clearFilters = useCallback(() => {
-        setFilters((f) => ({ ...EMPTY_FILTERS, search: f.search, sort: f.sort }));
-        setPage(1);
-    }, []);
+        const params = new URLSearchParams(searchParams.toString());
+        const search = params.get('search');
+        const sort = params.get('sort');
+        const apply = params.get('apply');
+        
+        const keys = Array.from(params.keys());
+        for (const key of keys) {
+            params.delete(key);
+        }
+        
+        if (search) params.set('search', search);
+        if (sort) params.set('sort', sort);
+        if (apply) params.set('apply', apply);
+        
+        params.set('page', '1');
+        updateURL(params);
+    }, [searchParams, updateURL]);
 
     const goToPage = useCallback((p: number) => {
-        setPage((curr) => (p < 1 || p > totalPages ? curr : p));
-    }, [totalPages]);
+        if (p < 1 || p > totalPages) return;
+        const params = new URLSearchParams(searchParams.toString());
+        params.set('page', p.toString());
+        updateURL(params);
+    }, [searchParams, updateURL, totalPages]);
 
     const openWhatsApp = (job: AdminJob) => {
         const text = `Hi! I want to apply for "${job.title}" (${job.company}). Please review my application.`;
@@ -167,12 +215,6 @@ export function useJobsListing() {
         window.open(waUrl, '_blank');
     };
 
-    /**
-     * Gated entry point for the "Apply Now" button. Unauthenticated users get
-     * redirected to login with a return URL that brings them straight back to
-     * this job with ?resume=1, which auto-fires the WhatsApp apply once
-     * they're authenticated (see the deep-link effect above).
-     */
     const applyOnWhatsApp = useCallback((job: AdminJob) => {
         if (!isAuthenticated) {
             const returnTo = `${pathname}?apply=${job.slug}&resume=1`;

@@ -23,10 +23,8 @@ export function JobList({
     page, totalPages, onPageChange, totalResults,
 }: JobListProps) {
     return (
-        <div className="flex flex-col h-full min-h-0">
-            {/* Independently scrollable — this is the key overflow fix: the list
-          pane scrolls on its own, the page shell never does. */}
-            <div className="flex-1 min-h-0 overflow-y-auto pr-1 custom-scrollbar">
+        <div className="flex flex-col gap-6">
+            <div className="flex flex-col">
                 {initialLoading ? (
                     <div className="flex flex-col gap-3">
                         {Array.from({ length: 4 }).map((_, i) => (
@@ -60,7 +58,7 @@ export function JobList({
             </div>
 
             {!initialLoading && !error && jobs.length > 0 && (
-                <div className="flex-shrink-0 pt-4 flex items-center justify-between">
+                <div className="flex items-center justify-between">
                     <span className="text-[11px] text-muted">{totalResults} results</span>
                     {totalPages > 1 && (
                         <div className="flex items-center gap-1">

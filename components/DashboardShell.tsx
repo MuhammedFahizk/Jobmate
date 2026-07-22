@@ -203,7 +203,7 @@ function ShellInner({ children }: { children: ReactNode }) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="flex-1 min-w-0"
+            className="flex-1 min-w-0 bg-white p-4 md:p-6 rounded-2xl "
           >
             {children}
           </motion.div>

@@ -30,16 +30,16 @@ export interface PaginatedResponse<T> {
  * Normalised error shape thrown by the Axios response interceptor.
  * Catch this in components with: catch (e) { const err = e as ApiError }
  */
+// Property 'message' does not exist on type '{ field: string; message: string; }[]'.ts(2339)
 export interface ApiError {
   status: number;
   message: string;
-  /** Field-level validation errors e.g. { field: "email", message: "Invalid" } */
-  errors?: { field: string; message: string }[];
+  errors?: [{ field: string; message: string }] | { field: string; message: string }[];
 }
 
 /**
  * Query parameters for paginated / filtered list requests.
- */
+**/
 export interface PaginationParams {
   page?: number;
   limit?: number;

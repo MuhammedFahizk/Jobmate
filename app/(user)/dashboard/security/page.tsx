@@ -75,7 +75,7 @@ export default function SecurityPage() {
       success('Password updated', 'Your password has been changed successfully.');
     } catch (err) {
       const apiError = err as ApiError;
-      error('Update failed', apiError.message || 'Something went wrong.');
+      error('Update failed', apiError?.errors?.[0].message || 'Something went wrong.');
     } finally {
       setSaving(false);
     }
@@ -101,36 +101,7 @@ export default function SecurityPage() {
     }
   };
 
-  // ── Reusable password field ───────────────────────────────────────────────
-  const PasswordField = ({
-    id, label, placeholder,
-  }: { id: VisKey; label: string; placeholder: string }) => (
-    <div className="flex flex-col gap-1.5">
-      <label className={LBL}>{label}</label>
-      <div className="relative">
-        <Lock size={15} className={ICN} />
-        <input
-          id={id}
-          type={vis[id] ? 'text' : 'password'}
-          placeholder={placeholder}
-          value={form[id]}
-          onChange={setField(id)}
-          required
-          autoComplete={id === 'current' ? 'current-password' : 'new-password'}
-          className={INPUT}
-        />
-        <button
-          type="button"
-          onClick={() => toggleVis(id)}
-          tabIndex={-1}
-          aria-label={vis[id] ? 'Hide password' : 'Show password'}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-foreground transition-colors"
-        >
-          {vis[id] ? <EyeOff size={15} /> : <Eye size={15} />}
-        </button>
-      </div>
-    </div>
-  );
+
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
@@ -146,18 +117,83 @@ export default function SecurityPage() {
         </p>
       </div>
 
-      <PasswordField
-        id="current"
-        label="Current Password"
-        placeholder="Enter your current password" />
-      <PasswordField
-        id="next"
-        label="New Password"
-        placeholder="At least 8 characters" />
-      <PasswordField
-        id="confirm"
-        label="Confirm New Password"
-        placeholder="Repeat your new password" />
+      <div className="flex flex-col gap-1.5">
+        <label className={LBL}>Current Password</label>
+        <div className="relative">
+          <Lock size={15} className={ICN} />
+          <input
+            id="current"
+            type={vis.current ? 'text' : 'password'}
+            placeholder="Enter your current password"
+            value={form.current}
+            onChange={setField('current')}
+            required
+            autoComplete="current-password"
+            className={INPUT}
+          />
+          <button
+            type="button"
+            onClick={() => toggleVis('current')}
+            tabIndex={-1}
+            aria-label={vis.current ? 'Hide password' : 'Show password'}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-foreground transition-colors"
+          >
+            {vis.current ? <EyeOff size={15} /> : <Eye size={15} />}
+          </button>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <label className={LBL}>New Password</label>
+        <div className="relative">
+          <Lock size={15} className={ICN} />
+          <input
+            id="next"
+            type={vis.next ? 'text' : 'password'}
+            placeholder="At least 8 characters"
+            value={form.next}
+            onChange={setField('next')}
+            required
+            autoComplete="new-password"
+            className={INPUT}
+          />
+          <button
+            type="button"
+            onClick={() => toggleVis('next')}
+            tabIndex={-1}
+            aria-label={vis.next ? 'Hide password' : 'Show password'}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-foreground transition-colors"
+          >
+            {vis.next ? <EyeOff size={15} /> : <Eye size={15} />}
+          </button>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <label className={LBL}>Confirm New Password</label>
+        <div className="relative">
+          <Lock size={15} className={ICN} />
+          <input
+            id="confirm"
+            type={vis.confirm ? 'text' : 'password'}
+            placeholder="Repeat your new password"
+            value={form.confirm}
+            onChange={setField('confirm')}
+            required
+            autoComplete="new-password"
+            className={INPUT}
+          />
+          <button
+            type="button"
+            onClick={() => toggleVis('confirm')}
+            tabIndex={-1}
+            aria-label={vis.confirm ? 'Hide password' : 'Show password'}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-foreground transition-colors"
+          >
+            {vis.confirm ? <EyeOff size={15} /> : <Eye size={15} />}
+          </button>
+        </div>
+      </div>
 
       <div className="flex justify-end pt-2 border-t border-border">
         <button

@@ -108,11 +108,11 @@ export default function JobConsulting() {
   };
 
   return (
-    <div className="bg-brand-bg min-h-screen font-body overflow-hidden">
+    <div className="bg-background min-h-screen font-body overflow-hidden">
       
       {/* 1. HERO SECTION */}
-      <section className="relative bg-gradient-to-b from-brand-surface to-brand-bg px-6 py-20 md:py-28 border-b border-brand-border/40">
-        <div className="absolute right-0 top-1/4 w-[350px] h-[350px] rounded-full bg-brand-accent-light/35 blur-[80px] pointer-events-none -z-10" />
+      <section className="relative bg-gradient-to-b from-brand-surface to-brand-bg px-6 py-20 md:py-28 border-b border-border/40">
+        <div className="absolute right-0 top-1/4 w-[350px] h-[350px] rounded-full bg-primary-100/35 blur-[80px] pointer-events-none -z-10" />
         <div className="absolute left-10 bottom-10 w-[200px] h-[200px] rounded-full bg-[#EDF6F4]/50 blur-[50px] pointer-events-none -z-10" />
 
         <div className="max-w-[1200px] mx-auto text-center flex flex-col items-center gap-6">
@@ -120,7 +120,7 @@ export default function JobConsulting() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4 }}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-brand-accent-light text-brand-accent-dark text-xs font-semibold uppercase tracking-wider shadow-sm"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-primary-100 text-primary-700 text-xs font-semibold uppercase tracking-wider shadow-sm"
           >
             Limited Offer: ₹499 → ₹199 Only
           </motion.div>
@@ -129,7 +129,7 @@ export default function JobConsulting() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.5 }}
-            className="font-display text-4xl sm:text-5xl md:text-6xl font-semibold leading-[1.1] text-brand-text max-w-3xl tracking-tight"
+            className="font-display text-4xl sm:text-5xl md:text-6xl font-semibold leading-[1.1] text-foreground max-w-3xl tracking-tight"
           >
             Your Career, <span className="font-bold bg-gradient-to-r from-brand-accent-dark to-brand-accent bg-clip-text text-transparent">Placed Right</span>
           </motion.h1>
@@ -138,7 +138,7 @@ export default function JobConsulting() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-base sm:text-lg text-brand-muted max-w-xl leading-relaxed"
+            className="text-base sm:text-lg text-muted max-w-xl leading-relaxed"
           >
             Fast-track your job search in Kerala. Direct hiring matching, direct communication, and immediate WhatsApp applications. Consulted at NIT Kattangal.
           </motion.p>
@@ -151,13 +151,13 @@ export default function JobConsulting() {
           >
             <button
               onClick={handleWhatsAppChat}
-              className="font-body font-medium bg-brand-accent hover:bg-brand-accent-dark text-white px-8 py-3.5 rounded-pill shadow-card transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 text-center"
+              className="font-body font-medium bg-primary-500 hover:bg-primary-700 text-white px-8 py-3.5 rounded-pill shadow-card transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 text-center"
             >
               Register Free — ₹199
             </button>
             <Link
               href="/jobs"
-              className="font-body font-medium border border-brand-border bg-brand-surface hover:bg-brand-bg text-brand-text px-8 py-3.5 rounded-pill shadow-sm transition-all duration-200 hover:-translate-y-0.5 text-center"
+              className="font-body font-medium border border-border bg-white hover:bg-background text-foreground px-8 py-3.5 rounded-pill shadow-sm transition-all duration-200 hover:-translate-y-0.5 text-center"
             >
               Browse Jobs
             </Link>
@@ -166,13 +166,13 @@ export default function JobConsulting() {
       </section>
 
       {/* 2. FEATURES GRID SECTION */}
-      <section className="py-20 px-6 bg-brand-surface border-b border-brand-border/60">
+      <section className="py-20 px-6 bg-white border-b border-border/60">
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center max-w-md mx-auto mb-16">
-            <span className="font-body font-semibold text-brand-accent uppercase tracking-wider text-xs block mb-2">
+            <span className="font-body font-semibold text-primary-500 uppercase tracking-wider text-xs block mb-2">
               Key Features
             </span>
-            <h2 className="font-display text-3xl font-bold text-brand-text tracking-tight">
+            <h2 className="font-display text-3xl font-bold text-foreground tracking-tight">
               A Modern Hiring Service
             </h2>
           </div>
@@ -189,15 +189,15 @@ export default function JobConsulting() {
                 key={idx}
                 variants={itemVariants}
                 whileHover={{ y: -3 }}
-                className="bg-brand-bg border border-brand-border p-8 rounded-card flex flex-col items-start gap-4 transition-all duration-200 hover:shadow-card"
+                className="bg-background border border-border p-8 rounded-card flex flex-col items-start gap-4 transition-all duration-200 hover:shadow-card"
               >
-                <div className="w-12 h-12 rounded-card-sm bg-brand-accent-light text-brand-accent-dark flex items-center justify-center">
+                <div className="w-12 h-12 rounded-card-sm bg-primary-100 text-primary-700 flex items-center justify-center">
                   <feature.icon size={22} strokeWidth={1.5} />
                 </div>
-                <h3 className="font-display font-semibold text-brand-text text-lg">
+                <h3 className="font-display font-semibold text-foreground text-lg">
                   {feature.title}
                 </h3>
-                <p className="font-body text-sm text-brand-muted leading-relaxed">
+                <p className="font-body text-sm text-muted leading-relaxed">
                   {feature.description}
                 </p>
               </motion.div>
@@ -207,13 +207,13 @@ export default function JobConsulting() {
       </section>
 
       {/* 3. HOW IT WORKS SECTION */}
-      <section className="py-20 px-6 bg-brand-bg border-b border-brand-border/60">
+      <section className="py-20 px-6 bg-background border-b border-border/60">
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center max-w-md mx-auto mb-16">
-            <span className="font-body font-semibold text-brand-accent uppercase tracking-wider text-xs block mb-2">
+            <span className="font-body font-semibold text-primary-500 uppercase tracking-wider text-xs block mb-2">
               Process Flow
             </span>
-            <h2 className="font-display text-3xl font-bold text-brand-text tracking-tight">
+            <h2 className="font-display text-3xl font-bold text-foreground tracking-tight">
               How It Works
             </h2>
           </div>
@@ -236,18 +236,18 @@ export default function JobConsulting() {
                   className="flex flex-col items-center text-center gap-4"
                 >
                   <div className="relative">
-                    <div className="w-24 h-24 rounded-full bg-brand-surface border border-brand-border flex items-center justify-center text-brand-accent-dark shadow-sm">
+                    <div className="w-24 h-24 rounded-full bg-white border border-border flex items-center justify-center text-primary-700 shadow-sm">
                       <step.icon size={32} strokeWidth={1.5} />
                     </div>
-                    <div className="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-brand-accent text-white text-xs font-display font-bold flex items-center justify-center shadow-sm">
+                    <div className="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-primary-500 text-white text-xs font-display font-bold flex items-center justify-center shadow-sm">
                       {step.number}
                     </div>
                   </div>
                   <div className="flex flex-col gap-1 max-w-[220px]">
-                    <h3 className="font-display font-semibold text-brand-text text-base">
+                    <h3 className="font-display font-semibold text-foreground text-base">
                       {step.title}
                     </h3>
-                    <p className="font-body text-xs text-brand-muted leading-relaxed">
+                    <p className="font-body text-xs text-muted leading-relaxed">
                       {step.description}
                     </p>
                   </div>
@@ -259,13 +259,13 @@ export default function JobConsulting() {
       </section>
 
       {/* 4. JOB CATEGORIES GRID */}
-      <section className="py-20 px-6 bg-brand-surface border-b border-brand-border/60">
+      <section className="py-20 px-6 bg-white border-b border-border/60">
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center max-w-md mx-auto mb-16">
-            <span className="font-body font-semibold text-brand-accent uppercase tracking-wider text-xs block mb-2">
+            <span className="font-body font-semibold text-primary-500 uppercase tracking-wider text-xs block mb-2">
               Industries
             </span>
-            <h2 className="font-display text-3xl font-bold text-brand-text tracking-tight">
+            <h2 className="font-display text-3xl font-bold text-foreground tracking-tight">
               Popular Job Categories
             </h2>
           </div>
@@ -282,22 +282,22 @@ export default function JobConsulting() {
                 key={idx}
                 variants={itemVariants}
                 whileHover={{ y: -3 }}
-                className="group cursor-pointer bg-brand-bg border border-brand-border p-6 rounded-card flex items-center justify-between transition-all duration-200 hover:shadow-card hover:border-brand-accent/40"
+                className="group cursor-pointer bg-background border border-border p-6 rounded-card flex items-center justify-between transition-all duration-200 hover:shadow-card hover:border-brand-accent/40"
               >
                 <div className="flex items-center gap-4 min-w-0">
-                  <div className="w-11 h-11 rounded-card-sm bg-brand-accent-light text-brand-accent-dark flex items-center justify-center flex-shrink-0">
+                  <div className="w-11 h-11 rounded-card-sm bg-primary-100 text-primary-700 flex items-center justify-center flex-shrink-0">
                     <cat.icon size={20} strokeWidth={1.5} />
                   </div>
                   <div className="min-w-0">
-                    <h3 className="font-display font-semibold text-sm text-brand-text truncate">
+                    <h3 className="font-display font-semibold text-sm text-foreground truncate">
                       {cat.title}
                     </h3>
-                    <p className="font-body text-xs text-brand-accent-dark mt-0.5">
+                    <p className="font-body text-xs text-primary-700 mt-0.5">
                       {cat.openings} Openings
                     </p>
                   </div>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-brand-surface border border-brand-border flex items-center justify-center text-brand-muted group-hover:text-brand-accent group-hover:bg-brand-accent-light group-hover:border-transparent transition-colors duration-200 flex-shrink-0">
+                <div className="w-8 h-8 rounded-full bg-white border border-border flex items-center justify-center text-muted group-hover:text-primary-500 group-hover:bg-primary-100 group-hover:border-transparent transition-colors duration-200 flex-shrink-0">
                   <ArrowRight size={14} strokeWidth={1.5} />
                 </div>
               </motion.div>
@@ -307,12 +307,12 @@ export default function JobConsulting() {
       </section>
 
       {/* 5. SERVICE LOCATIONS */}
-      <section className="py-16 px-6 bg-brand-bg border-b border-brand-border/60">
+      <section className="py-16 px-6 bg-background border-b border-border/60">
         <div className="max-w-[1200px] mx-auto text-center">
-          <span className="font-body font-semibold text-brand-accent uppercase tracking-wider text-xs block mb-4">
+          <span className="font-body font-semibold text-primary-500 uppercase tracking-wider text-xs block mb-4">
             Coverage Area
           </span>
-          <h2 className="font-display text-2xl font-bold text-brand-text tracking-tight mb-8">
+          <h2 className="font-display text-2xl font-bold text-foreground tracking-tight mb-8">
             Placement Service Locations
           </h2>
 
@@ -327,9 +327,9 @@ export default function JobConsulting() {
               <motion.div
                 key={loc}
                 variants={itemVariants}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-pill bg-brand-surface border border-brand-border font-body text-sm font-medium text-brand-text shadow-sm hover:border-brand-accent/30 transition-colors duration-150"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-pill bg-white border border-border font-body text-sm font-medium text-foreground shadow-sm hover:border-brand-accent/30 transition-colors duration-150"
               >
-                <MapPin size={14} className="text-brand-accent" strokeWidth={1.5} />
+                <MapPin size={14} className="text-primary-500" strokeWidth={1.5} />
                 <span>{loc}</span>
               </motion.div>
             ))}
@@ -338,7 +338,7 @@ export default function JobConsulting() {
       </section>
 
       {/* 6. CTA BANNER */}
-      <section className="py-12 px-6 bg-brand-surface">
+      <section className="py-12 px-6 bg-white">
         <div className="max-w-[1200px] mx-auto">
           <motion.div
             initial={{ scale: 0.96, opacity: 0 }}
@@ -361,7 +361,7 @@ export default function JobConsulting() {
               
               <button
                 onClick={handleWhatsAppChat}
-                className="mt-2 font-body font-medium bg-white hover:bg-brand-bg text-brand-accent-dark px-8 py-3.5 rounded-pill shadow-card transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+                className="mt-2 font-body font-medium bg-white hover:bg-background text-primary-700 px-8 py-3.5 rounded-pill shadow-card transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
               >
                 Register Now
               </button>

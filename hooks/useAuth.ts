@@ -6,7 +6,9 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 'use client';
-
+interface AuthOptions {
+    redirectTo?: string;
+}
 import { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { authService } from '@/lib/services/auth.service';
@@ -24,9 +26,15 @@ export function useAuth() {
     const [error, setError] = useState<ApiError | null>(null);
 
     const login = useCallback(
-        async (payload: LoginPayload, redirectTo = '/dashboard') => {
+        async (
+            payload: LoginPayload,
+            options?: AuthOptions
+        ) => {
+            const redirectTo = options?.redirectTo ?? '/dashboard';
+
             setIsSubmitting(true);
             setError(null);
+
             try {
                 await authService.login(payload);
                 router.push(redirectTo);
@@ -36,13 +44,19 @@ export function useAuth() {
                 throw err;
             }
         },
-        [router],
+        [router]
     );
 
     const register = useCallback(
-        async (payload: RegisterPayload, redirectTo = '/dashboard') => {
+        async (
+            payload: RegisterPayload,
+            options?: AuthOptions
+        ) => {
+            const redirectTo = options?.redirectTo ?? '/dashboard';
+
             setIsSubmitting(true);
             setError(null);
+
             try {
                 await authService.register(payload);
                 router.push(redirectTo);
@@ -52,9 +66,8 @@ export function useAuth() {
                 throw err;
             }
         },
-        [router],
+        [router]
     );
-
     const logout = useCallback(async () => {
         await authService.logout();
         router.push('/login');

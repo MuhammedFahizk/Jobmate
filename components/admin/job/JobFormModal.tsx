@@ -13,6 +13,10 @@ import {
   DEFAULT_SALARY,
   type AdminJob,
   type Salary,
+  type JobCategory,
+  type JobType,
+  type ExperienceLevel,
+  type JobStatus,
 } from '@/lib/types/job.type';
 
 const EMPTY_FORM = {
@@ -32,8 +36,24 @@ const EMPTY_FORM = {
   status: JOB_STATUSES[0].value,
 };
 
-type FormState = typeof EMPTY_FORM;
 
+
+interface FormState {
+  title: string;
+  company: string;
+  category: JobCategory;
+  type: JobType;
+  location: string;
+  salary: Salary;
+  description: string;
+  whatsappNumber: string;
+  experienceRequired: ExperienceLevel;
+  tags: string;
+  requiredSkills: string;
+  keyResponsibilities: string;
+  isFeatured: boolean;
+  status: JobStatus;
+}
 function jobToForm(job: AdminJob): FormState {
   return {
     title: job.title,

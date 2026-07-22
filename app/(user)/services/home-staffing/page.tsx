@@ -111,10 +111,10 @@ export default function HomeStaffing() {
   };
 
   return (
-    <div className="bg-brand-bg min-h-screen font-body overflow-hidden">
+    <div className="bg-background min-h-screen font-body overflow-hidden">
       
       {/* 1. HERO SECTION */}
-      <section className="relative bg-gradient-to-b from-[#EBF5FF] to-brand-bg px-6 py-20 md:py-28 border-b border-brand-border/60">
+      <section className="relative bg-gradient-to-b from-[#EBF5FF] to-brand-bg px-6 py-20 md:py-28 border-b border-border/60">
         <div className="absolute right-0 top-1/4 w-[350px] h-[350px] rounded-full bg-blue-100/40 blur-[80px] pointer-events-none -z-10" />
         <div className="absolute left-10 bottom-10 w-[200px] h-[200px] rounded-full bg-blue-50/50 blur-[50px] pointer-events-none -z-10" />
 
@@ -132,7 +132,7 @@ export default function HomeStaffing() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.5 }}
-            className="font-display text-4xl sm:text-5xl md:text-6xl font-semibold leading-[1.1] text-brand-text max-w-3xl tracking-tight"
+            className="font-display text-4xl sm:text-5xl md:text-6xl font-semibold leading-[1.1] text-foreground max-w-3xl tracking-tight"
           >
             Trusted Help for <span className="font-bold bg-gradient-to-r from-blue-700 to-blue-500 bg-clip-text text-transparent">Your Home</span>
           </motion.h1>
@@ -141,7 +141,7 @@ export default function HomeStaffing() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-base sm:text-lg text-brand-muted max-w-xl leading-relaxed"
+            className="text-base sm:text-lg text-muted max-w-xl leading-relaxed"
           >
             Hire qualified home nurses, professional housekeeping staff, and live-in helpers in the Kozhikode area. Reliable, reference-verified placement support.
           </motion.p>
@@ -164,7 +164,7 @@ export default function HomeStaffing() {
             
             <a
               href="tel:+919207543772"
-              className="font-body font-medium flex items-center justify-center gap-2 border border-brand-border bg-brand-surface hover:bg-brand-bg text-brand-text px-8 py-3.5 rounded-pill shadow-sm transition-all duration-200 hover:-translate-y-0.5 text-center"
+              className="font-body font-medium flex items-center justify-center gap-2 border border-border bg-white hover:bg-background text-foreground px-8 py-3.5 rounded-pill shadow-sm transition-all duration-200 hover:-translate-y-0.5 text-center"
             >
               <Phone size={16} strokeWidth={1.5} />
               <span>Call 9207 543 772</span>
@@ -174,13 +174,13 @@ export default function HomeStaffing() {
       </section>
 
       {/* 2. STAFF TYPES GRID SECTION */}
-      <section className="py-20 px-6 bg-brand-surface border-b border-brand-border/60">
+      <section className="py-20 px-6 bg-white border-b border-border/60">
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center max-w-md mx-auto mb-16">
             <span className="font-body font-semibold text-blue-600 uppercase tracking-wider text-xs block mb-2">
               Staff Categories
             </span>
-            <h2 className="font-display text-3xl font-bold text-brand-text tracking-tight">
+            <h2 className="font-display text-3xl font-bold text-foreground tracking-tight">
               Home Care Profiles
             </h2>
           </div>
@@ -197,7 +197,7 @@ export default function HomeStaffing() {
                 key={idx}
                 variants={itemVariants}
                 whileHover={{ y: -3 }}
-                className="relative bg-brand-bg border border-brand-border p-8 rounded-card flex flex-col items-start gap-4 transition-all duration-200 hover:shadow-card"
+                className="relative bg-background border border-border p-8 rounded-card flex flex-col items-start gap-4 transition-all duration-200 hover:shadow-card"
               >
                 {/* Vacancy badge top-right */}
                 <span className={`absolute top-6 right-6 inline-flex px-2.5 py-0.5 rounded-pill text-[10px] font-semibold border ${staff.badgeClass}`}>
@@ -208,17 +208,17 @@ export default function HomeStaffing() {
                   <staff.icon size={22} strokeWidth={1.5} />
                 </div>
                 
-                <h3 className="font-display font-semibold text-brand-text text-lg">
+                <h3 className="font-display font-semibold text-foreground text-lg">
                   {staff.title}
                 </h3>
                 
-                <p className="font-body text-sm text-brand-muted leading-relaxed mb-4">
+                <p className="font-body text-sm text-muted leading-relaxed mb-4">
                   {staff.description}
                 </p>
 
                 <button
                   onClick={() => handleWhatsAppChat(staff.message)}
-                  className="mt-auto font-body text-xs font-semibold border border-brand-border bg-brand-surface hover:bg-blue-50 text-brand-text hover:text-blue-700 px-4 py-2.5 rounded-pill transition-colors duration-200 flex items-center gap-1.5"
+                  className="mt-auto font-body text-xs font-semibold border border-border bg-white hover:bg-blue-50 text-foreground hover:text-blue-700 px-4 py-2.5 rounded-pill transition-colors duration-200 flex items-center gap-1.5"
                 >
                   Enquire on WhatsApp
                 </button>
@@ -229,13 +229,13 @@ export default function HomeStaffing() {
       </section>
 
       {/* 3. SERVICE PLANS SECTION */}
-      <section className="py-20 px-6 bg-brand-bg border-b border-brand-border/60">
+      <section className="py-20 px-6 bg-background border-b border-border/60">
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center max-w-md mx-auto mb-16">
             <span className="font-body font-semibold text-blue-600 uppercase tracking-wider text-xs block mb-2">
               Flexible Schedules
             </span>
-            <h2 className="font-display text-3xl font-bold text-brand-text tracking-tight">
+            <h2 className="font-display text-3xl font-bold text-foreground tracking-tight">
               Our Service Plans
             </h2>
           </div>
@@ -252,20 +252,20 @@ export default function HomeStaffing() {
                 key={idx}
                 variants={itemVariants}
                 whileHover={{ y: -3 }}
-                className="bg-brand-surface border border-brand-border p-8 rounded-card flex flex-col items-center text-center gap-4 transition-all duration-200 hover:shadow-card hover:border-blue-100"
+                className="bg-white border border-border p-8 rounded-card flex flex-col items-center text-center gap-4 transition-all duration-200 hover:shadow-card hover:border-blue-100"
               >
                 <div className="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
                   <Calendar size={22} strokeWidth={1.5} />
                 </div>
                 <div className="flex flex-col gap-1">
-                  <h3 className="font-display font-semibold text-brand-text text-lg">
+                  <h3 className="font-display font-semibold text-foreground text-lg">
                     {plan.title}
                   </h3>
                   <span className="font-body text-xs font-medium text-blue-600 uppercase tracking-wider">
                     {plan.subtitle}
                   </span>
                 </div>
-                <p className="font-body text-xs text-brand-muted leading-relaxed">
+                <p className="font-body text-xs text-muted leading-relaxed">
                   {plan.description}
                 </p>
               </motion.div>
@@ -275,12 +275,12 @@ export default function HomeStaffing() {
       </section>
 
       {/* 4. SERVICE AREAS */}
-      <section className="py-16 px-6 bg-brand-surface border-b border-brand-border/60">
+      <section className="py-16 px-6 bg-white border-b border-border/60">
         <div className="max-w-[1200px] mx-auto text-center">
           <span className="font-body font-semibold text-blue-600 uppercase tracking-wider text-xs block mb-4">
             Service Zone
           </span>
-          <h2 className="font-display text-2xl font-bold text-brand-text tracking-tight mb-8">
+          <h2 className="font-display text-2xl font-bold text-foreground tracking-tight mb-8">
             Kozhikode Service Areas
           </h2>
 
@@ -306,13 +306,13 @@ export default function HomeStaffing() {
       </section>
 
       {/* 5. WHY FAMILIES TRUST US */}
-      <section className="py-20 px-6 bg-brand-bg border-b border-brand-border/60">
+      <section className="py-20 px-6 bg-background border-b border-border/60">
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center max-w-md mx-auto mb-16">
             <span className="font-body font-semibold text-blue-600 uppercase tracking-wider text-xs block mb-2">
               Why Choose Us
             </span>
-            <h2 className="font-display text-3xl font-bold text-brand-text tracking-tight">
+            <h2 className="font-display text-3xl font-bold text-foreground tracking-tight">
               Why Families Trust Us
             </h2>
           </div>
@@ -328,15 +328,15 @@ export default function HomeStaffing() {
               <motion.div
                 key={idx}
                 variants={itemVariants}
-                className="bg-brand-surface border border-brand-border p-8 rounded-card flex flex-col items-start gap-4"
+                className="bg-white border border-border p-8 rounded-card flex flex-col items-start gap-4"
               >
                 <div className="w-12 h-12 rounded-card-sm bg-blue-50 text-blue-600 flex items-center justify-center">
                   <factor.icon size={22} strokeWidth={1.5} />
                 </div>
-                <h3 className="font-display font-semibold text-brand-text text-lg">
+                <h3 className="font-display font-semibold text-foreground text-lg">
                   {factor.title}
                 </h3>
-                <p className="font-body text-sm text-brand-muted leading-relaxed">
+                <p className="font-body text-sm text-muted leading-relaxed">
                   {factor.description}
                 </p>
               </motion.div>
@@ -346,7 +346,7 @@ export default function HomeStaffing() {
       </section>
 
       {/* 6. CTA BANNER */}
-      <section className="py-12 px-6 bg-brand-surface">
+      <section className="py-12 px-6 bg-white">
         <div className="max-w-[1200px] mx-auto">
           <motion.div
             initial={{ scale: 0.96, opacity: 0 }}

@@ -125,7 +125,7 @@ export default function Navbar() {
           </div>
 
           <Link
-            href="/#about"
+            href="/about"
             className="font-body font-medium text-sm transition-colors duration-200 hover:text-primary-500 text-muted"
           >
             About
@@ -231,7 +231,7 @@ export default function Navbar() {
             </div>
 
             <Link
-              href="/#about"
+              href="/about"
               onClick={() => setIsMobileMenuOpen(false)}
               className="font-body font-medium text-base text-muted hover:text-primary-500 transition-colors duration-200"
             >

@@ -1,11 +1,11 @@
 'use client';
 
 import { Suspense, useState } from 'react';
-import { useJobsListing } from '@/hooks/useJobsListing'
+import { useJobsListing } from '@/hooks/useJobsListing';
 import { JobSearchBar } from '@/components/jobs/JobSearchBar';
 import { JobFilterDrawer } from '@/components/jobs/JobFilterDrawer';
 import { JobList } from '@/components/jobs/JobList';
-import { JobDetailPanel } from '@/components/jobs//JobDetailPanel';
+import { JobDetailPanel } from '@/components/jobs/JobDetailPanel'; // fixed double slash
 
 function JobsListContent() {
   const {
@@ -20,15 +20,18 @@ function JobsListContent() {
 
   const handleSelect = (job: typeof selectedJob) => {
     setSelectedJob(job);
-    setShowMobileList(false);
+    // Auto switch to detail view on mobile when a job is selected
+    if (window.innerWidth < 1024) {
+        setShowMobileList(false);
+        // Scroll to top for a better mobile experience when reading detail
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   return (
-    // h-screen + flex-col + min-h-0 children is what fixes uncontrolled page
-    // overflow: only the list/detail panes scroll, this shell never does.
-    <div className="h-screen flex flex-col bg-background overflow-hidden">
-      <div className="flex-1 min-h-0 max-w-7xl w-full mx-auto px-4 md:px-6 flex flex-col py-4 gap-4">
-        <div className="flex-shrink-0">
+    <div className="min-h-screen bg-background pb-12">
+      <div className="max-w-7xl w-full mx-auto px-4 md:px-6 pt-6 md:pt-10 flex flex-col gap-6">
+        <div>
           <JobSearchBar
             value={searchInput}
             onChange={setSearchInput}
@@ -37,8 +40,8 @@ function JobsListContent() {
           />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 flex-1 min-h-0">
-          <div className={`lg:col-span-4 min-h-0 ${!showMobileList ? 'hidden lg:block' : 'block'}`}>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <div className={`lg:col-span-5 xl:col-span-4 flex flex-col ${!showMobileList ? 'hidden lg:flex' : 'flex'}`}>
             <JobList
               jobs={jobs}
               selectedJob={selectedJob}
@@ -54,11 +57,11 @@ function JobsListContent() {
             />
           </div>
 
-          <div className={`lg:col-span-8 min-h-0 ${showMobileList ? 'hidden lg:block' : 'block'}`}>
+          <div className={`lg:col-span-7 xl:col-span-8 lg:sticky lg:top-24 lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto custom-scrollbar ${showMobileList ? 'hidden lg:block' : 'block'}`}>
             {!showMobileList && (
               <button
                 onClick={() => setShowMobileList(true)}
-                className="lg:hidden mb-3 text-[13px] font-semibold text-muted hover:text-foreground"
+                className="lg:hidden mb-4 text-[13px] font-semibold text-muted hover:text-foreground flex items-center gap-1"
               >
                 ← Back to roles
               </button>

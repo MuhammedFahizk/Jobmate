@@ -4,7 +4,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import apiClient from '@/lib/api/client';
-import type { ApiResponse, PaginatedResponse, JobFilters } from '@/lib/api/types';
+import type { ApiResponse, JobFilters } from '@/lib/api/types';
 import type { Job } from '@/lib/dummy-data';
 import { AdminJob, AdminJobListResponse, AdminJobResponse, CreateJobRequest, CreateJobResponse, UpdateJobRequest, UpdateJobResponse } from '../types/job.type';
 

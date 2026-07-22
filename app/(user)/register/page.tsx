@@ -31,13 +31,13 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center bg-brand-bg px-6 py-12">
+    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center bg-background px-6 py-12">
 
       {/* Blurred decorative background blobs */}
-      <div className="absolute right-[35%] bottom-[25%] w-[300px] h-[300px] rounded-full bg-brand-accent-light/30 blur-[80px] pointer-events-none -z-10" />
+      <div className="absolute right-[35%] bottom-[25%] w-[300px] h-[300px] rounded-full bg-primary-100/30 blur-[80px] pointer-events-none -z-10" />
 
       <motion.div
-        className="w-full max-w-[480px] bg-brand-surface p-8 sm:p-10 rounded-card border border-brand-border shadow-card relative overflow-hidden"
+        className="w-full max-w-[480px] bg-white p-8 sm:p-10 rounded-card border border-border shadow-card relative overflow-hidden"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
@@ -46,13 +46,13 @@ export default function Register() {
         <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-brand-accent-dark to-brand-accent" />
 
         <div className="flex flex-col items-center mb-8">
-          <div className="w-12 h-12 rounded-card-sm bg-brand-accent flex items-center justify-center text-white mb-4">
+          <div className="w-12 h-12 rounded-card-sm bg-primary-500 flex items-center justify-center text-white mb-4">
             <BriefcaseBusiness size={24} strokeWidth={1.5} />
           </div>
-          <h1 className="font-display text-2xl font-bold text-brand-text">
+          <h1 className="font-display text-2xl font-bold text-foreground">
             Create Account
           </h1>
-          <p className="font-body text-sm text-brand-muted mt-1 text-center">
+          <p className="font-body text-sm text-muted mt-1 text-center">
             Register as a candidate to unlock instant WhatsApp applications
           </p>
         </div>
@@ -70,7 +70,7 @@ export default function Register() {
               autoComplete="name"
               placeholder="Michael Darwin"
               {...register("name")}
-              className="w-full pl-9 pr-4 py-2.5 rounded-card-sm border border-brand-border bg-brand-surface text-brand-text font-body text-sm placeholder-brand-muted focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all duration-200"
+              className="w-full pl-9 pr-4 py-2.5 rounded-card-sm border border-border bg-white text-foreground font-body text-sm placeholder-brand-muted focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-brand-accent transition-all duration-200"
             />
           </FormField>
 
@@ -85,7 +85,7 @@ export default function Register() {
               type="email"
               autoComplete="email"
               {...register("email")}
-              className="w-full pl-9 pr-4 py-2.5 rounded-card-sm border border-brand-border bg-brand-surface text-brand-text font-body text-sm placeholder-brand-muted focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all duration-200"
+              className="w-full pl-9 pr-4 py-2.5 rounded-card-sm border border-border bg-white text-foreground font-body text-sm placeholder-brand-muted focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-brand-accent transition-all duration-200"
             />
           </FormField>
 
@@ -101,7 +101,7 @@ export default function Register() {
               autoComplete="tel"
               placeholder="919999999999"
               {...register("phone")}
-              className="w-full pl-9 pr-4 py-2.5 rounded-card-sm border border-brand-border bg-brand-surface text-brand-text font-body text-sm placeholder-brand-muted focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all duration-200"
+              className="w-full pl-9 pr-4 py-2.5 rounded-card-sm border border-border bg-white text-foreground font-body text-sm placeholder-brand-muted focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-brand-accent transition-all duration-200"
             />
           </FormField>
 
@@ -117,7 +117,7 @@ export default function Register() {
               autoComplete="new-password"
               placeholder="••••••••"
               {...register("password")}
-              className="w-full pl-9 pr-4 py-2.5 rounded-card-sm border border-brand-border bg-brand-surface text-brand-text font-body text-sm placeholder-brand-muted focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all duration-200"
+              className="w-full pl-9 pr-4 py-2.5 rounded-card-sm border border-border bg-white text-foreground font-body text-sm placeholder-brand-muted focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-brand-accent transition-all duration-200"
             />
           </FormField>
 
@@ -127,7 +127,7 @@ export default function Register() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full mt-3 font-body font-medium bg-brand-accent hover:bg-brand-accent-dark disabled:bg-brand-accent/70 text-white py-3 rounded-pill shadow-sm transition-all duration-200 flex items-center justify-center gap-2 hover:-translate-y-0.5"
+            className="w-full mt-3 font-body font-medium bg-primary-500 hover:bg-primary-700 disabled:bg-primary-500/70 text-white py-3 rounded-pill shadow-sm transition-all duration-200 flex items-center justify-center gap-2 hover:-translate-y-0.5"
           >
             {isSubmitting ? (
               <div className="w-5 h-5 rounded-full border-2 border-white border-t-transparent animate-spin" />
@@ -140,9 +140,9 @@ export default function Register() {
           </button>
         </form>
 
-        <div className="mt-8 text-center text-sm font-body text-brand-muted border-t border-brand-border pt-6">
+        <div className="mt-8 text-center text-sm font-body text-muted border-t border-border pt-6">
           Already have an account?{" "}
-          <Link href="/login" className="font-semibold text-brand-accent hover:text-brand-accent-dark hover:underline">
+          <Link href="/login" className="font-semibold text-primary-500 hover:text-primary-700 hover:underline">
             Sign In
           </Link>
         </div>

@@ -127,14 +127,7 @@ export function JobFilterDrawer({
                                 </div>
                             </FilterSection>
 
-                            <FilterSection title="Tags">
-                                <input
-                                    value={filters.tags}
-                                    onChange={(e) => onUpdate('tags', e.target.value)}
-                                    placeholder="e.g. remote, urgent"
-                                    className="w-full px-3 py-2.5 rounded-lg border border-border text-[13px] outline-none focus:border-primary-500"
-                                />
-                            </FilterSection>
+
 
                             <FilterSection title="Sort by">
                                 <select
