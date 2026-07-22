@@ -1,8 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Search, MapPin, Bell } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -21,22 +19,31 @@ import {
   PhoneCall,
 } from "lucide-react";
 import { dummyJobs, dummyUser } from "@/lib/dummy-data";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import apiClient from "@/lib/api/client";
 
 export default function Home() {
   const [selectedRole, setSelectedRole] = useState<"Design" | "Development">("Design");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [latestJobs, setLatestJobs] = useState<any[]>([]);
+  const [isLoadingJobs, setIsLoadingJobs] = useState(true);
   const router = useRouter();
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/jobs?search=${encodeURIComponent(searchQuery.trim())}`);
-    } else {
-      router.push(`/jobs`);
-    }
-  };
 
-  const latestJobs = dummyJobs.filter(job => job.status === "active").slice(0, 3);
+  useEffect(() => {
+    const fetchLatestJobs = async () => {
+      try {
+        setIsLoadingJobs(true);
+        const res = await apiClient.get("/jobs/latest");
+        setLatestJobs(res.data.data.jobs || []);
+      } catch (err) {
+        console.error("Failed to fetch latest jobs", err);
+      } finally {
+        setIsLoadingJobs(false);
+      }
+    };
+    fetchLatestJobs();
+  }, []);
 
   const mockDesignJobs = [
     { initial: "M", title: "UI/UX Designer", company: "Minerva Company", meta: "Min. 1+ Years Exp • Based in Bangalore", logoBg: "bg-secondary-100 text-secondary-700" },
@@ -54,6 +61,8 @@ export default function Home() {
     "/images/profile.png",
     "/images/profile1.png",
     "/images/profile2.png",
+    "/images/profile.png",
+
     "/images/profile4.png",
   ];
 
@@ -151,124 +160,162 @@ export default function Home() {
   return (
     <div className="overflow-hidden">
       {/* ─── 1. HERO ─── */}
-      <section className="relative min-h-[calc(100vh-64px)] flex items-center bg-gradient-to-b from-primary-50/50 via-white to-background px-6 py-12 md:py-16 overflow-hidden">
-        <div className="absolute right-0 top-0 w-[500px] h-[500px] rounded-full bg-primary-100/40 blur-[100px] pointer-events-none -z-10" />
-        <div className="absolute -left-20 bottom-10 w-[300px] h-[300px] rounded-full bg-primary-100/30 blur-[80px] pointer-events-none -z-10" />
+      <section className="relative min-h-[calc(100vh-64px)] flex items-center bg-gradient-to-b from-white to-background px-6 py-12 md:py-10">
+        <div className="absolute right-0 top-1/4 w-[400px] h-[400px] rounded-full bg-primary-100/40 blur-[80px] pointer-events-none -z-10" />
+        <div className="absolute left-10 bottom-10 w-[200px] h-[200px] rounded-full bg-primary-50/50 blur-[50px] pointer-events-none -z-10" />
 
         <div className="max-w-[1200px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          <motion.div className="lg:col-span-6 flex flex-col gap-6 relative z-10" initial="hidden" animate="visible" variants={containerVariants}>
+          <motion.div className="lg:col-span-6 flex flex-col gap-6" initial="hidden" animate="visible" variants={containerVariants}>
             <motion.div variants={itemVariants}>
               <span className="font-mono text-[11px] tracking-[0.12em] uppercase text-primary-500 mb-2 block">
-                Got Talent ? Meet Opportunity
+                The Optimal Solution For Employment
               </span>
             </motion.div>
 
             <motion.h1 className="font-display text-4xl sm:text-5xl lg:text-[54px] leading-[1.15] text-foreground tracking-tight" variants={itemVariants}>
-              Find Your <span className="block font-bold text-primary-500 relative inline-block">Dream Job Here
-                <svg className="absolute w-full h-3 -bottom-1 left-0 text-primary-200 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="4" fill="transparent"/></svg>
-              </span>
+              Find Your <span className="block font-bold text-primary-500">Dream Job Here</span>
             </motion.h1>
 
             <motion.p className="text-base sm:text-lg text-muted max-w-lg leading-[1.6]" variants={itemVariants}>
-              Company reviews. Salaries. Interviews. Jobs. Submit your application instantly via WhatsApp for rapid placement.
+              Powered by M Cube Services, JOBMATE provides direct matching with top-tier companies in Kerala. Submit your application instantly via WhatsApp for rapid placement.
             </motion.p>
 
-            <motion.form onSubmit={handleSearch} className="flex flex-col sm:flex-row items-center bg-white rounded-full p-2 mt-4 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-border" variants={itemVariants}>
-              <div className="flex-1 flex items-center px-4 py-2 w-full">
-                <Search size={18} className="text-muted mr-3 flex-shrink-0" />
-                <input 
-                  type="text" 
-                  placeholder="Job title or keyword" 
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-transparent border-none outline-none text-[15px] font-body text-foreground placeholder-muted"
-                />
-              </div>
-              <div className="hidden sm:block w-[1px] h-8 bg-border mx-2"></div>
-              <div className="flex-1 flex items-center px-4 py-2 w-full border-t sm:border-t-0 border-border mt-2 sm:mt-0 pt-2 sm:pt-0">
-                <MapPin size={18} className="text-muted mr-3 flex-shrink-0" />
-                <input 
-                  type="text" 
-                  placeholder="Kochi, Kerala" 
-                  className="w-full bg-transparent border-none outline-none text-[15px] font-body text-foreground placeholder-muted"
-                />
-              </div>
-              <button type="submit" className="w-full sm:w-auto mt-2 sm:mt-0 font-body text-[14px] font-semibold bg-primary-600 hover:bg-primary-700 text-white px-8 py-3.5 rounded-full transition-all duration-200 flex-shrink-0">
-                Search &rarr;
+            <motion.div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mt-2" variants={itemVariants}>
+              <Link href="/jobs" className="font-mono text-[11px] font-semibold tracking-widest uppercase bg-foreground hover:bg-primary-600 text-white px-8 py-3.5 rounded transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 text-center">
+                Get Started
+              </Link>
+              <button onClick={handleWhatsAppChat} className="font-mono text-[11px] font-semibold tracking-widest uppercase flex items-center justify-center gap-2 border-[1.5px] border-border bg-white hover:bg-background text-foreground px-8 py-3.5 rounded transition-all duration-200 hover:-translate-y-0.5">
+                <svg className="w-4 h-4 fill-whatsapp" viewBox="0 0 24 24">
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.665.989 3.3 1.472 5.358 1.473 5.568 0 10.1-4.529 10.104-10.099.002-2.699-1.047-5.234-2.951-7.138C17.256 1.487 14.73 0.439 12.004 0.439 6.438 0.439 1.91 4.966 1.906 10.537c-.001 2.115.562 4.185 1.63 6.002l-1.074 3.924 4.017-1.054-.232-.116z" />
+                </svg>
+                <span>Chat on WhatsApp</span>
               </button>
-            </motion.form>
-            
-            <motion.div className="mt-2 text-sm text-muted font-body" variants={itemVariants}>
-              <span className="text-foreground font-medium">Popular Searches:</span> Designer, Marketing Manager, Customer Support
             </motion.div>
 
-            <motion.div className="flex flex-col gap-3 pt-6 mt-2 border-t-[1.5px] border-dashed border-border" variants={itemVariants}>
-               <span className="text-xs text-muted font-body">Trusted by leading brands and startups</span>
-               <div className="flex gap-6 items-center opacity-70 grayscale">
-                  <div className="font-display font-bold text-lg flex items-center gap-1"><div className="w-4 h-4 bg-foreground rounded-sm"></div> Square</div>
-                  <div className="font-display font-bold text-lg flex items-center gap-1"><div className="w-4 h-4 rounded-sm border border-foreground"></div> Notion</div>
-                  <div className="font-display font-bold text-lg flex items-center gap-1"><div className="w-4 h-4 rounded-full bg-foreground"></div> GitHub</div>
-               </div>
+
+            <motion.div className="grid grid-cols-4 gap-4 pt-8 mt-4 border-t-[1.5px] border-dashed border-border" variants={itemVariants}>
+              <div className="flex items-center -space-x-3 flex-shrink-0">
+                {stackedAvatars.map((src, idx) => (
+                  <div key={src} className="relative w-8 h-8 rounded-full bg-primary-300 border-2 border-white shadow-card overflow-hidden" style={{ zIndex: 10 - idx }}>
+                    <Image src={src} alt={`Profile ${idx + 1}`} fill className="object-cover" />
+                  </div>
+                ))}
+              </div>
+              <div className="col-span-1 flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                <div className="min-w-0">
+                  <h4 className="font-display text-xl sm:text-2xl font-bold text-foreground leading-tight">50,000+</h4>
+                  <p className="font-mono text-[9px] uppercase tracking-wider text-muted leading-tight whitespace-nowrap mt-1">Active Members</p>
+                </div>
+              </div>
+
+              <div className="col-span-1 pl-2">
+                <h4 className="font-display text-xl sm:text-2xl font-bold text-foreground leading-tight">90%</h4>
+                <p className="font-mono text-[9px] uppercase tracking-wider text-muted leading-tight mt-1">Hiring Response</p>
+              </div>
             </motion.div>
           </motion.div>
 
-          <div className="lg:col-span-6 relative flex flex-col items-center justify-center min-h-[420px] sm:min-h-[550px]">
-            {/* The main hero image representing the candidate */}
-            <div className="relative w-[300px] h-[400px] sm:w-[400px] sm:h-[500px] z-10">
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10 bottom-0 h-1/4 rounded-b-full"></div>
-              <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[280px] h-[280px] bg-primary-100/50 rounded-full blur-[40px] -z-10"></div>
-              {/* Profile image cutout effect */}
-              <div className="relative w-full h-full overflow-hidden flex items-end justify-center rounded-[30px]">
-                 <div className="w-[85%] h-[85%] bg-[#FCECD8] rounded-full absolute bottom-4 -z-10"></div>
-                 <Image src="/images/profile.png" alt="Candidate" fill className="object-cover object-top scale-[1.15]" />
-              </div>
+          <div className="lg:col-span-6 relative flex flex-col items-center justify-center min-h-[420px] sm:min-h-[480px]">
+            {/* richer color wash so glass has something to refract */}
+            <div className="absolute w-[85%] h-[85%] rounded-full bg-gradient-to-tr from-primary-200 via-primary-100 to-transparent opacity-60 blur-3xl pointer-events-none" />
+            <div className="absolute w-[50%] h-[50%] top-0 right-0 rounded-full bg-gradient-to-bl from-whatsapp/20 to-transparent opacity-50 blur-2xl pointer-events-none" />
+            <div className="absolute w-[40%] h-[40%] bottom-0 left-0 rounded-full bg-gradient-to-tr from-primary-300/30 to-transparent opacity-40 blur-2xl pointer-events-none" />
+
+            {floatingAvatars.map((avatar, idx) => (
+              <motion.div
+                key={idx}
+                className={`absolute ${avatar.className} w-22 h-22 z-40 sm:w-11 sm:h-11 rounded-full bg-white border border-border shadow-card overflow-hidden z-10 flex-shrink-0`}
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: avatar.duration, repeat: Infinity, repeatType: "reverse", ease: "easeInOut", delay: avatar.delay }}
+              >
+                <div className="relative w-full h-full bg-primary-50">
+                  <Image src={avatar.src} alt="Candidate Doodle" fill className="object-cover" />
+                </div>
+              </motion.div>
+            ))} <div className="absolute w-[240px] h-[240px] opacity-20 pointer-events-none z-[2]">
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-primary-500">
+                <circle cx="50" cy="40" r="20" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M15 85C15 65 30 55 50 55C70 55 85 65 85 85" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                <path d="M50 20C45 20 40 25 40 30" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
             </div>
 
-            {/* Glassmorphism Badge: Job Alert */}
-            <motion.div 
-              className="absolute top-1/4 -left-2 sm:-left-12 z-20 bg-white/70 backdrop-blur-md border border-white/40 shadow-xl p-3 sm:p-4 rounded-2xl flex items-center gap-3"
-              initial={{ opacity: 0, x: -20, y: 20 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              transition={{ delay: 0.5, type: 'spring' }}
-              whileHover={{ y: -5 }}
-            >
-              <div className="relative w-10 h-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center">
-                 <Bell size={20} />
-                 <div className="absolute top-0 right-0 w-3 h-3 bg-[#FF4500] rounded-full border-2 border-white"></div>
-              </div>
-              <div className="font-display font-semibold text-sm sm:text-base text-foreground whitespace-nowrap">
-                 Job Alert Subscribe
+            {/* hiring profile cluster — sits behind the SVG doodle */}
+            <div className="absolute w-[220px] sm:w-[260px] flex items-center justify-center -space-x-4 sm:-space-x-5 z-[1] pointer-events-none">
+              {stackedAvatars.slice(0, 4).map((src, idx) => (
+                <div
+                  key={src}
+                  className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-white/70 shadow-md overflow-hidden bg-primary-100 backdrop-blur-sm"
+                  style={{ zIndex: 4 - idx, transform: `translateY(${idx % 2 === 0 ? '-6px' : '6px'})` }}
+                >
+                  <Image src={src} alt={`Hiring profile ${idx + 1}`} fill className="object-cover" />
+                </div>
+              ))}
+            </div>
+
+            {/* svg doodle stays on top of the cluster, glass cards stay on top of everything */}
+
+
+            <motion.div className="absolute top-4 right-[5%] sm:right-[10%] w-[240px] bg-white/25 backdrop-blur-xl p-5 pb-4 rounded-[14px] border border-white/40 shadow-lg shadow-black/5 z-20 overflow-hidden">
+              <div className="absolute left-0 right-0 bottom-12 h-0 border-t-[1.5px] border-dashed border-white/40 pointer-events-none" />
+              <div className="flex flex-col items-center text-center">
+                <div className="relative mb-3">
+                  <div className="relative w-16 h-16 rounded-full overflow-hidden shadow-sm bg-primary-100 border border-white/50">
+                    <Image src="/images/image.png" alt={dummyUser.name} fill className="object-cover" />
+                  </div>
+                  <div className="absolute bottom-0 right-0 w-5 h-5 bg-whatsapp border-2 border-white rounded-full flex items-center justify-center">
+                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-ping" />
+                  </div>
+                </div>
+                <h3 className="font-display font-semibold text-foreground text-[17px] leading-tight mb-1">{dummyUser.name}</h3>
+                <p className="font-mono text-[10px] text-muted tracking-wider uppercase mb-7">UI Designer • {dummyUser.experience}</p>
+                <Link href="/jobs" className="w-full pt-3 mt-auto font-mono text-[10px] uppercase tracking-wider font-semibold text-primary-500 hover:text-primary-700 transition-colors text-center z-10 block">
+                  Hire Candidate →
+                </Link>
               </div>
             </motion.div>
 
-            {/* Glassmorphism Badge: Candidates placed */}
-            <motion.div 
-              className="absolute bottom-1/4 -right-2 sm:-right-8 z-20 bg-white/70 backdrop-blur-md border border-white/40 shadow-xl p-4 rounded-2xl flex flex-col gap-2"
-              initial={{ opacity: 0, x: 20, y: -20 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              transition={{ delay: 0.7, type: 'spring' }}
-              whileHover={{ y: -5 }}
-            >
-              <div className="font-display font-semibold text-sm sm:text-sm text-foreground whitespace-nowrap">
-                 5k+ candidates get job
-              </div>
-              <div className="flex items-center -space-x-2">
-                  {stackedAvatars.map((src, idx) => (
-                    <div key={src} className="relative w-8 h-8 rounded-full border-2 border-white shadow-sm overflow-hidden" style={{ zIndex: 10 - idx }}>
-                      <Image src={src} alt="avatar" fill className="object-cover" />
+            <motion.div className="absolute bottom-4 left-[2%] sm:left-[8%] w-[290px] bg-white/25 backdrop-blur-xl p-5 rounded-[14px] border border-white/40 shadow-lg shadow-black/5 z-10">
+              <div className="mb-4">
+                <label className="font-mono text-[10px] uppercase tracking-[0.1em] font-semibold text-muted block mb-1">Find Job</label>
+                <div className="relative">
+                  <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="w-full flex items-center justify-between bg-white/30 backdrop-blur-sm px-3 py-2 rounded border border-white/40 text-foreground font-display font-semibold text-sm hover:bg-white/40 transition-colors duration-150">
+                    <span>{selectedRole === "Design" ? "UI Designer" : "Frontend Dev"}</span>
+                    <ChevronDown size={14} className={`text-muted transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  {isDropdownOpen && (
+                    <div className="absolute left-0 right-0 mt-1 bg-white/70 backdrop-blur-xl border border-white/40 rounded-md shadow-lg z-30 overflow-hidden">
+                      <button onClick={() => { setSelectedRole("Design"); setIsDropdownOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-white/40 text-[13px] font-body text-foreground transition-colors">UI Designer</button>
+                      <button onClick={() => { setSelectedRole("Development"); setIsDropdownOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-white/40 text-[13px] font-body text-foreground transition-colors">Frontend Dev</button>
                     </div>
-                  ))}
-                  <div className="relative w-8 h-8 rounded-full border-2 border-white bg-primary-600 flex items-center justify-center text-white z-0 shadow-sm">
-                    <span className="font-mono text-xs">+</span>
-                  </div>
+                  )}
+                </div>
+              </div>
+              <div className="flex flex-col gap-3">
+                {activeMockJobs.map((job, idx) => (
+                  <motion.div key={job.title} className="flex gap-3 items-start p-2 rounded hover:bg-white/20 transition-colors duration-150" initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 * idx }}>
+                    <div className={`w-8 h-8 rounded border-[1.5px] border-white/40 ${job.logoBg} font-display font-semibold text-xs flex items-center justify-center flex-shrink-0 -rotate-3`}>{job.initial}</div>
+                    <div className="min-w-0">
+                      <h4 className="font-display font-semibold text-[14px] text-foreground truncate">{job.title}</h4>
+                      <p className="text-[11px] text-muted truncate">{job.company}</p>
+                      <p className="font-mono text-[8px] tracking-wider uppercase text-primary-500 mt-1 truncate">{job.meta}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+              <div className="border-t-[1.5px] border-dashed border-white/40 mt-3 pt-3 flex justify-between items-center">
+                <Link href="/jobs" className="font-mono text-[10px] tracking-wider uppercase font-semibold text-foreground hover:text-primary-600 flex items-center gap-1 transition-colors duration-200">
+                  Load More Jobs →
+                </Link>
               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
+
       {/* ─── 2. LATEST JOBS ─── */}
-      <section className="bg-background py-20 px-12 ">
+      <section className="bg-background py-20 px-6 ">
         <div className=" mx-auto">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
             <div>
@@ -280,44 +327,104 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {latestJobs.map((job, idx) => (
-              <motion.div key={job.id} className="bg-white border border-border rounded-[14px] p-6 pb-5 relative overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-card-hover transition-all duration-300" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.4, delay: idx * 0.1 }}>
-                <div className="absolute left-0 right-0 bottom-[46px] h-0 border-t-[1.5px] border-dashed border-border pointer-events-none" />
-                <div className="font-mono text-[10px] text-muted tracking-[0.06em] text-right mb-4 uppercase">
-                  JM-JOB-00{idx + 1}
+          {isLoadingJobs ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-white border border-border rounded-[14px] p-6 pb-5 relative overflow-hidden flex flex-col min-h-[260px]">
+                  <div className="absolute left-0 right-0 bottom-[46px] h-0 border-t-[1.5px] border-dashed border-border" />
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-gray-200/60 animate-pulse" />
+                    <div className="w-16 h-5 rounded-pill bg-gray-200/60 animate-pulse" />
+                  </div>
+                  <div className="w-3/4 h-5 bg-gray-200/60 animate-pulse rounded mb-2" />
+                  <div className="w-1/2 h-3 bg-gray-200/60 animate-pulse rounded mb-6" />
+                  <div className="flex flex-wrap gap-1.5 mb-8">
+                    {[1, 2, 3].map((s) => (
+                      <div key={s} className="w-12 h-4 bg-gray-200/60 animate-pulse rounded-card-sm" />
+                    ))}
+                  </div>
+                  <div className="pt-3.5 mt-auto flex justify-between items-center z-10">
+                    <div className="w-20 h-3 bg-gray-200/60 animate-pulse rounded" />
+                    <div className="w-12 h-3 bg-gray-200/60 animate-pulse rounded" />
+                  </div>
                 </div>
+              ))}
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                {latestJobs.slice(0, 3).map((job, idx) => {
+                  const bgColors = ["bg-primary-100", "bg-secondary-100", "bg-accent-100"];
+                  const logoBg = bgColors[idx % bgColors.length];
+                  let salaryText = "Not disclosed";
+                  if (job.salary?.min && job.salary?.max) {
+                    salaryText = `₹${job.salary.min/100000}L - ₹${job.salary.max/100000}L`;
+                  }
+                  const skills = job.requiredSkills || job.tags || [];
 
-                <div className="flex justify-between items-start mb-4">
-                  <div className={`w-10 h-10 rounded-lg border-[1.5px] border-primary-500 ${job.logoBg} font-display font-semibold text-sm flex items-center justify-center -rotate-3`}>{job.company.substring(0, 1)}</div>
-                  <span className="inline-block px-2.5 py-1 rounded-pill bg-primary-50 text-primary-700 font-mono text-[9px] font-semibold tracking-wider uppercase border border-border/50">{job.type}</span>
-                </div>
+                  return (
+                  <motion.div key={job._id} className="bg-white border border-border rounded-[14px] p-6 pb-5 relative overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-card-hover transition-all duration-300 min-h-[260px]" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.4, delay: idx * 0.1 }}>
+                    <div className="absolute left-0 right-0 bottom-[46px] h-0 border-t-[1.5px] border-dashed border-border pointer-events-none" />
+                    <div className="font-mono text-[10px] text-muted tracking-[0.06em] text-right mb-4 uppercase">
+                      JM-JOB-00{idx + 1}
+                    </div>
 
-                <h3 className="font-display font-semibold text-[17px] mb-1 leading-tight">{job.title}</h3>
-                <span className="font-body text-[12px] text-muted block mb-4">{job.company} • {job.location}</span>
+                    <div className="flex justify-between items-start mb-4">
+                      <div className={`w-10 h-10 rounded-lg border-[1.5px] border-primary-500 ${logoBg} font-display font-semibold text-sm flex items-center justify-center -rotate-3 text-primary-700`}>{job.company?.substring(0, 1) || "J"}</div>
+                      <span className="inline-block px-2.5 py-1 rounded-pill bg-primary-50 text-primary-700 font-mono text-[9px] font-semibold tracking-wider uppercase border border-border/50">{job.type || "Full Time"}</span>
+                    </div>
 
-                <div className="flex flex-wrap gap-1.5 mb-8">
-                  {job.skills.map((skill) => (
-                    <span key={skill} className="px-2 py-0.5 rounded-card-sm bg-background text-muted font-body text-[10px] border border-border">{skill}</span>
+                    <h3 className="font-display font-semibold text-[17px] mb-1 leading-tight line-clamp-1">{job.title}</h3>
+                    <span className="font-body text-[12px] text-muted block mb-4 truncate">{job.company} • {job.location}</span>
+
+                    <div className="flex flex-wrap gap-1.5 mb-8">
+                      {skills.slice(0, 3).map((skill: string) => (
+                        <span key={skill} className="px-2 py-0.5 rounded-card-sm bg-background text-muted font-body text-[10px] border border-border truncate max-w-[100px]">{skill}</span>
+                      ))}
+                    </div>
+
+                    <div className="pt-3.5 mt-auto flex items-center justify-between z-10">
+                      <span className="font-mono text-[10px] text-primary-500 tracking-[0.04em] uppercase">{salaryText}</span>
+                      <Link href={`/jobs?apply=${job._id}`} className="font-body text-[11px] font-semibold text-foreground hover:text-primary-600 transition-colors">
+                        Apply →
+                      </Link>
+                    </div>
+                  </motion.div>
+                )})}
+              </div>
+
+              {latestJobs.length > 3 && (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-5">
+                  {latestJobs.slice(3, 6).map((job, idx) => (
+                    <motion.div 
+                      key={job._id}
+                      onClick={() => router.push(`/jobs?apply=${job._id}`)}
+                      className="bg-white border border-border rounded-lg p-3 cursor-pointer hover:border-primary-500 transition-all flex items-center gap-3"
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                    >
+                      <div className="w-8 h-8 rounded border-[1.5px] border-border flex items-center justify-center font-bold text-xs bg-gray-50 flex-shrink-0 text-foreground">
+                        {job.company?.substring(0, 1) || "J"}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <h4 className="font-display font-semibold text-[14px] text-foreground truncate">{job.title}</h4>
+                        <p className="text-[11px] text-muted truncate">{job.company} • {job.location}</p>
+                      </div>
+                      <ArrowRight size={14} className="text-muted" />
+                    </motion.div>
                   ))}
                 </div>
-
-                <div className="pt-3.5 mt-auto flex items-center justify-between z-10">
-                  <span className="font-mono text-[10px] text-primary-500 tracking-[0.04em] uppercase">{job.salary.split(' / ')[0]}</span>
-                  <Link href={`/jobs?apply=${job.id}`} className="font-body text-[11px] font-semibold text-foreground hover:text-primary-600 transition-colors">
-                    Apply →
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+              )}
+            </>
+          )}
 
           <div className="relative my-16 border-t-[1.5px] border-dashed border-border before:content-[''] before:absolute before:-top-[7px] before:-left-[7px] before:w-3.5 before:h-3.5 before:rounded-full before:bg-background before:border-[1.5px] before:border-border after:content-[''] after:absolute after:-top-[7px] after:-right-[7px] after:w-3.5 after:h-3.5 after:rounded-full after:bg-background after:border-[1.5px] after:border-border" />
         </div>
       </section>
 
       {/* ─── 3. WHY CHOOSE US ─── */}
-      <section id="services" className="bg-background py-10 px-12">
+      <section id="services" className="bg-background py-10 px-6">
         <div className=" mx-auto">
           <span className="font-mono text-[11px] tracking-[0.12em] uppercase text-primary-500 mb-2.5 block">Our process</span>
           <h2 className="font-display font-semibold text-[34px] tracking-tight mb-2">Why choose JobMate</h2>
@@ -352,7 +459,7 @@ export default function Home() {
       </section>
 
       {/* ─── 4. ABOUT (HOME VERSION) ─── */}
-      <section className="bg-background py-10 px-12">
+      <section className="bg-background py-10 px-6">
         <div className=" mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
           <motion.div
@@ -366,9 +473,9 @@ export default function Home() {
               <div className="absolute inset-2 border-[1.5px] border-dashed border-border rounded-lg pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-white to-background -z-10" />
               <div className="w-full h-full flex flex-col items-center justify-center opacity-80 text-primary-500">
-                <div className="font-mono text-xs tracking-widest uppercase mb-4 opacity-50">Fastest Growing</div>
-                <div className="font-display text-4xl sm:text-5xl font-bold text-center px-4 leading-tight">Top-Tier<br/>Recruitment</div>
-                <div className="font-display italic text-lg text-muted mt-4 text-center">Connecting Kerala</div>
+                <div className="font-mono text-xs tracking-widest uppercase mb-4 opacity-50">Est. 2018</div>
+                <div className="font-display text-5xl font-bold">6+ Years</div>
+                <div className="font-display italic text-lg text-muted mt-2">Placing Candidates in Kerala</div>
               </div>
             </div>
             {/* Ticket accent on the image */}
@@ -410,7 +517,7 @@ export default function Home() {
       </section>
 
       {/* ─── 5. EMPLOYMENT OPPORTUNITIES ─── */}
-      <section className="bg-background py-10 px-12">
+      <section className="bg-background py-10 px-6">
         <div className=" mx-auto">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
             <div>
@@ -448,7 +555,7 @@ export default function Home() {
       </section>
 
       {/* ─── 6. HIRING PROCESS ─── */}
-      <section className="bg-background py-10 px-12">
+      <section className="bg-background py-10 px-6">
         <div className=" mx-auto">
           <div className="text-center max-w-lg mx-auto mb-14">
             <span className="font-mono text-[11px] tracking-[0.12em] uppercase text-primary-500 mb-2.5 block">How It Works</span>
@@ -486,7 +593,7 @@ export default function Home() {
       </section>
 
       {/* ─── 7. TESTIMONIALS ─── */}
-      <section className="bg-background py-10 px-12">
+      <section className="bg-background py-10 px-6">
         <div className=" mx-auto">
           <span className="font-mono text-[11px] tracking-[0.12em] uppercase text-primary-500 mb-2.5 block">Placed & Happy</span>
           <h2 className="font-display font-semibold text-[34px] tracking-tight mb-2">What candidates say</h2>
@@ -530,7 +637,7 @@ export default function Home() {
       </section>
 
       {/* ─── 8. CTA BANNER ─── */}
-      <section className="bg-white py-12 px-12">
+      <section className="bg-white py-12 px-6">
         <div className="max-w-[1200px] mx-auto">
           <motion.div className="bg-gradient-primary rounded-card p-10 md:p-16 text-white text-center relative overflow-hidden shadow-card-hover" initial={{ scale: 0.95, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.4 }}>
             <div className="absolute -left-16 -top-16 w-48 h-48 rounded-full bg-white/10 blur-xl pointer-events-none" />
