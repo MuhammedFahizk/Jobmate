@@ -5,14 +5,10 @@ import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, BadgeCheck } from 'lucide-react';
 import { SectionShell } from '@/components/dashboard/SectionShell';
 import { StatusBadge } from '@/components/admin/DataTable';
-import {
-  getCandidateById,
-  getApplicationsForCandidate,
-  verifyCandidate,
-  type Candidate,
-  type AdminApplication,
-} from '@/lib/dummy-data';
 import { useToast } from '@/components/ui/Toast';
+import { candidatesService } from '@/lib/services/candidates.service';
+import type { AdminCandidate } from '@/lib/types/user.type';
+import type { AdminApplication } from '@/lib/dummy-data';
 
 export default function AdminCandidateDetailPage() {
   const params = useParams<{ id: string }>();
@@ -20,77 +16,129 @@ export default function AdminCandidateDetailPage() {
   const router = useRouter();
   const toast = useToast();
 
-  const [candidate, setCandidate] = useState<Candidate | null | undefined>(undefined);
+  const [candidate, setCandidate] = useState<AdminCandidate | null | undefined>(undefined);
   const [applications, setApplications] = useState<AdminApplication[]>([]);
-  const [verifying, setVerifying] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
     if (!id) return;
-    const found = getCandidateById(id);
-    setCandidate(found ?? null);
-    if (found) setApplications(getApplicationsForCandidate(found.id));
+    setLoading(true);
+    candidatesService.getCandidateById(id)
+      .then((res) => {
+        setCandidate(res.data.candidate);
+        setApplications(res.data.applications);
+      })
+      .catch(() => {
+        setCandidate(null);
+        toast.error('Could not load candidate details.');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [id]);
 
-  if (candidate === undefined) return null;
+  if (candidate === undefined || loading) {
+    return <SectionShell title="Loading candidate..." >
+      <div className='flex  gap-4 w-full justify-between '>
+        {([1, 2,] as any).map((a: number) => (
+          //skelten for lading time 
+          <div key={a} className=' w-full h-[400px] rounded-lg bg-gray-200 rounded animate-pulse '>
+
+          </div>
+        ))}
+      </div>
+    </SectionShell>;
+  }
 
   if (candidate === null) {
     return (
       <SectionShell title="Candidate not found">
-        <button onClick={() => router.push('/candidates')} className="text-[13px] text-primary-600 hover:underline">
+        <button onClick={() => router.push('/mc-ops/candidates')} className="text-[13px] text-primary-600 hover:underline">
           Back to candidates
         </button>
       </SectionShell>
     );
   }
 
-  const handleVerify = async () => {
-    setVerifying(true);
+  const handleActiveStatusChange = async (newStatus: boolean) => {
+    if (newStatus === candidate.isActive) return;
+    setUpdating(true);
     try {
-      await verifyCandidate(candidate.id);
-      setCandidate((c) => (c ? { ...c, isVerified: true } : c));
-      toast.success('Candidate verified.');
+      const updated = await candidatesService.updateCandidateStatus(candidate._id, { isActive: newStatus });
+      setCandidate(updated);
+      toast.success(newStatus ? 'Candidate activated.' : 'Candidate deactivated.');
+    } catch {
+      toast.error('Failed to update status.');
     } finally {
-      setVerifying(false);
+      setUpdating(false);
     }
   };
+
+  const handlePaymentChange = async (newStatus: 'unpaid' | 'paid') => {
+    if (newStatus === candidate.paymentStatus) return;
+    setUpdating(true);
+    try {
+      const updated = await candidatesService.updateCandidateStatus(candidate._id, { paymentStatus: newStatus });
+      setCandidate(updated);
+      toast.success(`Payment marked as ${newStatus}.`);
+    } catch {
+      toast.error('Failed to update payment status.');
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  const formatDate = (dateStr: string) => new Date(dateStr).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
 
   return (
     <SectionShell
       title={
-        <button onClick={() => router.push('/candidates')} className="inline-flex items-center gap-1.5 text-foreground">
+        <button onClick={() => router.push('/mc-ops/candidates')} className="inline-flex items-center gap-1.5 text-foreground">
           <ArrowLeft size={15} /> {candidate.name}
         </button>
       }
       description={candidate.email}
-      actions={
-        !candidate.isVerified ? (
-          <button
-            onClick={handleVerify}
-            disabled={verifying}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-primary-600 hover:bg-primary-700 disabled:opacity-60 text-white text-[13px] font-medium"
-          >
-            <BadgeCheck size={14} /> {verifying ? 'Verifying…' : 'Verify candidate'}
-          </button>
-        ) : undefined
-      }
     >
       <div className="grid md:grid-cols-2 gap-4">
         <div className="border border-border rounded-md bg-white p-5">
           <h3 className="text-[13px] font-semibold text-foreground mb-3">Profile</h3>
           <dl className="flex flex-col gap-2 text-sm">
-            <Row label="Phone" value={candidate.phone} />
-            <Row label="Location" value={candidate.location ?? '—'} />
-            <Row label="Category" value={candidate.category ?? '—'} />
-            <Row label="Experience" value={candidate.experience ?? '—'} />
-            <Row label="Skills" value={candidate.skills?.join(', ') ?? '—'} />
-            <Row label="Joined" value={candidate.joinedAt} />
+            <Row label="Phone" value={candidate.phone || '—'} />
+            <Row label="Location" value={candidate.location || '—'} />
+            <Row label="Category" value={candidate.category || '—'} />
+            <Row label="Experience" value={candidate.experience || '—'} />
+            <Row label="Skills" value={candidate.skills?.join(', ') || '—'} />
+            <Row label="Joined" value={formatDate(candidate.createdAt)} />
             <div className="flex items-center justify-between py-1">
-              <span className="text-muted text-[12px]">Verification</span>
-              <StatusBadge status={candidate.isVerified ? 'verified' : 'unverified'} tone={candidate.isVerified ? 'positive' : 'neutral'} />
+              <span className="text-muted text-[12px]">Account Status</span>
+              <select
+                value={candidate.isActive ? 'true' : 'false'}
+                disabled={updating}
+                onChange={(e) => handleActiveStatusChange(e.target.value === 'true')}
+                className={`text-[12px] rounded border px-1.5 py-1 capitalize disabled:opacity-50 ${candidate.isActive
+                  ? 'bg-[#EAF4FD] text-primary-700 border-primary-100'
+                  : 'bg-[#F0F0EE] text-muted border-border'
+                  }`}
+              >
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+              </select>
             </div>
             <div className="flex items-center justify-between py-1">
               <span className="text-muted text-[12px]">Payment</span>
-              <StatusBadge status={candidate.paymentStatus} tone={candidate.paymentStatus === 'paid' ? 'positive' : 'warning'} />
+              <select
+                value={candidate.paymentStatus}
+                disabled={updating}
+                onChange={(e) => handlePaymentChange(e.target.value as 'unpaid' | 'paid')}
+                className={`text-[12px] rounded border px-1.5 py-1 capitalize disabled:opacity-50 ${candidate.paymentStatus === 'paid'
+                  ? 'bg-[#EAF4FD] text-primary-700 border-primary-100'
+                  : 'bg-[#F0F0EE] text-muted border-border'
+                  }`}
+              >
+                <option value="unpaid">Unpaid</option>
+                <option value="paid">Paid</option>
+              </select>
             </div>
           </dl>
           {candidate.bio && <p className="text-sm text-foreground mt-3 border-t border-border pt-3">{candidate.bio}</p>}
@@ -102,11 +150,11 @@ export default function AdminCandidateDetailPage() {
             <p className="text-sm text-muted">No applications from this candidate yet.</p>
           ) : (
             <ul className="flex flex-col divide-y divide-border">
-              {applications.map((a) => (
-                <li key={a.id} className="py-2 flex items-center justify-between text-sm">
+              {applications.map((a: any) => (
+                <li key={a._id || a.id} className="py-2 flex items-center justify-between text-sm">
                   <div>
-                    <p className="text-foreground font-medium">{a.jobTitle}</p>
-                    <p className="text-[12px] text-muted">{a.appliedAt}</p>
+                    <p className="text-foreground font-medium">{a.job?.title || a.jobTitle}</p>
+                    <p className="text-[12px] text-muted">{formatDate(a.createdAt || a.appliedAt)}</p>
                   </div>
                   <StatusBadge status={a.status} tone="neutral" />
                 </li>

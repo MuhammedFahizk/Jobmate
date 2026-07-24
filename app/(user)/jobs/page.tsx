@@ -22,9 +22,9 @@ function JobsListContent() {
     setSelectedJob(job);
     // Auto switch to detail view on mobile when a job is selected
     if (window.innerWidth < 1024) {
-        setShowMobileList(false);
-        // Scroll to top for a better mobile experience when reading detail
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+      setShowMobileList(false);
+      // Scroll to top for a better mobile experience when reading detail
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
