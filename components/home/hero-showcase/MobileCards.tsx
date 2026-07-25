@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowRight, Chrome, Code2, Grid2x2, ShoppingBag, Home, Music } from "lucide-react";
+import { ArrowRight, Code2, Grid2x2, ShoppingBag, Home, Music, KeyRoundIcon } from "lucide-react";
 import type { CandidateCardData, CompanyCardData, JobCardData } from "./cardData";
 
 const TINTS: Record<string, string> = {
@@ -11,7 +11,7 @@ const TINTS: Record<string, string> = {
 };
 
 const COMPANY_ICONS: Record<string, React.ElementType> = {
-    chrome: Chrome, "code-2": Code2, "grid-2x2": Grid2x2,
+    chrome: KeyRoundIcon, "code-2": Code2, "grid-2x2": Grid2x2,
     "shopping-bag": ShoppingBag, home: Home, music: Music,
 };
 
