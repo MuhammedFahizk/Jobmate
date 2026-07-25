@@ -1,6 +1,6 @@
 'use client';
 
-import { MapPin, BriefcaseBusiness, Clock, HashIcon, Search } from 'lucide-react';
+import { MapPin, BriefcaseBusiness, Clock, HashIcon, Search, CheckCircle2, Send } from 'lucide-react';
 import { formatSalary } from './JobCard';
 import type { AdminJob } from '@/lib/types/job.type';
 
@@ -18,9 +18,11 @@ function avatarTone(seed: string) {
 interface JobDetailPanelProps {
     job: AdminJob | null;
     onApply: (job: AdminJob) => void;
+    isApplying?: boolean;
+    hasApplied?: boolean;
 }
 
-export function JobDetailPanel({ job, onApply }: JobDetailPanelProps) {
+export function JobDetailPanel({ job, onApply, isApplying = false, hasApplied = false }: JobDetailPanelProps) {
     if (!job) {
         return (
             <div className="bg-white border border-border rounded-2xl shadow-sm flex items-center justify-center h-full text-center p-8">
@@ -56,15 +58,30 @@ export function JobDetailPanel({ job, onApply }: JobDetailPanelProps) {
                         </div>
                     </div>
 
-                    <button
-                        onClick={() => onApply(job)}
-                        className="flex-shrink-0 font-mono text-[11px] font-semibold tracking-widest uppercase flex items-center justify-center gap-2 px-6 py-3 rounded bg-foreground hover:bg-primary-600 text-white shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all"
-                    >
-                        <svg className="w-4 h-4 fill-whatsapp" viewBox="0 0 24 24">
-                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.665.989 3.3 1.472 5.358 1.473 5.568 0 10.1-4.529 10.104-10.099.002-2.699-1.047-5.234-2.951-7.138C17.256 1.487 14.73 0.439 12.004 0.439 6.438 0.439 1.91 4.966 1.906 10.537c-.001 2.115.562 4.185 1.63 6.002l-1.074 3.924 4.017-1.054-.232-.116z" />
-                        </svg>
-                        Apply Now
-                    </button>
+                    {hasApplied ? (
+                        <div className="flex-shrink-0 flex items-center gap-2 px-6 py-3 rounded bg-emerald-50 border border-emerald-200 text-emerald-700">
+                            <CheckCircle2 size={16} className="text-emerald-500" />
+                            <span className="font-mono text-[11px] font-semibold tracking-widest uppercase">Applied</span>
+                        </div>
+                    ) : (
+                        <button
+                            onClick={() => onApply(job)}
+                            disabled={isApplying}
+                            className="flex-shrink-0 font-mono text-[11px] font-semibold tracking-widest uppercase flex items-center justify-center gap-2 px-6 py-3 rounded bg-foreground hover:bg-primary-600 text-white shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+                        >
+                            {isApplying ? (
+                                <>
+                                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                    Applying…
+                                </>
+                            ) : (
+                                <>
+                                    <Send size={14} />
+                                    Apply Now
+                                </>
+                            )}
+                        </button>
+                    )}
                 </div>
 
                 <div className="bg-white border border-border rounded-2xl overflow-hidden mb-8 relative">

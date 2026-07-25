@@ -300,6 +300,7 @@ export interface Job {
 }
 
 export interface Application {
+  applications: never[];
   id: string;
   jobId: string;
   jobTitle: string;
@@ -454,7 +455,8 @@ export const dummyApplications: Application[] = [
     jobTitle: "Senior UI/UX Designer",
     company: "Minerva Company",
     appliedDate: "2026-06-15",
-    status: "Interviewing"
+    status: "Interviewing",
+    applications: []
   },
   {
     id: "APP-002",
@@ -462,6 +464,7 @@ export const dummyApplications: Application[] = [
     jobTitle: "Product Marketing Manager",
     company: "Vertex Scale",
     appliedDate: "2026-06-18",
-    status: "Applied"
+    status: "Applied",
+    applications: []
   }
 ];

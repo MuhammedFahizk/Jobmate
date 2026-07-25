@@ -1,35 +1,87 @@
+import { ChevronDown } from 'lucide-react';
+import { Search as SearchIcon, SlidersHorizontal } from 'lucide-react';
 
-import { Search, SlidersHorizontal } from 'lucide-react';
+const EXPERIENCE_OPTIONS = [
+    { value: '', label: 'Select experience' },
+    { value: 'fresher', label: 'Fresher' },
+    { value: '0-1', label: '0-1 years' },
+    { value: '1-3', label: '1-3 years' },
+    { value: '3-5', label: '3-5 years' },
+    { value: '5+', label: '5+ years' },
+];
 
 interface JobSearchBarProps {
     value: string;
     onChange: (v: string) => void;
+    experienceRequired: string;
+    onExperienceChange: (v: string) => void;
+    location: string;
+    onLocationChange: (v: string) => void;
     onOpenFilters: () => void;
     activeFilterCount: number;
-    placeholder?: string;
 }
 
-export function JobSearchBar({ value, onChange, onOpenFilters, activeFilterCount, placeholder }: JobSearchBarProps) {
+export function JobSearchBar({
+    value,
+    onChange,
+    experienceRequired,
+    onExperienceChange,
+    location,
+    onLocationChange,
+    onOpenFilters,
+    activeFilterCount,
+}: JobSearchBarProps) {
     return (
-        <div className="bg-white rounded-full border border-border shadow-sm flex items-center gap-2 p-1.5 pl-5">
-            <Search size={18} className="text-muted flex-shrink-0" />
+        <div className="bg-white rounded-full border border-border shadow-sm flex items-center gap-1 p-1.5 pl-6 w-full">
+            {/* Keyword */}
             <input
                 type="text"
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
-                placeholder={placeholder ?? 'Search roles, companies, or locations...'}
-                className="flex-1 min-w-0 py-2 text-[14px] text-foreground placeholder-muted outline-none bg-transparent"
+                placeholder="Enter keyword / designation / companies"
+                className="flex-[1.6] min-w-0 py-2.5 text-[14px] text-foreground placeholder-muted outline-none bg-transparent"
             />
+
+            <span className="h-6 w-px bg-border flex-shrink-0" />
+
+            {/* Experience */}
+            <div className="relative flex-1 min-w-0">
+                <select
+                    value={experienceRequired}
+                    onChange={(e) => onExperienceChange(e.target.value)}
+                    className="w-full appearance-none bg-transparent outline-none py-2.5 pr-6 text-[14px] cursor-pointer text-foreground"
+                >
+                    {EXPERIENCE_OPTIONS.map((opt) => (
+                        <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
+                </select>
+                <ChevronDown size={16} className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 text-muted" />
+            </div>
+
+            <span className="h-6 w-px bg-border flex-shrink-0" />
+
+            {/* Location */}
+            <input
+                type="text"
+                value={location}
+                onChange={(e) => onLocationChange(e.target.value)}
+                placeholder="Enter location"
+                className="flex-1 min-w-0 py-2.5 text-[14px] text-foreground placeholder-muted outline-none bg-transparent"
+            />
+
+            {/* Advanced filters (type, salary, category, etc.) still live in the drawer */}
             <button
+                type="button"
                 onClick={onOpenFilters}
-                className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary-600 hover:bg-primary-700 text-white text-[13px] font-semibold transition-colors"
+                className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary-600 hover:bg-primary-700 text-white text-[14px] font-semibold transition-colors"
             >
                 <SlidersHorizontal size={14} />
-                Filter
-                {activeFilterCount > 0 && (
+                {activeFilterCount > 0 ? (
                     <span className="w-4 h-4 rounded-full bg-white text-primary-700 text-[10px] font-bold flex items-center justify-center">
                         {activeFilterCount}
                     </span>
+                ) : (
+                    <SearchIcon size={14} />
                 )}
             </button>
         </div>
