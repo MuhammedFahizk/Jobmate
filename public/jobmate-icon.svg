@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 100 100"
+    fill="none"
+    style="color: #ffffff;"
+>
+    <!-- Outer Hexagon -->
+    <polygon
+        points="50,5 90,28 90,72 50,95 10,72 10,28"
+        stroke="currentColor"
+        stroke-width="6"
+        stroke-linejoin="round"
+    />
+
+    <!-- Inner Cube -->
+    <polygon
+        points="50,28 72,40 72,60 50,72 28,60 28,40"
+        stroke="currentColor"
+        stroke-width="6"
+        stroke-linejoin="round"
+    />
+
+    <!-- Cube Lines -->
+    <line
+        x1="50"
+        y1="28"
+        x2="50"
+        y2="72"
+        stroke="currentColor"
+        stroke-width="6"
+        stroke-linecap="round"
+    />
+
+    <line
+        x1="28"
+        y1="40"
+        x2="50"
+        y2="50"
+        stroke="currentColor"
+        stroke-width="6"
+        stroke-linecap="round"
+    />
+
+    <line
+        x1="72"
+        y1="40"
+        x2="50"
+        y2="50"
+        stroke="currentColor"
+        stroke-width="6"
+        stroke-linecap="round"
+    />
+</svg>

@@ -20,6 +20,7 @@ let refreshInFlight: Promise<AuthUser> | null = null;
 export interface LoginPayload {
   email: string;
   password: string;
+  rememberMe?: boolean;
 }
 
 export interface RegisterPayload {
@@ -107,5 +108,14 @@ export const authService = {
       });
 
     return refreshInFlight;
+  },
+
+  /**
+   * POST /auth/forgot-password
+   * Sends a password reset link to the given email if it exists.
+   */
+  forgotPassword: async (payload: import('@/lib/validation/auth.schema').ForgotPasswordPayload): Promise<{ message: string }> => {
+    const { data } = await apiClient.post<{ success: boolean; message: string }>('/auth/forgot-password', payload);
+    return { message: data.message };
   },
 };

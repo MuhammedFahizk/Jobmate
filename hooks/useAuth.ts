@@ -8,6 +8,7 @@
 'use client';
 interface AuthOptions {
     redirectTo?: string;
+    rememberMe?: boolean;
 }
 import { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -31,12 +32,13 @@ export function useAuth() {
             options?: AuthOptions
         ) => {
             const redirectTo = options?.redirectTo ?? '/dashboard';
+            const rememberMe = options?.rememberMe ?? false;
 
             setIsSubmitting(true);
             setError(null);
 
             try {
-                await authService.login(payload);
+                await authService.login({ ...payload, rememberMe });
                 router.push(redirectTo);
             } catch (err) {
                 setError(err as ApiError);
