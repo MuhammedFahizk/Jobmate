@@ -4,6 +4,7 @@ import { AuthProvider } from "@/contexts/AuthProvider";
 import { ToastProvider } from "@/components/ui/Toast";
 import { ConfirmModalProvider } from "@/components/ui/ConfirmModal";
 import "./globals.css";
+import { ReactQueryProvider } from "@/components/ui/QueryClientProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -30,6 +31,7 @@ export const metadata: Metadata = {
 
 // Just <html>, <body>, and app-wide providers. No nav, no chrome — that's
 // owned per-section by app/(user)/layout.tsx and app/mc-ops/(admin)/layout.tsx.
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -40,11 +42,13 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${fraunces.variable} ${ibmPlexMono.variable} bg-background text-foreground min-h-screen flex flex-col antialiased font-body`}
       >
-        <ConfirmModalProvider>
-          <ToastProvider>
-            <AuthProvider>{children}</AuthProvider>
-          </ToastProvider>
-        </ConfirmModalProvider>
+        <ReactQueryProvider>
+          <ConfirmModalProvider>
+            <ToastProvider>
+              <AuthProvider>{children}</AuthProvider>
+            </ToastProvider>
+          </ConfirmModalProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );

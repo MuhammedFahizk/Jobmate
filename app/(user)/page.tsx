@@ -9,7 +9,6 @@ import {
   CheckCircle,
   Shield,
   Zap,
-  ChevronDown,
   Users,
   Building2,
   TrendingUp,
@@ -18,17 +17,16 @@ import {
   Briefcase,
   PhoneCall,
 } from "lucide-react";
-import { dummyJobs, dummyUser } from "@/lib/dummy-data";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import apiClient from "@/lib/api/client";
 import { HeroSearchBar } from "@/components/home/HeroSearchBar";
 import { HeroShowcase } from "@/components/home/hero-showcase/HeroShowcase";
 import { MobileShowcase } from "@/components/home/hero-showcase/MobileShowcase";
+import { TestimonialsSection } from "@/components/user/Testimonialssection";
 
 export default function Home() {
   const [selectedRole, setSelectedRole] = useState<"Design" | "Development">("Design");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [latestJobs, setLatestJobs] = useState<any[]>([]);
   const [isLoadingJobs, setIsLoadingJobs] = useState(true);
   const router = useRouter();
@@ -515,50 +513,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── 7. TESTIMONIALS ─── */}
-      <section className="bg-background py-10 px-6">
-        <div className=" mx-auto">
-          <span className="font-mono text-[11px] tracking-[0.12em] uppercase text-primary-500 mb-2.5 block">Placed & Happy</span>
-          <h2 className="font-display font-semibold text-[34px] tracking-tight mb-2">What candidates say</h2>
-          <p className="text-muted text-sm max-w-[480px] leading-[1.6] mb-10">Records straight from the source.</p>
-
-          <div className="flex flex-col gap-5">
-            {testimonials.map((t, idx) => (
-              <motion.div
-                key={t.name}
-                className="bg-white border border-border rounded-[14px] p-7 flex flex-col md:flex-row gap-4 md:gap-6 items-start relative overflow-hidden"
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 * idx }}
-              >
-                <div className="hidden md:block absolute left-0 top-5 bottom-5 w-0 border-l-[1.5px] border-dashed border-border" />
-
-                <span className="font-display text-[44px] leading-[0.8] text-primary-500 shrink-0 md:ml-2 mt-2 md:mt-0">&ldquo;</span>
-
-                <div className="flex-1 w-full">
-                  <p className="font-display text-[16px] leading-[1.55] text-foreground mb-4">
-                    {t.text}
-                  </p>
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-3">
-                    <div className="flex items-center gap-3">
-                      <div className="relative w-8 h-8 rounded border border-border overflow-hidden bg-primary-50 flex-shrink-0 grayscale opacity-80">
-                        <Image src={t.avatar} alt={t.name} fill className="object-cover" />
-                      </div>
-                      <div>
-                        <div className="text-[13px] font-semibold font-body">{t.name}</div>
-                        <div className="text-[11px] text-muted font-body">{t.role}</div>
-                      </div>
-                    </div>
-                    <span className="font-mono text-[10px] text-muted tracking-wider uppercase">JM-PLC-0{231 + idx}</span>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      <TestimonialsSection />
       {/* ─── 8. CTA BANNER ─── */}
       <section className="bg-white py-12 px-6">
         <div className="max-w-[1200px] mx-auto">
