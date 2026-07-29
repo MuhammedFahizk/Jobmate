@@ -11,7 +11,7 @@ import { useToast } from '@/components/ui/Toast';
 import { jobsService } from '@/lib/services/jobs.service';
 import { JOB_CATEGORIES, JOB_STATUSES, type AdminJob, type JobStatus } from '@/lib/types/job.type';
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 10;
 
 const SORT_OPTIONS = [
   { value: '-createdAt', label: 'Newest first' },

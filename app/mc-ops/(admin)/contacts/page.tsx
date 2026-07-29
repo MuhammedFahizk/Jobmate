@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { SectionShell } from '@/components/dashboard/SectionShell';
 import DataTable, { StatusBadge, type DataTableColumn } from '@/components/admin/DataTable';
-import { listContacts, markContactHandled, type ContactSubmission } from '@/lib/dummy-data';
+import { listContacts, markContactHandled, type ContactSubmission } from '@/lib/services/contacts.service';
 import { useToast } from '@/components/ui/Toast';
 
 function ContactModal({ contact, onClose, onHandled }: { contact: ContactSubmission; onClose: () => void; onHandled: () => void }) {
@@ -18,6 +18,9 @@ function ContactModal({ contact, onClose, onHandled }: { contact: ContactSubmiss
       toast.success('Marked as handled.');
       onHandled();
       onClose();
+    } catch (err) {
+      console.error('Failed to mark contact as handled', err);
+      toast.error('Failed to mark as handled.');
     } finally {
       setSaving(false);
     }
@@ -66,10 +69,10 @@ export default function AdminContactsPage() {
 
   const load = () => {
     setLoading(true);
-    listContacts().then((data) => {
-      setContacts(data);
-      setLoading(false);
-    });
+    listContacts()
+      .then((data) => setContacts(data))
+      .catch((err) => console.error('Failed to fetch contact submissions', err))
+      .finally(() => setLoading(false));
   };
 
   useEffect(load, []);

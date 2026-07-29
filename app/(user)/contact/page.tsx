@@ -2,22 +2,30 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Phone, Mail, MapPin, MessageSquare, Send, CheckCircle } from "lucide-react";
+import { Phone, Mail, MapPin, MessageSquare, Send, CheckCircle, AlertCircle } from "lucide-react";
+import { submitContact } from "@/lib/services/contacts.service";
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
   const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    setErrorMessage(null);
+    try {
+      await submitContact(formData);
       setIsSubmitSuccessful(true);
       setFormData({ name: "", email: "", subject: "", message: "" });
       setTimeout(() => setIsSubmitSuccessful(false), 5000);
-    }, 1000);
+    } catch (err) {
+      console.error("Failed to submit contact form", err);
+      setErrorMessage("Something went wrong sending your message. Please try again, or reach us on WhatsApp.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleWhatsAppQuickChat = () => {
@@ -28,7 +36,7 @@ export default function Contact() {
   return (
     <div className="bg-background min-h-screen font-body overflow-hidden py-12 md:py-20">
       <div className="max-w-[1000px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
-        
+
         {/* Left Side: Contact Information Cards */}
         <div className="lg:col-span-5 flex flex-col gap-6">
           <div className="flex flex-col gap-4">
@@ -94,7 +102,7 @@ export default function Contact() {
           </button>
         </div>
 
-        {/* Right Side: Interactive Mock Form Card */}
+        {/* Right Side: Contact Form Card */}
         <div className="lg:col-span-7">
           <motion.div
             className="bg-white p-8 sm:p-10 rounded-card border border-border shadow-card h-full flex flex-col justify-between"
@@ -120,6 +128,17 @@ export default function Contact() {
                   >
                     <CheckCircle className="text-emerald-600 flex-shrink-0" size={18} />
                     <span className="font-body text-xs font-semibold">Message sent successfully! We will contact you soon.</span>
+                  </motion.div>
+                )}
+                {errorMessage && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="p-4 rounded-card-sm bg-red-50 border border-red-200 text-red-700 flex items-center gap-3 mb-6"
+                  >
+                    <AlertCircle className="text-red-600 flex-shrink-0" size={18} />
+                    <span className="font-body text-xs font-semibold">{errorMessage}</span>
                   </motion.div>
                 )}
               </AnimatePresence>
