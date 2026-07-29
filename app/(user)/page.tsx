@@ -25,9 +25,22 @@ import { HeroShowcase } from "@/components/home/hero-showcase/HeroShowcase";
 import { MobileShowcase } from "@/components/home/hero-showcase/MobileShowcase";
 import { TestimonialsSection } from "@/components/user/Testimonialssection";
 
+interface LatestJob {
+  _id: string;
+  title: string;
+  company: string;
+  location: string;
+  type: string;
+  salary?: {
+    min?: number;
+    max?: number;
+  };
+  requiredSkills?: string[];
+  tags?: string[];
+}
+
 export default function Home() {
-  const [selectedRole, setSelectedRole] = useState<"Design" | "Development">("Design");
-  const [latestJobs, setLatestJobs] = useState<any[]>([]);
+  const [latestJobs, setLatestJobs] = useState<LatestJob[]>([]);
   const [isLoadingJobs, setIsLoadingJobs] = useState(true);
   const router = useRouter();
 
@@ -46,17 +59,9 @@ export default function Home() {
     fetchLatestJobs();
   }, []);
 
-  const mockDesignJobs = [
-    { initial: "M", title: "UI/UX Designer", company: "Minerva Company", meta: "Min. 1+ Years Exp • Based in Bangalore", logoBg: "bg-secondary-100 text-secondary-700" },
-    { initial: "P", title: "UI Designer", company: "Pixel Perfect", meta: "Internship • Based in Mumbai", logoBg: "bg-primary-100 text-primary-700" }
-  ];
 
-  const mockDevJobs = [
-    { initial: "H", title: "Frontend Developer", company: "Halden Inc.", meta: "Min. 2+ Years Exp • Based in Remote", logoBg: "bg-primary-100 text-primary-700" },
-    { initial: "F", title: "Associate Developer", company: "FlowState SaaS", meta: "Min. 1+ Years Exp • Based in Bangalore", logoBg: "bg-accent-400/20 text-accent-500" }
-  ];
 
-  const activeMockJobs = selectedRole === "Design" ? mockDesignJobs : mockDevJobs;
+
 
   const stackedAvatars = [
     "/images/profile.png",
@@ -67,12 +72,6 @@ export default function Home() {
     "/images/profile4.png",
   ];
 
-  const floatingAvatars = [
-    { src: "/images/profile.png", className: "top-[22%] -left-[4%] sm:left-[8%]", delay: 0.1, duration: 4.2 },
-    { src: "/images/profile1.png", className: "top-[42%] right-[10%] sm:right-[3%]", delay: 0.3, duration: 3.8 },
-    { src: "/images/profile2.png", className: "bottom-[4%] left-[10%] sm:left-[6%]", delay: 0.5, duration: 4.5 },
-    { src: "/images/profile4.png", className: "-top-[10%] right-[32%] sm:right-[38%]", delay: 0.2, duration: 3.5 },
-  ];
 
   // ─── NEW: Hiring Steps ───
   const hiringSteps = [
@@ -99,31 +98,6 @@ export default function Home() {
       icon: <CheckCircle size={22} strokeWidth={1.5} />,
       title: "Get Placed",
       desc: "Our team follows up within 48 hours. Most candidates receive interview calls the same week.",
-    },
-  ];
-
-  // ─── NEW: Testimonials ───
-  const testimonials = [
-    {
-      name: "Arjun Menon",
-      role: "Sales Executive — Kochi",
-      avatar: "/images/profile.png",
-      text: "I had been applying online for three months without a single callback. JobMate got me placed at a Kochi firm within ten days. The WhatsApp apply feature made everything instant.",
-      rating: 5,
-    },
-    {
-      name: "Sreelakshmi R.",
-      role: "Admin Executive — Thrissur",
-      avatar: "/images/profile1.png",
-      text: "Very professional service. They clearly understood what kind of role I was looking for and didn&apos;t push random openings. Highly recommend for anyone in Kerala looking seriously.",
-      rating: 5,
-    },
-    {
-      name: "Faisal K.",
-      role: "Accountant — Kozhikode",
-      avatar: "/images/profile2.png",
-      text: "The process was straightforward — no unnecessary steps. Got an interview within a week and an offer two days later. The team was responsive throughout.",
-      rating: 5,
     },
   ];
 
@@ -316,7 +290,7 @@ export default function Home() {
 
               {latestJobs.length > 3 && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-5">
-                  {latestJobs.slice(3, 6).map((job, idx) => (
+                  {latestJobs.slice(3, 6).map((job) => (
                     <motion.div
                       key={job._id}
                       onClick={() => router.push(`/jobs?apply=${job._id}`)}

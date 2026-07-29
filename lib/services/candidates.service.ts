@@ -1,6 +1,5 @@
 import apiClient from '@/lib/api/client';
-import type { AdminCandidate } from '../types/user.type';
-import type { AdminApplication } from '@/lib/dummy-data';
+import type { AdminCandidate, Application } from '../types/user.type';
 
 export interface CandidatesListResponse {
   status: string;
@@ -15,7 +14,7 @@ export interface CandidateResponse {
   status: string;
   data: {
     candidate: AdminCandidate;
-    applications: AdminApplication[];
+    applications: Application[];
   };
 }
 

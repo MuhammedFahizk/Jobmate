@@ -1,6 +1,7 @@
 import apiClient from '@/lib/api/client';
 import type { ApiResponse, PaginationParams } from '@/lib/api/types';
-import type { Application } from '@/lib/dummy-data';
+import axios from 'axios';
+import { Application } from '../types/user.type';
 
 // ── Payload shapes ────────────────────────────────────────────────────────────
 
@@ -56,23 +57,41 @@ export const applicationsService = {
    */
   applyToJob: async (jobId: string): Promise<ApplyResult> => {
     try {
-      const { data } = await apiClient.post<{ status: string; code?: string }>(`/applications/${jobId}`, {});
-      return { ok: true, code: (data.code === 'ALREADY_APPLIED' ? 'ALREADY_APPLIED' : 'CREATED') };
-    } catch (err: any) {
-      const status = err?.response?.status;
-      const code = err?.response?.data?.code;
-      const message = err?.response?.data?.message ?? 'Something went wrong.';
+      const { data } = await apiClient.post<{ status: string; code?: string }>(
+        `/applications/${jobId}`,
+        {}
+      );
 
-      if (status === 402 || code === 'PAYMENT_REQUIRED') {
-        return { ok: false, code: 'PAYMENT_REQUIRED', message };
+      return {
+        ok: true,
+        code: data.code === 'ALREADY_APPLIED' ? 'ALREADY_APPLIED' : 'CREATED',
+      };
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        const status = err.response?.status;
+        const code = err.response?.data?.code;
+        const message = err.response?.data?.message ?? 'Something went wrong.';
+
+        if (status === 402 || code === 'PAYMENT_REQUIRED') {
+          return { ok: false, code: 'PAYMENT_REQUIRED', message };
+        }
+
+        if (status === 403 || code === 'ACCOUNT_INACTIVE') {
+          return { ok: false, code: 'ACCOUNT_INACTIVE', message };
+        }
+
+        if (status === 404) {
+          return { ok: false, code: 'NOT_FOUND', message };
+        }
+
+        return { ok: false, code: 'ERROR', message };
       }
-      if (status === 403 || code === 'ACCOUNT_INACTIVE') {
-        return { ok: false, code: 'ACCOUNT_INACTIVE', message };
-      }
-      if (status === 404) {
-        return { ok: false, code: 'NOT_FOUND', message };
-      }
-      return { ok: false, code: 'ERROR', message };
+
+      return {
+        ok: false,
+        code: 'ERROR',
+        message: 'Unexpected error occurred.',
+      };
     }
   },
 

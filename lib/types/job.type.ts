@@ -58,7 +58,7 @@ export const DEFAULT_SALARY: Salary = {
 };
 
 export interface AdminJob {
-    isActive: any;
+    isActive: boolean;
     _id: string;
     slug: string;
     title: string;

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { SectionShell } from '@/components/dashboard/SectionShell';
-import DataTable, { StatusBadge, type DataTableColumn } from '@/components/admin/DataTable';
+import DataTable, { type DataTableColumn } from '@/components/admin/DataTable';
 import { AdminListToolbar } from '@/components/admin/AdminListToolbar';
 import { useToast } from '@/components/ui/Toast';
 import { candidatesService } from '@/lib/services/candidates.service';

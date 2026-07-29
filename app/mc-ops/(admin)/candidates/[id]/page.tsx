@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, BadgeCheck } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { SectionShell } from '@/components/dashboard/SectionShell';
 import { StatusBadge } from '@/components/admin/DataTable';
 import { useToast } from '@/components/ui/Toast';
 import { candidatesService } from '@/lib/services/candidates.service';
-import type { AdminCandidate } from '@/lib/types/user.type';
-import type { AdminApplication } from '@/lib/dummy-data';
+import type { AdminCandidate, Application } from '@/lib/types/user.type';
+
 
 export default function AdminCandidateDetailPage() {
   const params = useParams<{ id: string }>();
@@ -17,7 +17,7 @@ export default function AdminCandidateDetailPage() {
   const toast = useToast();
 
   const [candidate, setCandidate] = useState<AdminCandidate | null | undefined>(undefined);
-  const [applications, setApplications] = useState<AdminApplication[]>([]);
+  const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(false);
   const [updating, setUpdating] = useState(false);
 
@@ -41,7 +41,7 @@ export default function AdminCandidateDetailPage() {
   if (candidate === undefined || loading) {
     return <SectionShell title="Loading candidate..." >
       <div className='flex  gap-4 w-full justify-between '>
-        {([1, 2,] as any).map((a: number) => (
+        {([1, 2,]).map((a: number) => (
           //skelten for lading time 
           <div key={a} className=' w-full h-[400px] rounded-lg bg-gray-200 rounded animate-pulse '>
 
@@ -150,11 +150,11 @@ export default function AdminCandidateDetailPage() {
             <p className="text-sm text-muted">No applications from this candidate yet.</p>
           ) : (
             <ul className="flex flex-col divide-y divide-border">
-              {applications.map((a: any) => (
+              {applications.map((a) => (
                 <li key={a._id || a.id} className="py-2 flex items-center justify-between text-sm">
                   <div>
                     <p className="text-foreground font-medium">{a.job?.title || a.jobTitle}</p>
-                    <p className="text-[12px] text-muted">{formatDate(a.createdAt || a.appliedAt)}</p>
+                    <p className="text-[12px] text-muted">{formatDate(a.createdAt || a.appliedDate)}</p>
                   </div>
                   <StatusBadge status={a.status} tone="neutral" />
                 </li>

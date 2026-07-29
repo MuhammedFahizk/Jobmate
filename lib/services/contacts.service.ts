@@ -39,7 +39,6 @@ interface PaginatedContacts {
 }
 
 // Maps the backend's _id/createdAt onto the id/submittedAt shape your
-// AdminContactsPage.tsx already expects from dummy-data.
 function toContactSubmission(raw: RawContact): ContactSubmission {
     return {
         id: raw._id,
@@ -55,7 +54,6 @@ function toContactSubmission(raw: RawContact): ContactSubmission {
 const ADMIN_BASE = '/contacts/admin';
 const PUBLIC_BASE = '/contact';
 
-// Same signature as the dummy-data version: listContacts().then(setContacts)
 export async function listContacts(): Promise<ContactSubmission[]> {
     const { data } = await apiClient.get<ApiResponse<PaginatedContacts>>(ADMIN_BASE, {
         params: { limit: 100 }, // admin inbox — bump if you outgrow one page
@@ -68,7 +66,6 @@ export async function getContact(id: string): Promise<ContactSubmission> {
     return toContactSubmission(data.data);
 }
 
-// Same signature as dummy-data: markContactHandled(contact.id)
 export async function markContactHandled(id: string): Promise<ContactSubmission> {
     const { data } = await apiClient.patch<ApiResponse<RawContact>>(`${ADMIN_BASE}/${id}/handled`);
     return toContactSubmission(data.data);

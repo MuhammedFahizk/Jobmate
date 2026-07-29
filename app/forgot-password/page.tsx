@@ -3,7 +3,7 @@
 import { Suspense, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, ArrowRight, ShieldCheck, MailCheck, AlertCircle, MoveLeft } from 'lucide-react';
+import { Mail, ShieldCheck, MailCheck, MoveLeft } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { forgotPasswordSchema, type ForgotPasswordPayload } from '@/lib/validation/auth.schema';
@@ -42,17 +42,20 @@ function ForgotPasswordForm() {
   const onSubmit = async (data: ForgotPasswordPayload) => {
     setIsSubmitting(true);
     setApiError(null);
+
     try {
       await authService.forgotPassword(data);
       setLastEmail(data.email);
       setIsSuccess(true);
-      setCountdown(60); // Start 60s cooldown
-    } catch (err: any) {
-      const errorMessage = err?.errors?.[0]?.message || err?.message || 'Something went wrong. Please try again.';
+      setCountdown(60);
+    } catch (err: unknown) {
+      const errorMessage = (err as { errors?: { message?: string }[]; message?: string }).errors?.[0]?.message || (err as { message?: string }).message || "Something went wrong. Please try again.";
+
       setApiError(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
+
   };
 
   const handleResend = async () => {
@@ -62,8 +65,8 @@ function ForgotPasswordForm() {
     try {
       await authService.forgotPassword({ email: lastEmail });
       setCountdown(60);
-    } catch (err: any) {
-      const errorMessage = err?.errors?.[0]?.message || err?.message || 'Something went wrong. Please try again.';
+    } catch (err: unknown) {
+      const errorMessage = (err as { errors?: { message?: string }[]; message?: string }).errors?.[0]?.message || (err as { message?: string }).message || 'Something went wrong. Please try again.';
       setApiError(errorMessage);
     } finally {
       setIsSubmitting(false);

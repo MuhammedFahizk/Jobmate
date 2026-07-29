@@ -9,7 +9,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import type { ApiError } from './types';
+import type { ApiAxiosError } from './types';
 import { useAuthStore, type AuthUser } from '@/lib/store/authStore';
 
 // ── Axios instance ────────────────────────────────────────────────────────────
@@ -114,13 +114,13 @@ apiClient.interceptors.response.use(
     }
 
     const serverData = error.response?.data as Record<string, unknown> | undefined;
-    const apiError: ApiError = {
+    const apiError: ApiAxiosError = {
       status,
       message:
         (serverData?.message as string) ??
         error.message ??
         'An unexpected error occurred.',
-      errors: (serverData?.errors as ApiError['errors']) ?? undefined,
+      errors: (serverData?.errors as ApiAxiosError['errors']) ?? undefined,
     };
 
     return Promise.reject(apiError);

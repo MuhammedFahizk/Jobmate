@@ -1,6 +1,6 @@
 'use client';
 
-import { Wrench, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { SectionShell } from '@/components/dashboard/SectionShell';
 
 export default function AdminServicesPage() {

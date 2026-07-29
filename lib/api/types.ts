@@ -32,11 +32,16 @@ export interface PaginatedResponse<T> {
  */
 // Property 'message' does not exist on type '{ field: string; message: string; }[]'.ts(2339)
 export interface ApiError {
-  status: number;
+  status: string;
   message: string;
   errors?: [{ field: string; message: string }] | { field: string; message: string }[];
 }
 
+export interface ApiAxiosError {
+  status: number;
+  message: string;
+  errors?: [{ field: string; message: string }] | { field: string; message: string }[];
+}
 /**
  * Query parameters for paginated / filtered list requests.
 **/

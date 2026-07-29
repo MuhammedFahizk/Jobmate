@@ -23,7 +23,7 @@ const cardBase =
     "rounded-[24px] p-4 shadow-[0_12px_32px_rgba(17,17,17,0.08)] cursor-default select-none";
 
 export function ShowcaseCard({ card }: { card: ShowcaseCardData }) {
-    const bg = { backgroundImage: TINTS[(card as any).tint] };
+    const bg = { backgroundImage: TINTS[(card).tint] };
 
     switch (card.type) {
         case "candidate": {

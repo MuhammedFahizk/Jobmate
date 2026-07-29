@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Eye, EyeOff, Lock, CheckCircle2, AlertCircle } from "lucide-react";
+import { Eye, EyeOff, Lock, CheckCircle2 } from "lucide-react";
 import { FormField } from "@/components/form/FormField";
 import { UseFormRegisterReturn, FieldError } from "react-hook-form";
 
@@ -38,10 +38,10 @@ export function ConfirmPasswordInput({
           placeholder={placeholder}
           {...register}
           className={`w-full pl-9 pr-10 py-2.5 rounded-xl border bg-white text-foreground font-body text-sm placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary-500/40 transition-all duration-200 ${isMismatch
-              ? "border-red-300 focus:border-red-500"
-              : isMatch
-                ? "border-green-300 focus:border-green-500"
-                : "border-border focus:border-primary-500"
+            ? "border-red-300 focus:border-red-500"
+            : isMatch
+              ? "border-green-300 focus:border-green-500"
+              : "border-border focus:border-primary-500"
             }`}
         />
         <button

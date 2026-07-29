@@ -5,8 +5,7 @@
 
 import apiClient from '@/lib/api/client';
 import type { ApiResponse, JobFilters } from '@/lib/api/types';
-import type { Job } from '@/lib/dummy-data';
-import { AdminJob, AdminJobListResponse, AdminJobResponse, CreateJobRequest, CreateJobResponse, UpdateJobRequest, UpdateJobResponse } from '../types/job.type';
+import { AdminJob, AdminJobListResponse, AdminJobResponse, CreateJobRequest, CreateJobResponse, JobType, UpdateJobRequest, UpdateJobResponse } from '../types/job.type';
 
 // ── Service ───────────────────────────────────────────────────────────────────
 
@@ -29,8 +28,8 @@ export const jobsService = {
    * GET /jobs/:id
    * Returns a single job by its ID.
    */
-  getJobById: async (id: string): Promise<ApiResponse<Job>> => {
-    const { data } = await apiClient.get<ApiResponse<Job>>(`/jobs/${id}`);
+  getJobById: async (id: string): Promise<ApiResponse<JobType>> => {
+    const { data } = await apiClient.get<ApiResponse<JobType>>(`/jobs/${id}`);
     return data;
   },
 
