@@ -44,7 +44,7 @@ export function HeroSearchBar() {
                 />
                 <button
                     type="submit"
-                    className="flex-shrink-0 inline-flex items-center justify-center gap-2 font-mono text-[11px] font-semibold tracking-widest uppercase bg-foreground hover:bg-primary-600 text-white px-5 sm:px-7 py-3.5 rounded-full transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+                    className="flex-shrink-0 inline-flex items-center justify-center gap-2 font-mono text-[11px] font-semibold tracking-widest uppercase bg-teal hover:bg-primary-600 text-white px-5 sm:px-7 py-3.5 rounded-full transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
                 >
                     <Search size={14} className="sm:hidden" />
                     <span className="hidden sm:inline">Search Jobs</span>

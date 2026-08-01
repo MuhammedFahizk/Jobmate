@@ -127,16 +127,6 @@ export default function AdminApplicationsPage() {
       render: (a) => <span className="text-[12px] text-muted">{formatDate(a.createdAt)}</span>,
     },
     {
-      key: 'whatsappClicked',
-      header: 'WhatsApp',
-      render: (a) => (
-        <StatusBadge
-          status={a.whatsappClicked ? 'clicked' : 'not yet'}
-          tone={a.whatsappClicked ? 'positive' : 'neutral'}
-        />
-      ),
-    },
-    {
       key: 'status',
       header: 'Status',
       render: (a) => <StatusBadge status={a.status} tone={TONE_MAP[a.status] ?? 'neutral'} />,

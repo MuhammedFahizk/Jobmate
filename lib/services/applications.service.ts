@@ -14,8 +14,6 @@ export interface AdminApplicationEntry {
   job: { _id: string; title: string; company: string; location: string } | null;
   candidate: { _id: string; name: string; email: string; phone?: string; location?: string } | null;
   status: 'pending' | 'reviewed' | 'shortlisted' | 'placed' | 'rejected';
-  whatsappClicked: boolean;
-  whatsappClickedAt?: string;
   adminNote?: string;
   createdAt: string;
 }

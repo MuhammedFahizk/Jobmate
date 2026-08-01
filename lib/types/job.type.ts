@@ -71,7 +71,6 @@ export interface AdminJob {
     status: JobStatus;
     postedAt: string;
     applicantCount: number;
-    whatsappNumber: string;
     experienceRequired: ExperienceLevel;
     tags: string[];
     requiredSkills: string[];
@@ -105,7 +104,6 @@ export interface CreateJobRequest {
     location: string;
     salary: Salary;
     description: string;
-    whatsappNumber: string;
     experienceRequired: ExperienceLevel;
     tags: string[];
     requiredSkills: string[];

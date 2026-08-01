@@ -85,7 +85,6 @@ export default function AdminJobDetailPage() {
           <DetailField label="Location" value={job.location} />
           <DetailField label="Salary" value={formatSalary(job.salary)} />
           <DetailField label="Experience required" value={job.experienceRequired} />
-          <DetailField label="WhatsApp number" value={job.whatsappNumber} />
         </div>
 
         {job.requiredSkills?.length > 0 && (

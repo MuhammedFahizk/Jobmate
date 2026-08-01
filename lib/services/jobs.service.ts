@@ -25,6 +25,15 @@ export const jobsService = {
   },
 
   /**
+   * GET /jobs/latest
+   * Returns a list of the latest jobs.
+   */
+  getLatestJobs: async (): Promise<AdminJobListResponse> => {
+    const { data } = await apiClient.get<AdminJobListResponse>('/jobs/latest');
+    return data;
+  },
+
+  /**
    * GET /jobs/:id
    * Returns a single job by its ID.
    */

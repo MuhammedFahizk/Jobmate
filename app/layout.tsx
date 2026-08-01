@@ -26,7 +26,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: "JobMate - Find Your Dream Job Here",
-  description: "A candidate-facing platform to apply for top jobs easily via WhatsApp.",
+  description: "A candidate-facing platform to apply for top jobs easily.",
 };
 
 // Just <html>, <body>, and app-wide providers. No nav, no chrome — that's

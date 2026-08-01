@@ -27,7 +27,6 @@ const EMPTY_FORM = {
   location: '',
   salary: DEFAULT_SALARY,
   description: '',
-  whatsappNumber: '',
   experienceRequired: EXPERIENCE_LEVELS[0].value,
   tags: '',
   requiredSkills: '',
@@ -46,7 +45,6 @@ interface FormState {
   location: string;
   salary: Salary;
   description: string;
-  whatsappNumber: string;
   experienceRequired: ExperienceLevel;
   tags: string;
   requiredSkills: string;
@@ -63,7 +61,6 @@ function jobToForm(job: AdminJob): FormState {
     location: job.location,
     salary: { ...DEFAULT_SALARY, ...job.salary },
     description: job.description,
-    whatsappNumber: job.whatsappNumber,
     experienceRequired: job.experienceRequired,
     tags: job.tags?.join(', ') ?? '',
     requiredSkills: job.requiredSkills?.join(', ') ?? '',
@@ -104,10 +101,7 @@ export function JobFormModal({ open, job, onClose, onSaved }: JobFormModalProps)
       toast.error('Title and company are required.');
       return;
     }
-    if (!form.whatsappNumber.trim()) {
-      toast.error('WhatsApp number is required.');
-      return;
-    }
+
     if (
       !form.salary.isNegotiable &&
       form.salary.min != null &&
@@ -222,18 +216,13 @@ export function JobFormModal({ open, job, onClose, onSaved }: JobFormModalProps)
         </div>
       </AdminModalField>
 
-      <div className="grid grid-cols-2 gap-3">
-        <AdminModalField label="WhatsApp number">
-          <input value={form.whatsappNumber} onChange={(e) => update('whatsappNumber', e.target.value)} className={adminInputClass} placeholder="+91XXXXXXXXXX" />
-        </AdminModalField>
-        <AdminModalField label="Experience required">
-          <select value={form.experienceRequired} onChange={(e) => update('experienceRequired', e.target.value as FormState['experienceRequired'])} className={adminInputClass}>
-            {EXPERIENCE_LEVELS.map((lvl) => (
-              <option key={lvl.value} value={lvl.value}>{lvl.label}</option>
-            ))}
-          </select>
-        </AdminModalField>
-      </div>
+      <AdminModalField label="Experience required">
+        <select value={form.experienceRequired} onChange={(e) => update('experienceRequired', e.target.value as FormState['experienceRequired'])} className={adminInputClass}>
+          {EXPERIENCE_LEVELS.map((lvl) => (
+            <option key={lvl.value} value={lvl.value}>{lvl.label}</option>
+          ))}
+        </select>
+      </AdminModalField>
 
       {isEdit && (
         <AdminModalField label="Status">

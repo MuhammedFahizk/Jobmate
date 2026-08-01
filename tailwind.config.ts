@@ -12,6 +12,8 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         muted: "var(--muted)",
+        brass: "var(--brass)",
+        teal: "var(--teal)",
         border: "var(--border)",
         primary: {
           50: "var(--primary-50)",
