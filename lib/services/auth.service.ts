@@ -118,4 +118,14 @@ export const authService = {
     const { data } = await apiClient.post<{ success: boolean; message: string }>('/auth/forgot-password', payload);
     return { message: data.message };
   },
+
+  /**
+   * POST /auth/reset-password
+   * Validates the token and sets a new password. Logs the user in on success.
+   */
+  resetPassword: async (payload: { token: string; password: string }): Promise<AuthUser> => {
+    const { data } = await apiClient.post<AuthResponse>('/auth/reset-password', payload);
+    useAuthStore.getState().setAuth(data.accessToken, data.data.user);
+    return data.data.user;
+  },
 };

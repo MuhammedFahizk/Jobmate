@@ -22,7 +22,6 @@ import { useRouter } from "next/navigation";
 import { jobsService } from "@/lib/services/jobs.service";
 import { HeroSearchBar } from "@/components/home/HeroSearchBar";
 import { HeroShowcase } from "@/components/home/hero-showcase/HeroShowcase";
-import { MobileShowcase } from "@/components/home/hero-showcase/MobileShowcase";
 import { TestimonialsSection } from "@/components/user/Testimonialssection";
 import { useAuthStore } from "@/lib/store/authStore";
 

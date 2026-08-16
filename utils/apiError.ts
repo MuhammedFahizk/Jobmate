@@ -7,9 +7,16 @@ import type { ApiError } from '@/lib/api/types';
  * that knows how to read an axios error body — nothing else in the app
  * should reach into `err.response.data` directly.
  */
-export function getApiError(err: unknown): ApiError | null {
+export function getApiError(err: any): ApiError | null {
     if (axios.isAxiosError<ApiError>(err)) {
         return err.response?.data ?? null;
+    }
+    if (err && typeof err === 'object' && 'status' in err && 'message' in err) {
+        return {
+            status: String(err.status),
+            message: err.message,
+            errors: err.errors
+        } as ApiError;
     }
     return null;
 }

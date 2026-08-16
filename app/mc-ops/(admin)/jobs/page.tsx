@@ -63,6 +63,7 @@ export default function AdminJobsPage() {
   };
 
   // Reload whenever any filter/sort/page changes.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(load, [page, search, category, status, sort]);
 
   // Any filter/search/sort change should reset back to page 1.

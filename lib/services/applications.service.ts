@@ -1,6 +1,5 @@
 import apiClient from '@/lib/api/client';
 import type { ApiResponse, PaginationParams } from '@/lib/api/types';
-import axios from 'axios';
 import { Application } from '../types/user.type';
 
 // ── Payload shapes ────────────────────────────────────────────────────────────
@@ -65,30 +64,27 @@ export const applicationsService = {
         code: data.code === 'ALREADY_APPLIED' ? 'ALREADY_APPLIED' : 'CREATED',
       };
     } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        const status = err.response?.status;
-        const code = err.response?.data?.code;
-        const message = err.response?.data?.message ?? 'Something went wrong.';
+      const apiErr = err as { status?: number; code?: string; message?: string };
+      const status = apiErr.status;
+      const code = apiErr.code;
+      const message = apiErr.message ?? 'Something went wrong.';
 
-        if (status === 402 || code === 'PAYMENT_REQUIRED') {
-          return { ok: false, code: 'PAYMENT_REQUIRED', message };
-        }
+      if (status === 402 || code === 'PAYMENT_REQUIRED') {
+        return { ok: false, code: 'PAYMENT_REQUIRED', message };
+      }
 
-        if (status === 403 || code === 'ACCOUNT_INACTIVE') {
-          return { ok: false, code: 'ACCOUNT_INACTIVE', message };
-        }
+      if (status === 403 || code === 'ACCOUNT_INACTIVE') {
+        return { ok: false, code: 'ACCOUNT_INACTIVE', message };
+      }
 
-        if (status === 404) {
-          return { ok: false, code: 'NOT_FOUND', message };
-        }
-
-        return { ok: false, code: 'ERROR', message };
+      if (status === 404) {
+        return { ok: false, code: 'NOT_FOUND', message };
       }
 
       return {
         ok: false,
         code: 'ERROR',
-        message: 'Unexpected error occurred.',
+        message: message || 'Unexpected error occurred.',
       };
     }
   },

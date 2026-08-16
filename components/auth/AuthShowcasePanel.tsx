@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import {
     Users,
@@ -114,7 +115,7 @@ export default function AuthShowcasePanel() {
             {/* top brand mark */}
             <div className="relative z-10 flex items-center gap-2.5">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 backdrop-blur-md border border-white/20">
-                    <img src="/jobmate-icon.svg" alt="JobMate" className="w-5 h-5 text-primary-500" />                </div>
+                    <Image src="/jobmate-icon.svg" alt="JobMate" width={20} height={20} className="w-5 h-5" /></div>
                 <span className="font-display text-white/95 text-[15px] font-semibold tracking-tight">
                     JobMate
                 </span>

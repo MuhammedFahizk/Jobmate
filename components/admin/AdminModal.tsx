@@ -218,10 +218,12 @@ export function AdminModalFooter({
 export function AdminModalField({
     label,
     required,
+    error,
     children,
 }: {
     label: string;
     required?: boolean;
+    error?: string;
     children: ReactNode;
 }) {
     return (
@@ -231,6 +233,7 @@ export function AdminModalField({
                 {required && <span className="text-rose-500 ml-0.5">*</span>}
             </span>
             {children}
+            {error && <span className="text-[11px] text-rose-500 font-medium mt-0.5">{error}</span>}
         </label>
     );
 }

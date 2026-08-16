@@ -10,6 +10,28 @@ import { candidatesService } from '@/lib/services/candidates.service';
 import type { AdminCandidate, Application } from '@/lib/types/user.type';
 
 
+const WhatsAppIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    width="12"
+    height="12"
+    fill="currentColor"
+    className="inline-block"
+  >
+    <path d="M12.012 2c-5.506 0-9.988 4.47-9.988 9.951 0 1.758.459 3.474 1.33 4.982L2 22l5.215-1.365a9.902 9.902 0 0 0 4.797 1.233c5.507 0 9.988-4.47 9.988-9.951C22 6.47 17.519 2 12.012 2zm0 17.531c-1.572 0-3.11-.42-4.46-1.218l-.32-.19-3.097.81.826-3.018-.21-.334c-.874-1.39-1.334-3-1.334-4.664 0-4.693 3.829-8.511 8.595-8.511 4.764 0 8.593 3.818 8.593 8.511 0 4.694-3.829 8.513-8.593 8.513zm4.706-6.425c-.258-.13-1.528-.752-1.764-.838-.236-.086-.407-.13-.578.13-.171.26-.66.838-.81.996-.148.158-.297.18-.555.05-.258-.13-1.09-.402-2.077-1.28-.767-.684-1.285-1.53-1.436-1.79-.15-.26-.016-.401.113-.53.117-.116.258-.302.387-.453.128-.15.172-.258.258-.43.086-.171.043-.323-.021-.453-.065-.13-.578-1.396-.792-1.912-.208-.5-.437-.43-.578-.437-.148-.007-.323-.007-.495-.007-.172 0-.451.065-.688.324-.236.258-.902.882-.902 2.15 0 1.27.924 2.496 1.053 2.668.129.172 1.819 2.778 4.407 3.896.615.266 1.096.424 1.47.543.618.196 1.18.169 1.624.103.495-.073 1.528-.624 1.742-1.226.215-.602.215-1.118.15-1.226-.065-.107-.236-.171-.494-.301z"/>
+  </svg>
+);
+
+function getWhatsAppLink(phone: string, text?: string) {
+  const cleanPhone = phone.replace(/\D/g, '');
+  const formattedPhone = cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone;
+  const url = new URL(`https://wa.me/${formattedPhone}`);
+  if (text) {
+    url.searchParams.set('text', text);
+  }
+  return url.toString();
+}
+
 export default function AdminCandidateDetailPage() {
   const params = useParams<{ id: string }>();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
@@ -36,7 +58,7 @@ export default function AdminCandidateDetailPage() {
       .finally(() => {
         setLoading(false);
       });
-  }, [id]);
+  }, [id, toast]);
 
   if (candidate === undefined || loading) {
     return <SectionShell title="Loading candidate..." >
@@ -104,7 +126,23 @@ export default function AdminCandidateDetailPage() {
         <div className="border border-border rounded-md bg-white p-5">
           <h3 className="text-[13px] font-semibold text-foreground mb-3">Profile</h3>
           <dl className="flex flex-col gap-2 text-sm">
-            <Row label="Phone" value={candidate.phone || '—'} />
+            <div className="flex items-center justify-between py-1">
+              <span className="text-muted text-[12px]">Phone</span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-foreground text-[13px]">{candidate.phone || '—'}</span>
+                {candidate.phone && (
+                  <a
+                    href={getWhatsAppLink(candidate.phone, `Hello ${candidate.name}, `)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-600 hover:text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-1.5 py-0.5 rounded transition-colors"
+                  >
+                    <WhatsAppIcon />
+                    <span>Message</span>
+                  </a>
+                )}
+              </div>
+            </div>
             <Row label="Location" value={candidate.location || '—'} />
             <Row label="Category" value={candidate.category || '—'} />
             <Row label="Experience" value={candidate.experience || '—'} />

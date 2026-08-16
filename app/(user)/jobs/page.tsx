@@ -52,7 +52,7 @@ function JobsListContent() {
 
     const result = await applyToJob(job);
     if (!result) return;
-
+    console.log(result)
     if (result.ok) {
       if (result.code === 'ALREADY_APPLIED') {
         info('Already Applied', 'You\'ve already applied to this job. Check your dashboard for updates.');
@@ -85,7 +85,7 @@ function JobsListContent() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          <div className={`lg:col-span-5 xl:col-span-4 flex flex-col ${!showMobileList ? 'hidden lg:flex' : 'flex'}`}>
+          <div className={`lg:col-span-5 xl:col-span-4 flex flex-col lg:sticky lg:top-24 lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto custom-scrollbar lg:pr-2 ${!showMobileList ? 'hidden lg:flex' : 'flex'}`}>
             <JobList
               jobs={jobs}
               selectedJob={selectedJob}
@@ -101,7 +101,7 @@ function JobsListContent() {
             />
           </div>
 
-          <div className={`lg:col-span-7 xl:col-span-8 lg:sticky lg:top-24 lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto custom-scrollbar ${showMobileList ? 'hidden lg:block' : 'block'}`}>
+          <div className={`lg:col-span-7 xl:col-span-8 lg:sticky lg:top-24 lg:overflow-y-auto custom-scrollbar ${showMobileList ? 'hidden lg:block' : 'block'}`}>
             {!showMobileList && (
               <button
                 onClick={() => setShowMobileList(true)}

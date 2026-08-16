@@ -3,7 +3,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   User, Mail, Phone, BriefcaseBusiness, Code, Check, Plus,
 } from 'lucide-react';
@@ -45,24 +45,7 @@ export default function ProfilePage() {
 
   // ── Handlers ──────────────────────────────────────────────────────────────
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  // `form` is local editable state, separate from `user` (the fetched
-  // record) — this is what keeps the fields populated once the API
-  // response lands, instead of staying stuck on the empty initial state.
-  useEffect(() => {
-    if (!user) return;
-    setForm({
-      name: user.name ?? '',
-      phone: user.phone ?? '',
-      experience: user.experience ?? '2+ Years',
-      skills: user.skills ?? [],
-    });
-  }, [user]);
-
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     setIsLoading(true);
     try {
       const fetched = await userService.getMe();
@@ -73,7 +56,22 @@ export default function ProfilePage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [error]);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
+  // Sync fetched user data into form state once the API response lands
+  useEffect(() => {
+    if (!user) return;
+    setForm({
+      name: user.name ?? '',
+      phone: user.phone ?? '',
+      experience: user.experience ?? '2+ Years',
+      skills: user.skills ?? [],
+    });
+  }, [user]);
 
   const addSkill = () => {
     const t = newSkill.trim();

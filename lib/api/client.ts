@@ -120,6 +120,7 @@ apiClient.interceptors.response.use(
         (serverData?.message as string) ??
         error.message ??
         'An unexpected error occurred.',
+      code: serverData?.code as string | undefined,
       errors: (serverData?.errors as ApiAxiosError['errors']) ?? undefined,
     };
 

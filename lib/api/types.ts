@@ -40,6 +40,7 @@ export interface ApiError {
 export interface ApiAxiosError {
   status: number;
   message: string;
+  code?: string;
   errors?: [{ field: string; message: string }] | { field: string; message: string }[];
 }
 /**

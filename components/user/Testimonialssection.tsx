@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { usePublicTestimonials } from '@/hooks/usepublictestimonials';
+import Image from 'next/image';
 
 export function TestimonialsSection() {
   const { data: testimonials, isLoading } = usePublicTestimonials();
@@ -69,7 +70,7 @@ export function TestimonialsSection() {
                     <div className="flex items-center gap-3">
                       <div className="relative w-12 h-12 rounded border border-border overflow-hidden  flex-shrink-0">
                         {t.avatar ? (
-                          <img src={t.avatar} alt={t.name} className="object-cover" />
+                          <Image src={t.avatar} alt={t.name} fill className="object-cover" />
                         ) : (
                           <div className="w-full h-full bg-primary-100" />
                         )}

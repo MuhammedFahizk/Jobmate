@@ -1,6 +1,6 @@
 'use client';
 
-import { AlertCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { JobCard } from './JobCard';
 import type { AdminJob } from '@/lib/types/job.type';
 
@@ -14,14 +14,32 @@ interface JobListProps {
     onRetry: () => void;
     page: number;
     totalPages: number;
-    onPageChange: (p: number) => void;
+    onPageChange: () => void;
     totalResults: number;
 }
+
+import { useEffect, useRef } from 'react';
 
 export function JobList({
     jobs, selectedJob, onSelect, initialLoading, isFetching, error, onRetry,
     page, totalPages, onPageChange, totalResults,
 }: JobListProps) {
+    const loadMoreRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && !isFetching && page < totalPages) {
+                    onPageChange();
+                }
+            },
+            { rootMargin: '100px' }
+        );
+
+        if (loadMoreRef.current) observer.observe(loadMoreRef.current);
+        return () => observer.disconnect();
+    }, [isFetching, page, totalPages, onPageChange]);
+
     return (
         <div className="flex flex-col gap-6">
             <div className="flex flex-col">
@@ -49,7 +67,7 @@ export function JobList({
                         </p>
                     </div>
                 ) : (
-                    <div className={`flex flex-col gap-3 transition-opacity ${isFetching ? 'opacity-50' : 'opacity-100'}`}>
+                    <div className="flex flex-col gap-3">
                         {jobs.map((job) => (
                             <JobCard key={job._id} job={job} selected={selectedJob?._id === job._id} onSelect={onSelect} />
                         ))}
@@ -58,35 +76,16 @@ export function JobList({
             </div>
 
             {!initialLoading && !error && jobs.length > 0 && (
-                <div className="flex items-center justify-between">
-                    <span className="text-[11px] text-muted">{totalResults} results</span>
-                    {totalPages > 1 && (
-                        <div className="flex items-center gap-1">
-                            <button
-                                onClick={() => onPageChange(page - 1)}
-                                disabled={page === 1 || isFetching}
-                                className="w-8 h-8 rounded-lg border border-border bg-white flex items-center justify-center text-muted hover:text-foreground hover:border-primary-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                            >
-                                <ChevronLeft size={14} />
-                            </button>
-                            {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-                                <button
-                                    key={p}
-                                    onClick={() => onPageChange(p)}
-                                    disabled={isFetching}
-                                    className={`w-8 h-8 rounded-lg text-[12px] font-semibold transition-colors ${p === page ? 'bg-foreground text-white' : 'bg-white border border-border text-muted hover:border-primary-300 hover:text-foreground'
-                                        }`}
-                                >
-                                    {p}
-                                </button>
-                            ))}
-                            <button
-                                onClick={() => onPageChange(page + 1)}
-                                disabled={page === totalPages || isFetching}
-                                className="w-8 h-8 rounded-lg border border-border bg-white flex items-center justify-center text-muted hover:text-foreground hover:border-primary-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                            >
-                                <ChevronRight size={14} />
-                            </button>
+                <div className="flex flex-col items-center gap-4 py-4">
+                    <span className="text-[12px] font-medium text-muted">Showing {jobs.length} of {totalResults} roles</span>
+                    
+                    {page < totalPages && (
+                        <div ref={loadMoreRef} className="w-full flex flex-col gap-3 pt-2">
+                            {isFetching ? (
+                                Array.from({ length: 2 }).map((_, i) => (
+                                    <div key={`skeleton-${i}`} className="bg-white border border-border rounded-2xl p-5 h-[150px] animate-pulse" />
+                                ))
+                            ) : null}
                         </div>
                     )}
                 </div>

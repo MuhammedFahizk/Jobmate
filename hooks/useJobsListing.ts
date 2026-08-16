@@ -44,8 +44,8 @@ export function useJobsListing() {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const { isAuthenticated } = useAuth();
-
-    const page = Number(searchParams.get('page')) || 1;
+    
+    const [page, setPage] = useState(1);
 
     const filters = useMemo<JobFiltersState>(() => ({
         search: searchParams.get('search') || '',
@@ -60,6 +60,11 @@ export function useJobsListing() {
         dateTo: searchParams.get('dateTo') || '',
         sort: searchParams.get('sort') || SORT_OPTIONS[0].value,
     }), [searchParams]);
+
+    const filterString = JSON.stringify(filters);
+    useEffect(() => {
+        setPage(1);
+    }, [filterString]);
 
     const [searchInput, setSearchInput] = useState(filters.search);
 
@@ -112,7 +117,7 @@ export function useJobsListing() {
                 const params = new URLSearchParams(searchParams.toString());
                 if (searchInput) params.set('search', searchInput);
                 else params.delete('search');
-                params.set('page', '1');
+                params.delete('page');
                 router.push(`${pathname}?${params.toString()}`, { scroll: false });
             }
         }, SEARCH_DEBOUNCE_MS);
@@ -121,6 +126,7 @@ export function useJobsListing() {
 
     const load = useCallback(() => {
         setIsFetching(true);
+        if (page === 1) setInitialLoading(true);
         setError(false);
         jobsService
             .getJobs({
@@ -140,7 +146,7 @@ export function useJobsListing() {
                 ...(filters.dateTo ? { dateTo: filters.dateTo } : {}),
             })
             .then((data) => {
-                setJobs(data.data.jobs);
+                setJobs((prev) => (page === 1 ? data.data.jobs : [...prev, ...data.data.jobs]));
                 setTotal(data.total);
             })
             .catch(() => setError(true))
@@ -194,7 +200,7 @@ export function useJobsListing() {
         } else {
             params.delete(key);
         }
-        params.set('page', '1');
+        params.delete('page');
         updateURL(params);
     }, [searchParams, updateURL]);
 
@@ -204,7 +210,7 @@ export function useJobsListing() {
         params.delete('type');
         const newTypes = currentTypes.includes(value) ? currentTypes.filter(t => t !== value) : [...currentTypes, value];
         newTypes.forEach(t => params.append('type', t));
-        params.set('page', '1');
+        params.delete('page');
         updateURL(params);
     }, [searchParams, updateURL]);
 
@@ -234,16 +240,14 @@ export function useJobsListing() {
         if (sort) params.set('sort', sort);
         if (apply) params.set('apply', apply);
 
-        params.set('page', '1');
+        params.delete('page');
         updateURL(params);
     }, [searchParams, updateURL]);
 
-    const goToPage = useCallback((p: number) => {
-        if (p < 1 || p > totalPages) return;
-        const params = new URLSearchParams(searchParams.toString());
-        params.set('page', p.toString());
-        updateURL(params);
-    }, [searchParams, updateURL, totalPages]);
+    const goToPage = useCallback(() => {
+        if (page >= totalPages) return;
+        setPage((p) => p + 1);
+    }, [page, totalPages]);
 
     /**
      * Apply to a job via the API.

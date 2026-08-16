@@ -12,12 +12,12 @@ interface ApplyBlockModalProps {
 const CONTENT = {
     payment: {
         icon: CreditCard,
-        iconBg: 'bg-amber-50 text-amber-600 border-amber-200',
-        title: 'Upgrade to Apply',
-        body: 'Your account is on the free plan. Complete your payment to unlock full access and start applying to jobs instantly.',
-        cta: 'Upgrade Now',
-        ctaHref: '/dashboard/billing',
-        ctaClass: 'bg-amber-500 hover:bg-amber-600 text-white',
+        iconBg: 'bg-green-50 text-green-600 border-green-200',
+        title: 'Registration Fee Required',
+        body: 'To apply for jobs, please complete your one-time registration payment. Contact our support team on WhatsApp to proceed.',
+        cta: 'Message on WhatsApp',
+        ctaHref: 'https://wa.me/919207543772?text=Hi%2C%20I%20would%20like%20to%20complete%20my%20registration%20to%20start%20applying%20for%20jobs.',
+        ctaClass: 'bg-green-500 hover:bg-green-600 text-white',
     },
     inactive: {
         icon: ShieldOff,
