@@ -114,8 +114,8 @@ export default function AuthShowcasePanel() {
 
             {/* top brand mark */}
             <div className="relative z-10 flex items-center gap-2.5">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 backdrop-blur-md border border-white/20">
-                    <Image src="/jobmate-icon.svg" alt="JobMate" width={20} height={20} className="w-5 h-5" /></div>
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 overflow-hidden">
+                    <Image src="/images/logo.png" alt="JobMate" width={36} height={36} className="w-full h-full object-contain" /></div>
                 <span className="font-display text-white/95 text-[15px] font-semibold tracking-tight">
                     JobMate
                 </span>

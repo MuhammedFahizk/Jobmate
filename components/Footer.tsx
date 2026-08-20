@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   const footerLinks = [
@@ -29,14 +30,8 @@ export default function Footer() {
           {/* Logo and About Column */}
           <div className="md:col-span-2 flex flex-col gap-6">
             <Link href="/" className="flex items-center gap-3 self-start group">
-              <div className="w-10 h-10 rounded-card-sm bg-primary-500 flex items-center justify-center text-white transition-transform duration-300 group-hover:scale-105 flex-shrink-0">
-                <svg viewBox="0 0 100 100" className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round">
-                  <polygon points="50,5 90,28 90,72 50,95 10,72 10,28" />
-                  <polygon points="50,28 72,40 72,60 50,72 28,60 28,40" />
-                  <line x1="50" y1="28" x2="50" y2="72" />
-                  <line x1="28" y1="40" x2="50" y2="50" />
-                  <line x1="72" y1="40" x2="50" y2="50" />
-                </svg>
+              <div className="w-10 h-10 bg-gradient-to-r  from-primary-600 to-primary-500  rounded-card-sm overflow-hidden flex items-center justify-center transition-transform duration-300 group-hover:scale-105 flex-shrink-0">
+                <Image src="/images/logo.png" alt="JobMate Logo" width={44} height={40} className="w-full  h-full object-contain" />
               </div>
               <div className="flex flex-col">
                 <span className="font-display font-bold text-lg leading-none tracking-tight text-white flex items-center gap-1.5">
