@@ -355,6 +355,7 @@ export default function Home() {
       </section>
 
       {/* ─── 4. ABOUT (HOME VERSION) ─── */}
+      {/* ─── 4. ABOUT (HOME VERSION) ─── */}
       <section className="bg-background py-10 px-6">
         <div className=" mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
@@ -365,17 +366,20 @@ export default function Home() {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="relative rounded-[14px] overflow-hidden bg-white border border-border shadow-sm aspect-[4/3] p-2">
-              <div className="absolute inset-2 border-[1.5px] border-dashed border-border rounded-lg pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-white to-background -z-10" />
-              <div className="w-full h-full flex flex-col items-center justify-center opacity-80 text-primary-500">
-                <div className="font-mono text-xs tracking-widest uppercase mb-4 opacity-50">Est. 2018</div>
-                <div className="font-display text-5xl font-bold">6+ Years</div>
-                <div className="font-display italic text-lg text-muted mt-2">Placing Candidates in Kerala</div>
-              </div>
+            {/* Main image */}
+            <div className="relative rounded-[14px] overflow-hidden  s aspect-[4/3]">
+              <Image
+                src="/images/about.png"
+                alt="JobMate team helping candidates"
+                fill
+                className="object-cover"
+              />
             </div>
-            {/* Ticket accent on the image */}
-            <div className="absolute -bottom-4 -right-4 bg-white border border-border p-3 shadow-sm flex items-center justify-center -rotate-6">
+
+
+
+            {/* Ticket accent badge */}
+            <div className="absolute -top-4 -left-4 bg-white border border-border p-3 shadow-sm flex items-center justify-center -rotate-6 z-10">
               <div className="border-[1.5px] border-primary-500 px-3 py-1 text-primary-700 font-mono text-[10px] uppercase font-bold tracking-widest">Trusted</div>
             </div>
           </motion.div>
