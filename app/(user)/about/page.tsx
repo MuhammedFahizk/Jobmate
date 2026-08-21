@@ -12,7 +12,7 @@ export default function About() {
     },
     {
       title: "Absolute Integrity",
-      description: "Every listing, candidate background, and service detail is vetted. No hidden placement fees beyond our clear ₹199 plan.",
+      description: "Every listing, candidate background, and service detail is vetted. No hidden placement fees beyond our clear ₹200 plan.",
       icon: ShieldCheck,
     },
     {
@@ -33,19 +33,19 @@ export default function About() {
   };
 
   // Replace your itemVariants with this:
-const itemVariants = {
-  hidden: { opacity: 0, y: 15 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: "spring" as const, stiffness: 100 },
-  },
-};
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring" as const, stiffness: 100 },
+    },
+  };
 
   return (
     <div className="bg-background min-h-screen font-body overflow-hidden py-12 md:py-20">
       <div className="max-w-[1000px] mx-auto px-6 flex flex-col gap-16">
-        
+
         {/* Hero Section */}
         <div className="text-center flex flex-col items-center gap-6">
           <motion.span
@@ -55,7 +55,7 @@ const itemVariants = {
           >
             Our Mission & Slogan
           </motion.span>
-          
+
           <motion.h1
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
@@ -64,7 +64,7 @@ const itemVariants = {
           >
             The Optimal Solution For <span className="bg-gradient-to-r from-primary-700 to-primary-500 bg-clip-text text-transparent">Employment</span>
           </motion.h1>
-          
+
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}

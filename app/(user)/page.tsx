@@ -133,14 +133,14 @@ export default function Home() {
   return (
     <div className="overflow-hidden">
       {/* ─── 1. HERO ─── */}
-      <section className="relative min-h-[calc(100vh-64px)] flex items-center bg-gradient-to-b from-white to-background px-6 pt-2 pb-12 m">
+      <section className="relative min-h-[calc(100vh-64px)] flex items-center bg-gradient-to-b from-white to-background px-6 pb-24 lg:pb-12">
         <div className="absolute right-0 top-1/4 w-[400px] h-[400px] rounded-full bg-primary-100/40 blur-[80px] pointer-events-none -z-10" />
         <div className="absolute left-10 bottom-10 w-[200px] h-[200px] rounded-full bg-primary-50/50 blur-[50px] pointer-events-none -z-10" />
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.15 }}
-          className="w-full absolute bottom-[230px] md:bottom-[200px] z-40 px-2   mx-auto max-w-[90%] sm:max-w-xl md:max-w-3xl   lg:max-w-4xl order-2 lg:order-none"
+          className="w-full absolute bottom-[60px] md:bottom-[200px] z-40 px-2 mx-auto max-w-[90%] sm:max-w-xl md:max-w-3xl lg:max-w-4xl order-2 lg:order-none"
         >
           <HeroSearchBar />
         </motion.div>
@@ -177,7 +177,7 @@ export default function Home() {
                 </button> */}
               </motion.div>
 
-              <motion.div className="grid  grid-cols-4 gap-4 pt-6 mt-20 sm:pt-8 sm:mt-20 border-t-[1.5px] border-dashed border-border" variants={itemVariants}>
+              <motion.div className="grid grid-cols-4 gap-4 pt-6 mt-6 sm:pt-8 sm:mt-8 border-t-[1.5px] border-dashed border-border" variants={itemVariants}>
                 <div className="flex items-center -space-x-3 flex-shrink-0">
                   {stackedAvatars.map((src, idx) => (
                     <div key={src} className="relative w-8 h-8 rounded-full bg-primary-300 border-2 border-white shadow-card overflow-hidden" style={{ zIndex: 10 - idx }}>

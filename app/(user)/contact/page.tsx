@@ -47,7 +47,7 @@ export default function Contact() {
               Get in Touch with Us
             </h1>
             <p className="font-body text-sm text-muted leading-relaxed">
-              Have questions about our ₹199 placement plan, or need to hire home staffing helpers in Kozhikode? Speak directly with our NIT Kattangal coordinators.
+              Have questions about our 200 placement plan, or need to hire home staffing helpers in Kozhikode? Speak directly with our NIT Kattangal coordinators.
             </p>
           </div>
 

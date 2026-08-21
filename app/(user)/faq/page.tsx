@@ -10,7 +10,7 @@ export default function FAQ() {
   const faqs = [
     {
       question: "What is the fee for Job Placement Consulting?",
-      answer: "We charge a minimal consulting registration fee of ₹199 (reduced from ₹499 for a limited time) for candidate verification and CV preparation at our NIT Kattangal center. We do not take cut-percentages from your starting salary.",
+      answer: "We charge a minimal consulting registration fee of ₹200 (reduced from ₹499 for a limited time) for candidate verification and CV preparation at our NIT Kattangal center. We do not take cut-percentages from your starting salary.",
       category: "Job Consulting",
       icon: CreditCard,
     },
@@ -53,7 +53,7 @@ export default function FAQ() {
   return (
     <div className="bg-background min-h-screen font-body overflow-hidden py-12 md:py-20">
       <div className="max-w-[800px] mx-auto px-6">
-        
+
         {/* Header */}
         <div className="text-center flex flex-col items-center gap-6 mb-16">
           <span className="inline-flex px-3 py-1.5 rounded-pill bg-primary-100 text-primary-700 text-xs font-semibold uppercase tracking-wider shadow-sm">

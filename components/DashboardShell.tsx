@@ -98,7 +98,7 @@ function ShellInner({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-background py-8 px-6">
+    <div className="min-h-[calc(100vh-64px)] bg-background py-8 md:px-6">
       <div className=" max-w-7xl px-6 mx-auto flex flex-col gap-6">
 
         {/* ── Profile header ─────────────────────────────────────────────── */}

@@ -2,41 +2,45 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { 
-  MessageSquare, 
-  ShieldCheck, 
-  Clock, 
-  UserPlus, 
-  Search, 
-  Send, 
-  UserCheck, 
-  Briefcase, 
-  TrendingUp, 
-  FileText, 
-  Code, 
-  HeartPulse, 
-  Building2, 
-  ArrowRight, 
-  MapPin, 
-  Phone, 
-  Mail 
+import {
+  ShieldCheck,
+  Clock,
+  UserPlus,
+  Search,
+  MousePointerClick,
+  UserCheck,
+  Briefcase,
+  TrendingUp,
+  FileText,
+  Code,
+  HeartPulse,
+  Building2,
+  ArrowRight,
+  MapPin,
+  Phone,
+  Mail,
+  Zap,
+  CheckCircle2,
 } from "lucide-react";
 
 export default function JobConsulting() {
   const features = [
     {
-      title: "WhatsApp Applications",
-      description: "No complex portals. Apply instantly with a pre-formatted WhatsApp chat directly to our placement managers.",
-      icon: MessageSquare,
+      title: "1-Click Online Apply",
+      description:
+        "No WhatsApp. No phone calls. Submit your application directly through the platform — your profile goes straight to the recruiter instantly.",
+      icon: MousePointerClick,
     },
     {
       title: "Verified Employers",
-      description: "Direct connection with verified hiring companies in Kozhikode, Kochi, and across Kerala.",
+      description:
+        "Every company listed on JobMate is verified. Direct hiring connections with top companies in Kozhikode, Kochi, and across Kerala.",
       icon: ShieldCheck,
     },
     {
-      title: "48-Hour Response",
-      description: "We review and match your profile with suitable vacancies, initiating contact within 48 hours.",
+      title: "48-Hour Recruiter Response",
+      description:
+        "Our placement team reviews every application and matches your profile with the right vacancy. Most candidates hear back within 48 hours.",
       icon: Clock,
     },
   ];
@@ -44,26 +48,30 @@ export default function JobConsulting() {
   const steps = [
     {
       number: "01",
-      title: "Create Profile",
-      description: "Enter your experience, qualifications and upload your resume document.",
+      title: "Create Your Profile",
+      description:
+        "Register and complete your profile — add your skills, experience level, preferred location, and upload your resume. Takes under 5 minutes.",
       icon: UserPlus,
     },
     {
       number: "02",
-      title: "Browse Openings",
-      description: "Browse curated vacancies in multiple sectors across Kerala locations.",
+      title: "Browse Job Openings",
+      description:
+        "Explore curated vacancies across multiple sectors and Kerala locations. Filter by category, salary, and job type to find the perfect match.",
       icon: Search,
     },
     {
       number: "03",
-      title: "Apply via WhatsApp",
-      description: "Tap the quick-apply button to open a direct chat line with details.",
-      icon: Send,
+      title: "Apply in 1 Click",
+      description:
+        "Tap the Apply button. Your profile and resume are sent directly to the employer's recruiter instantly — no lengthy forms or calls needed.",
+      icon: MousePointerClick,
     },
     {
       number: "04",
       title: "Get Placed",
-      description: "Attend direct interviews and secure your premium job placement.",
+      description:
+        "Our team follows up within 48 hours. Most candidates receive interview calls within the same week of applying.",
       icon: UserCheck,
     },
   ];
@@ -86,30 +94,36 @@ export default function JobConsulting() {
     "Kannur",
   ];
 
-  // Container variants for stagger animation
+  const whyJobMate = [
+    "One-time registration fee of ₹200 — no recurring or hidden charges",
+    "Profiles reviewed by human consultants, not bots",
+    "Direct connection to verified companies in Kerala",
+    "Dedicated to placements in the Kerala job market",
+    "Fast placement — most candidates placed within 1 week",
+    "Backed by M Cube Services with campus presence at NIT Kattangal",
+  ];
+
+  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
+      transition: { staggerChildren: 0.1 },
     },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 100 } },
-  };
-
-  const handleWhatsAppChat = () => {
-    const text = encodeURIComponent("Hi JobMate / M Cube Services, I would like to register for Job Consulting services.");
-    window.open(`https://wa.me/919207543772?text=${text}`, "_blank");
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring" as const, stiffness: 100 },
+    },
   };
 
   return (
     <div className="bg-background min-h-screen font-body overflow-hidden">
-      
+
       {/* 1. HERO SECTION */}
       <section className="relative bg-gradient-to-b from-brand-surface to-brand-bg px-6 py-20 md:py-28 border-b border-border/40">
         <div className="absolute right-0 top-1/4 w-[350px] h-[350px] rounded-full bg-primary-100/35 blur-[80px] pointer-events-none -z-10" />
@@ -122,7 +136,7 @@ export default function JobConsulting() {
             transition={{ duration: 0.4 }}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-primary-100 text-primary-700 text-xs font-semibold uppercase tracking-wider shadow-sm"
           >
-            Limited Offer: ₹499 → ₹199 Only
+            Powered by M Cube Services · NIT Kattangal
           </motion.div>
 
           <motion.h1
@@ -131,7 +145,10 @@ export default function JobConsulting() {
             transition={{ delay: 0.1, duration: 0.5 }}
             className="font-display text-4xl sm:text-5xl md:text-6xl font-semibold leading-[1.1] text-foreground max-w-3xl tracking-tight"
           >
-            Your Career, <span className="font-bold bg-gradient-to-r from-brand-accent-dark to-brand-accent bg-clip-text text-transparent">Placed Right</span>
+            Apply Online.{" "}
+            <span className="font-bold bg-gradient-to-r from-brand-accent-dark to-brand-accent bg-clip-text text-transparent">
+              Get Placed Fast.
+            </span>
           </motion.h1>
 
           <motion.p
@@ -140,7 +157,9 @@ export default function JobConsulting() {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="text-base sm:text-lg text-muted max-w-xl leading-relaxed"
           >
-            Fast-track your job search in Kerala. Direct hiring matching, direct communication, and immediate WhatsApp applications. Consulted at NIT Kattangal.
+            JobMate connects candidates directly with verified employers across
+            Kerala. Create your profile, browse curated openings, and apply with
+            a single click — no calls, no WhatsApp, no hassle.
           </motion.p>
 
           <motion.div
@@ -149,12 +168,12 @@ export default function JobConsulting() {
             transition={{ delay: 0.3, duration: 0.5 }}
             className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto mt-2"
           >
-            <button
-              onClick={handleWhatsAppChat}
+            <Link
+              href="/auth/register"
               className="font-body font-medium bg-primary-500 hover:bg-primary-700 text-white px-8 py-3.5 rounded-pill shadow-card transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 text-center"
             >
-              Register Free — ₹199
-            </button>
+              Create Free Account
+            </Link>
             <Link
               href="/jobs"
               className="font-body font-medium border border-border bg-white hover:bg-background text-foreground px-8 py-3.5 rounded-pill shadow-sm transition-all duration-200 hover:-translate-y-0.5 text-center"
@@ -173,11 +192,15 @@ export default function JobConsulting() {
               Key Features
             </span>
             <h2 className="font-display text-3xl font-bold text-foreground tracking-tight">
-              A Modern Hiring Service
+              A Smarter Way to Get Hired
             </h2>
+            <p className="text-sm text-muted mt-3 leading-relaxed">
+              JobMate is a fully online platform. Everything from application to
+              placement happens through the app.
+            </p>
           </div>
 
-          <motion.div 
+          <motion.div
             className="grid grid-cols-1 md:grid-cols-3 gap-8"
             variants={containerVariants}
             initial="hidden"
@@ -214,15 +237,19 @@ export default function JobConsulting() {
               Process Flow
             </span>
             <h2 className="font-display text-3xl font-bold text-foreground tracking-tight">
-              How It Works
+              How JobMate Works
             </h2>
+            <p className="text-sm text-muted mt-3 leading-relaxed">
+              From registration to placement — the entire process is done
+              through the platform.
+            </p>
           </div>
 
           <div className="relative">
             {/* Horizontal Line on Desktop */}
             <div className="hidden md:block absolute top-[52px] left-[12%] right-[12%] h-[1px] bg-brand-border/80 z-0" />
 
-            <motion.div 
+            <motion.div
               className="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10"
               variants={containerVariants}
               initial="hidden"
@@ -258,8 +285,87 @@ export default function JobConsulting() {
         </div>
       </section>
 
-      {/* 4. JOB CATEGORIES GRID */}
+      {/* 4. WHY JOBMATE */}
       <section className="py-20 px-6 bg-white border-b border-border/60">
+        <div className="max-w-[1200px] mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <span className="font-body font-semibold text-primary-500 uppercase tracking-wider text-xs block mb-3">
+                Why Choose Us
+              </span>
+              <h2 className="font-display text-3xl font-bold text-foreground tracking-tight mb-4">
+                Why JobMate is Different
+              </h2>
+              <p className="text-sm text-muted leading-relaxed mb-8 max-w-md">
+                We are not just a job board. JobMate is a managed placement
+                service backed by M Cube Services, with dedicated consultants
+                who review every application.
+              </p>
+              <motion.ul
+                className="flex flex-col gap-4"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                {whyJobMate.map((point, idx) => (
+                  <motion.li
+                    key={idx}
+                    variants={itemVariants}
+                    className="flex items-start gap-3"
+                  >
+                    <CheckCircle2
+                      size={18}
+                      className="text-primary-500 flex-shrink-0 mt-0.5"
+                      strokeWidth={2}
+                    />
+                    <span className="font-body text-sm text-foreground leading-relaxed">
+                      {point}
+                    </span>
+                  </motion.li>
+                ))}
+              </motion.ul>
+            </div>
+            <div className="bg-background border border-border rounded-card p-8 flex flex-col gap-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-card-sm bg-primary-100 text-primary-700 flex items-center justify-center flex-shrink-0">
+                  <Zap size={20} strokeWidth={1.5} />
+                </div>
+                <div>
+                  <p className="font-display font-semibold text-foreground text-sm">
+                    Fast Placement Guarantee
+                  </p>
+                  <p className="font-body text-xs text-muted mt-0.5">
+                    Most candidates are placed within 7 days of applying.
+                  </p>
+                </div>
+              </div>
+              <div className="h-px bg-border" />
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <p className="font-display font-bold text-3xl text-foreground">50,000+</p>
+                  <p className="font-body text-xs text-muted uppercase tracking-wider mt-1">Registered Candidates</p>
+                </div>
+                <div>
+                  <p className="font-display font-bold text-3xl text-foreground">90%</p>
+                  <p className="font-body text-xs text-muted uppercase tracking-wider mt-1">Hiring Response Rate</p>
+                </div>
+                <div>
+                  <p className="font-display font-bold text-3xl text-foreground">48h</p>
+                  <p className="font-body text-xs text-muted uppercase tracking-wider mt-1">Avg. Recruiter Response</p>
+                </div>
+                <div>
+                  <p className="font-display font-bold text-3xl text-foreground">6+</p>
+                  <p className="font-body text-xs text-muted uppercase tracking-wider mt-1">Industry Sectors</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. JOB CATEGORIES GRID */}
+      <section className="py-20 px-6 bg-background border-b border-border/60">
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center max-w-md mx-auto mb-16">
             <span className="font-body font-semibold text-primary-500 uppercase tracking-wider text-xs block mb-2">
@@ -270,7 +376,7 @@ export default function JobConsulting() {
             </h2>
           </div>
 
-          <motion.div 
+          <motion.div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             variants={containerVariants}
             initial="hidden"
@@ -282,32 +388,36 @@ export default function JobConsulting() {
                 key={idx}
                 variants={itemVariants}
                 whileHover={{ y: -3 }}
-                className="group cursor-pointer bg-background border border-border p-6 rounded-card flex items-center justify-between transition-all duration-200 hover:shadow-card hover:border-brand-accent/40"
               >
-                <div className="flex items-center gap-4 min-w-0">
-                  <div className="w-11 h-11 rounded-card-sm bg-primary-100 text-primary-700 flex items-center justify-center flex-shrink-0">
-                    <cat.icon size={20} strokeWidth={1.5} />
+                <Link
+                  href="/jobs"
+                  className="group cursor-pointer bg-white border border-border p-6 rounded-card flex items-center justify-between transition-all duration-200 hover:shadow-card hover:border-brand-accent/40 block"
+                >
+                  <div className="flex items-center gap-4 min-w-0">
+                    <div className="w-11 h-11 rounded-card-sm bg-primary-100 text-primary-700 flex items-center justify-center flex-shrink-0">
+                      <cat.icon size={20} strokeWidth={1.5} />
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="font-display font-semibold text-sm text-foreground truncate">
+                        {cat.title}
+                      </h3>
+                      <p className="font-body text-xs text-primary-700 mt-0.5">
+                        {cat.openings} Openings
+                      </p>
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <h3 className="font-display font-semibold text-sm text-foreground truncate">
-                      {cat.title}
-                    </h3>
-                    <p className="font-body text-xs text-primary-700 mt-0.5">
-                      {cat.openings} Openings
-                    </p>
+                  <div className="w-8 h-8 rounded-full bg-background border border-border flex items-center justify-center text-muted group-hover:text-primary-500 group-hover:bg-primary-100 group-hover:border-transparent transition-colors duration-200 flex-shrink-0">
+                    <ArrowRight size={14} strokeWidth={1.5} />
                   </div>
-                </div>
-                <div className="w-8 h-8 rounded-full bg-white border border-border flex items-center justify-center text-muted group-hover:text-primary-500 group-hover:bg-primary-100 group-hover:border-transparent transition-colors duration-200 flex-shrink-0">
-                  <ArrowRight size={14} strokeWidth={1.5} />
-                </div>
+                </Link>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* 5. SERVICE LOCATIONS */}
-      <section className="py-16 px-6 bg-background border-b border-border/60">
+      {/* 6. SERVICE LOCATIONS */}
+      <section className="py-16 px-6 bg-white border-b border-border/60">
         <div className="max-w-[1200px] mx-auto text-center">
           <span className="font-body font-semibold text-primary-500 uppercase tracking-wider text-xs block mb-4">
             Coverage Area
@@ -316,7 +426,7 @@ export default function JobConsulting() {
             Placement Service Locations
           </h2>
 
-          <motion.div 
+          <motion.div
             className="flex flex-wrap items-center justify-center gap-3 max-w-2xl mx-auto"
             variants={containerVariants}
             initial="hidden"
@@ -327,7 +437,7 @@ export default function JobConsulting() {
               <motion.div
                 key={loc}
                 variants={itemVariants}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-pill bg-white border border-border font-body text-sm font-medium text-foreground shadow-sm hover:border-brand-accent/30 transition-colors duration-150"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-pill bg-background border border-border font-body text-sm font-medium text-foreground shadow-sm hover:border-brand-accent/30 transition-colors duration-150"
               >
                 <MapPin size={14} className="text-primary-500" strokeWidth={1.5} />
                 <span>{loc}</span>
@@ -337,8 +447,8 @@ export default function JobConsulting() {
         </div>
       </section>
 
-      {/* 6. CTA BANNER */}
-      <section className="py-12 px-6 bg-white">
+      {/* 7. CTA BANNER */}
+      <section className="py-12 px-6 bg-background">
         <div className="max-w-[1200px] mx-auto">
           <motion.div
             initial={{ scale: 0.96, opacity: 0 }}
@@ -347,7 +457,6 @@ export default function JobConsulting() {
             transition={{ duration: 0.4 }}
             className="relative overflow-hidden bg-gradient-to-r from-brand-accent-dark to-brand-accent rounded-card p-10 md:p-14 text-white text-center shadow-card-hover"
           >
-            {/* Blurry circular background accents */}
             <div className="absolute -left-16 -top-16 w-48 h-48 rounded-full bg-white/10 blur-xl pointer-events-none" />
             <div className="absolute -right-16 -bottom-16 w-48 h-48 rounded-full bg-white/10 blur-xl pointer-events-none" />
 
@@ -356,15 +465,25 @@ export default function JobConsulting() {
                 Ready to Get Placed?
               </h2>
               <p className="font-body text-white/90 text-sm max-w-md leading-relaxed">
-                Connect directly with our consulting center at NIT Kattangal. Lock in your placement plan and start receiving calls.
+                Create your free account on JobMate, complete your profile, and
+                start applying to verified job openings across Kerala — all
+                online, in under 5 minutes.
               </p>
-              
-              <button
-                onClick={handleWhatsAppChat}
-                className="mt-2 font-body font-medium bg-white hover:bg-background text-primary-700 px-8 py-3.5 rounded-pill shadow-card transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
-              >
-                Register Now
-              </button>
+
+              <div className="flex flex-col sm:flex-row items-center gap-3 mt-2">
+                <Link
+                  href="/auth/register"
+                  className="font-body font-medium bg-white hover:bg-background text-primary-700 px-8 py-3.5 rounded-pill shadow-card transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+                >
+                  Create Free Account
+                </Link>
+                <Link
+                  href="/jobs"
+                  className="font-body font-medium border border-white/40 hover:bg-white/10 text-white px-8 py-3.5 rounded-pill transition-all duration-200 hover:-translate-y-0.5"
+                >
+                  Browse Jobs
+                </Link>
+              </div>
 
               <div className="mt-6 pt-6 border-t border-white/20 w-full flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-body text-white/80">
                 <span className="flex items-center gap-1.5">
