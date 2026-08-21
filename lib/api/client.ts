@@ -16,7 +16,7 @@ import { useAuthStore, type AuthUser } from '@/lib/store/authStore';
 
 export const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000/api/v1',
-  timeout: 30_000,
+  // timeout: 30_000,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
