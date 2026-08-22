@@ -1,4 +1,3 @@
-import { ChevronDown } from 'lucide-react';
 import { Search as SearchIcon, SlidersHorizontal } from 'lucide-react';
 import { CustomSelect } from '@/components/ui/CustomSelect';
 

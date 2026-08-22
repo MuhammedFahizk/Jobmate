@@ -18,7 +18,6 @@ import {
   MapPin,
   Phone,
   Mail,
-  Zap,
   CheckCircle2,
   ArrowRight,
 } from "lucide-react";
