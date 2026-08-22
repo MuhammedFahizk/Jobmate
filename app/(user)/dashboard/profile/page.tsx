@@ -10,6 +10,7 @@ import {
 import { useToast } from '@/components/ui/Toast';
 import { userService } from '@/lib/services/user.service';
 import type { ApiError } from '@/lib/api/types';
+import { CustomSelect } from '@/components/ui/CustomSelect';
 
 // ── Shared input styles ───────────────────────────────────────────────────────
 const INPUT =
@@ -179,19 +180,20 @@ export default function ProfilePage() {
 
         <div className="flex flex-col gap-1.5">
           <label className={LBL}>Experience Level</label>
-          <div className="relative">
-            <BriefcaseBusiness size={15} className={ICN} />
-            <select
+          <div className="relative h-[42px]">
+            <CustomSelect
               value={form.experience}
-              onChange={(e) => setForm({ ...form, experience: e.target.value })}
-              className={INPUT}
-            >
-              <option value="Internship">Internship / Entry Level</option>
-              <option value="1+ Years">1+ Years</option>
-              <option value="2+ Years">2+ Years</option>
-              <option value="5+ Years">5+ Years</option>
-              <option value="10+ Years">10+ Years</option>
-            </select>
+              onChange={(v) => setForm({ ...form, experience: v })}
+              options={[
+                { label: 'Internship / Entry Level', value: 'Internship' },
+                { label: '1+ Years', value: '1+ Years' },
+                { label: '2+ Years', value: '2+ Years' },
+                { label: '5+ Years', value: '5+ Years' },
+                { label: '10+ Years', value: '10+ Years' },
+              ]}
+              icon={<BriefcaseBusiness size={15} className="text-muted" />}
+              className="h-full"
+            />
           </div>
         </div>
       </div>

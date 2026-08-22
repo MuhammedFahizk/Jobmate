@@ -15,15 +15,17 @@ import {
   Code,
   HeartPulse,
   Building2,
-  ArrowRight,
   MapPin,
   Phone,
   Mail,
   Zap,
   CheckCircle2,
+  ArrowRight,
 } from "lucide-react";
+import { useAuthStore } from "@/lib/store/authStore";
 
 export default function JobConsulting() {
+  const { isAuthenticated } = useAuthStore();
   const features = [
     {
       title: "1-Click Online Apply",
@@ -168,12 +170,14 @@ export default function JobConsulting() {
             transition={{ delay: 0.3, duration: 0.5 }}
             className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto mt-2"
           >
-            <Link
-              href="/auth/register"
-              className="font-body font-medium bg-primary-500 hover:bg-primary-700 text-white px-8 py-3.5 rounded-pill shadow-card transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 text-center"
-            >
-              Create Free Account
-            </Link>
+            {!isAuthenticated && (
+              <Link
+                href="/auth/register"
+                className="font-body font-medium bg-primary-500 hover:bg-primary-700 text-white px-8 py-3.5 rounded-pill shadow-card transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 text-center"
+              >
+                Create Account
+              </Link>
+            )}
             <Link
               href="/jobs"
               className="font-body font-medium border border-border bg-white hover:bg-background text-foreground px-8 py-3.5 rounded-pill shadow-sm transition-all duration-200 hover:-translate-y-0.5 text-center"
@@ -326,40 +330,7 @@ export default function JobConsulting() {
                 ))}
               </motion.ul>
             </div>
-            <div className="bg-background border border-border rounded-card p-8 flex flex-col gap-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-card-sm bg-primary-100 text-primary-700 flex items-center justify-center flex-shrink-0">
-                  <Zap size={20} strokeWidth={1.5} />
-                </div>
-                <div>
-                  <p className="font-display font-semibold text-foreground text-sm">
-                    Fast Placement Guarantee
-                  </p>
-                  <p className="font-body text-xs text-muted mt-0.5">
-                    Most candidates are placed within 7 days of applying.
-                  </p>
-                </div>
-              </div>
-              <div className="h-px bg-border" />
-              <div className="grid grid-cols-2 gap-6">
-                <div>
-                  <p className="font-display font-bold text-3xl text-foreground">50,000+</p>
-                  <p className="font-body text-xs text-muted uppercase tracking-wider mt-1">Registered Candidates</p>
-                </div>
-                <div>
-                  <p className="font-display font-bold text-3xl text-foreground">90%</p>
-                  <p className="font-body text-xs text-muted uppercase tracking-wider mt-1">Hiring Response Rate</p>
-                </div>
-                <div>
-                  <p className="font-display font-bold text-3xl text-foreground">48h</p>
-                  <p className="font-body text-xs text-muted uppercase tracking-wider mt-1">Avg. Recruiter Response</p>
-                </div>
-                <div>
-                  <p className="font-display font-bold text-3xl text-foreground">6+</p>
-                  <p className="font-body text-xs text-muted uppercase tracking-wider mt-1">Industry Sectors</p>
-                </div>
-              </div>
-            </div>
+
           </div>
         </div>
       </section>
@@ -448,58 +419,60 @@ export default function JobConsulting() {
       </section>
 
       {/* 7. CTA BANNER */}
-      <section className="py-12 px-6 bg-background">
-        <div className="max-w-[1200px] mx-auto">
-          <motion.div
-            initial={{ scale: 0.96, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-            className="relative overflow-hidden bg-gradient-to-r from-brand-accent-dark to-brand-accent rounded-card p-10 md:p-14 text-white text-center shadow-card-hover"
-          >
-            <div className="absolute -left-16 -top-16 w-48 h-48 rounded-full bg-white/10 blur-xl pointer-events-none" />
-            <div className="absolute -right-16 -bottom-16 w-48 h-48 rounded-full bg-white/10 blur-xl pointer-events-none" />
+      {!isAuthenticated && (
+        <section className="py-12 px-6 bg-background">
+          <div className="max-w-[1200px] mx-auto">
+            <motion.div
+              initial={{ scale: 0.96, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+              className="relative overflow-hidden bg-gradient-to-r from-brand-accent-dark to-brand-accent rounded-card p-10 md:p-14 text-white text-center shadow-card-hover"
+            >
+              <div className="absolute -left-16 -top-16 w-48 h-48 rounded-full bg-white/10 blur-xl pointer-events-none" />
+              <div className="absolute -right-16 -bottom-16 w-48 h-48 rounded-full bg-white/10 blur-xl pointer-events-none" />
 
-            <div className="relative z-10 max-w-xl mx-auto flex flex-col items-center gap-5">
-              <h2 className="font-display text-3xl font-bold tracking-tight">
-                Ready to Get Placed?
-              </h2>
-              <p className="font-body text-white/90 text-sm max-w-md leading-relaxed">
-                Create your free account on JobMate, complete your profile, and
-                start applying to verified job openings across Kerala — all
-                online, in under 5 minutes.
-              </p>
+              <div className="relative z-10 max-w-xl mx-auto flex flex-col items-center gap-5">
+                <h2 className="font-display text-3xl font-bold tracking-tight">
+                  Ready to Get Placed?
+                </h2>
+                <p className="font-body text-white/90 text-sm max-w-md leading-relaxed">
+                  Create your account on JobMate, complete your profile, and
+                  start applying to verified job openings across Kerala — all
+                  online, in under 5 minutes.
+                </p>
 
-              <div className="flex flex-col sm:flex-row items-center gap-3 mt-2">
-                <Link
-                  href="/auth/register"
-                  className="font-body font-medium bg-white hover:bg-background text-primary-700 px-8 py-3.5 rounded-pill shadow-card transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
-                >
-                  Create Free Account
-                </Link>
-                <Link
-                  href="/jobs"
-                  className="font-body font-medium border border-white/40 hover:bg-white/10 text-white px-8 py-3.5 rounded-pill transition-all duration-200 hover:-translate-y-0.5"
-                >
-                  Browse Jobs
-                </Link>
+                <div className="flex flex-col sm:flex-row items-center gap-3 mt-2">
+                  <Link
+                    href="/auth/register"
+                    className="font-body font-medium bg-white hover:bg-background text-primary-700 px-8 py-3.5 rounded-pill shadow-card transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+                  >
+                    Create Account
+                  </Link>
+                  <Link
+                    href="/jobs"
+                    className="font-body font-medium border border-white/40 hover:bg-white/10 text-white px-8 py-3.5 rounded-pill transition-all duration-200 hover:-translate-y-0.5"
+                  >
+                    Browse Jobs
+                  </Link>
+                </div>
+
+                <div className="mt-6 pt-6 border-t border-white/20 w-full flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-body text-white/80">
+                  <span className="flex items-center gap-1.5">
+                    <Phone size={14} /> 9207 543 772
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Mail size={14} /> mcubeservicesclt@gmail.com
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <MapPin size={14} /> NIT Kattangal, Calicut
+                  </span>
+                </div>
               </div>
-
-              <div className="mt-6 pt-6 border-t border-white/20 w-full flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-body text-white/80">
-                <span className="flex items-center gap-1.5">
-                  <Phone size={14} /> 9207 543 772
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <Mail size={14} /> mcubeservicesclt@gmail.com
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <MapPin size={14} /> NIT Kattangal, Calicut
-                </span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+            </motion.div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

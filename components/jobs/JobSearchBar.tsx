@@ -1,5 +1,6 @@
 import { ChevronDown } from 'lucide-react';
 import { Search as SearchIcon, SlidersHorizontal } from 'lucide-react';
+import { CustomSelect } from '@/components/ui/CustomSelect';
 
 const EXPERIENCE_OPTIONS = [
     { value: '', label: 'Select experience' },
@@ -42,23 +43,20 @@ export function JobSearchBar({
                 className="flex-[1.6] min-w-0 py-2.5 text-[14px] text-foreground placeholder-muted outline-none bg-transparent"
             />
 
-            <span className="h-6 w-px bg-border flex-shrink-0" />
+            <span className="h-6 w-px bg-border flex-shrink-0 hidden md:block" />
 
             {/* Experience */}
-            <div className="relative flex-1 min-w-0">
-                <select
+            <div className="relative flex-1 min-w-0 hidden md:block">
+                <CustomSelect
                     value={experienceRequired}
-                    onChange={(e) => onExperienceChange(e.target.value)}
-                    className="w-full appearance-none bg-transparent outline-none py-2.5 pr-6 text-[14px] cursor-pointer text-foreground"
-                >
-                    {EXPERIENCE_OPTIONS.map((opt) => (
-                        <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                </select>
-                <ChevronDown size={16} className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 text-muted" />
+                    onChange={(v) => onExperienceChange(v)}
+                    options={EXPERIENCE_OPTIONS}
+                    placeholder="Select experience"
+                    variant="ghost"
+                />
             </div>
 
-            <span className="h-6 w-px bg-border flex-shrink-0" />
+            <span className="h-6 w-px bg-border flex-shrink-0 hidden md:block" />
 
             {/* Location */}
             <input
@@ -66,7 +64,7 @@ export function JobSearchBar({
                 value={location}
                 onChange={(e) => onLocationChange(e.target.value)}
                 placeholder="Enter location"
-                className="flex-1 min-w-0 py-2.5 text-[14px] text-foreground placeholder-muted outline-none bg-transparent"
+                className="flex-1 min-w-0 py-2.5 text-[14px] text-foreground placeholder-muted outline-none bg-transparent hidden md:block"
             />
 
             {/* Advanced filters (type, salary, category, etc.) still live in the drawer */}

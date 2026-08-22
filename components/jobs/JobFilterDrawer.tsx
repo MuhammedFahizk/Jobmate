@@ -4,6 +4,7 @@ import { X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { JOB_CATEGORIES, JOB_TYPES, EXPERIENCE_LEVELS } from '@/lib/types/job.type';
 import { SORT_OPTIONS, type JobFiltersState } from '@/hooks/useJobsListing';
+import { CustomSelect } from '@/components/ui/CustomSelect';
 
 interface JobFilterDrawerProps {
     open: boolean;
@@ -42,17 +43,26 @@ export function JobFilterDrawer({
                         </div>
 
                         <div className="flex-1 min-h-0 overflow-y-auto px-5 py-5 flex flex-col gap-7">
-                            <FilterSection title="Category">
-                                <select
-                                    value={filters.category}
-                                    onChange={(e) => onUpdate('category', e.target.value)}
+                            <FilterSection title="Location">
+                                <input
+                                    type="text"
+                                    value={filters.location || ''}
+                                    onChange={(e) => onUpdate('location', e.target.value)}
+                                    placeholder="Enter location"
                                     className="w-full px-3 py-2.5 rounded-lg border border-border text-[13px] outline-none focus:border-primary-500 bg-white"
-                                >
-                                    <option value="">All categories</option>
-                                    {JOB_CATEGORIES.map((c) => (
-                                        <option key={c} value={c}>{c}</option>
-                                    ))}
-                                </select>
+                                />
+                            </FilterSection>
+
+                            <FilterSection title="Category">
+                                <CustomSelect
+                                    value={filters.category}
+                                    onChange={(v) => onUpdate('category', v)}
+                                    options={[
+                                        { label: 'All categories', value: '' },
+                                        ...JOB_CATEGORIES.map((c) => ({ label: c, value: c }))
+                                    ]}
+                                    placeholder="All categories"
+                                />
                             </FilterSection>
 
                             <FilterSection title="Job Type">
@@ -69,16 +79,15 @@ export function JobFilterDrawer({
                             </FilterSection>
 
                             <FilterSection title="Experience level">
-                                <select
+                                <CustomSelect
                                     value={filters.experienceRequired}
-                                    onChange={(e) => onUpdate('experienceRequired', e.target.value)}
-                                    className="w-full px-3 py-2.5 rounded-lg border border-border text-[13px] outline-none focus:border-primary-500 bg-white"
-                                >
-                                    <option value="">Any experience</option>
-                                    {EXPERIENCE_LEVELS.map((l) => (
-                                        <option key={l.value} value={l.value}>{l.label}</option>
-                                    ))}
-                                </select>
+                                    onChange={(v) => onUpdate('experienceRequired', v)}
+                                    options={[
+                                        { label: 'Any experience', value: '' },
+                                        ...EXPERIENCE_LEVELS
+                                    ]}
+                                    placeholder="Any experience"
+                                />
                             </FilterSection>
 
                             <FilterSection title="Featured">
@@ -130,15 +139,11 @@ export function JobFilterDrawer({
 
 
                             <FilterSection title="Sort by">
-                                <select
+                                <CustomSelect
                                     value={filters.sort}
-                                    onChange={(e) => onUpdate('sort', e.target.value)}
-                                    className="w-full px-3 py-2.5 rounded-lg border border-border text-[13px] outline-none focus:border-primary-500 bg-white"
-                                >
-                                    {SORT_OPTIONS.map((o) => (
-                                        <option key={o.value} value={o.value}>{o.label}</option>
-                                    ))}
-                                </select>
+                                    onChange={(v) => onUpdate('sort', v)}
+                                    options={SORT_OPTIONS}
+                                />
                             </FilterSection>
                         </div>
 

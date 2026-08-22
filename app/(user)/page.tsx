@@ -401,7 +401,7 @@ export default function Home() {
               JobMate is a Kerala-based recruitment consultancy helping job seekers across Kochi, Thrissur, Kozhikode, and Thiruvananthapuram connect directly with employers — without the usual wait. We work across industries including IT, sales, accounts, admin, and skilled trades.
             </p>
             <div className="flex flex-col gap-2 mt-1">
-              {["Free registration for all candidates", "Direct employer connections, no middlemen", "Instant apply — submit your profile directly with one click"].map((point) => (
+              {["One-time registration for candidates", "Direct employer connections, no middlemen", "Instant apply — submit your profile directly with one click"].map((point) => (
                 <div key={point} className="flex items-start gap-3">
                   <span className="font-mono text-primary-500 font-bold text-[10px] mt-1 flex-shrink-0">++</span>
                   <span className="font-body text-[13px] text-foreground">{point}</span>
@@ -488,7 +488,7 @@ export default function Home() {
                 Go to Dashboard <ArrowRight size={14} />
               </Link>
             ) : (
-              <Link href="/register" className="inline-flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-wider bg-foreground text-white px-7 py-3 rounded hover:bg-primary-600 transition-colors duration-200">
+              <Link href="/auth/register" className="inline-flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-wider bg-foreground text-white px-7 py-3 rounded hover:bg-primary-600 transition-colors duration-200">
                 Start Now <ArrowRight size={14} />
               </Link>
             )}
@@ -520,7 +520,7 @@ export default function Home() {
                   Go to Dashboard
                 </Link>
               ) : (
-                <Link href="/register" className="mt-2 font-body font-medium bg-white hover:bg-background text-primary-700 hover:text-primary-700 px-8 py-3.5 rounded-pill shadow-card transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
+                <Link href="/auth/register" className="mt-2 font-body font-medium bg-white hover:bg-background text-primary-700 hover:text-primary-700 px-8 py-3.5 rounded-pill shadow-card transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
                   Register as Candidate
                 </Link>
               )}

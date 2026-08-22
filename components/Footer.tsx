@@ -16,7 +16,6 @@ export default function Footer() {
       title: "Company",
       links: [
         { name: "About Us", href: "/about" },
-        { name: "Careers", href: "/careers" },
         { name: "Contact Support", href: "/contact" },
         { name: "Privacy Policy", href: "/privacy" },
       ],
