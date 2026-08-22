@@ -443,7 +443,7 @@ export default function JobConsulting() {
 
                 <div className="flex flex-col sm:flex-row items-center gap-3 mt-2">
                   <Link
-                    href="/auth/register"
+                    href="/register"
                     className="font-body font-medium bg-white hover:bg-background text-primary-700 px-8 py-3.5 rounded-pill shadow-card transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
                   >
                     Create Account
