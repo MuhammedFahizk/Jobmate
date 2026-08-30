@@ -15,7 +15,7 @@ import { useAuthStore, type AuthUser } from '@/lib/store/authStore';
 // ── Axios instance ────────────────────────────────────────────────────────────
 
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_API_URL,
+  baseURL: process.env.NEXT_API_URL ?? 'https://www.api.jobmate.live',
   // timeout: 30_000,
   headers: {
     'Content-Type': 'application/json',
