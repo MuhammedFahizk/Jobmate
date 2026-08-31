@@ -5,6 +5,7 @@ import { ToastProvider } from "@/components/ui/Toast";
 import { ConfirmModalProvider } from "@/components/ui/ConfirmModal";
 import "./globals.css";
 import { ReactQueryProvider } from "@/components/ui/QueryClientProvider";
+import { SITE_URL } from "@/lib/config";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,16 +26,73 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "JobMate - Find Your Dream Job Here",
-  description: "A candidate-facing platform to apply for top jobs easily.",
+  metadataBase: new URL(SITE_URL),
+
+  title: {
+    default: "JobMate - Find Jobs in Kerala",
+    template: "%s | JobMate",
+  },
+
+  description:
+    "Discover the latest job opportunities across Kerala including Kozhikode, Mukkam, Koduvally, Kattangal and nearby locations. Find jobs and apply easily with JobMate.",
+
+  applicationName: "JobMate",
+
+  keywords: [
+    "JobMate",
+    "jobs in Kerala",
+    "Kerala jobs",
+    "jobs in Kozhikode",
+    "jobs in Calicut",
+    "Kozhikode job vacancies",
+    "jobs in Mukkam",
+    "jobs in Koduvally",
+    "jobs in Kattangal",
+    "jobs near NIT Calicut",
+    "latest jobs Kerala",
+    "fresher jobs Kerala",
+  ],
+
   icons: {
-    icon: '/images/logo.png',
-    apple: '/images/logo.png',
-  }
+    icon: "/images/logo.png",
+    apple: "/images/logo.png",
+  },
+
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    siteName: "JobMate",
+    title: "JobMate - Find Jobs in Kerala",
+    description:
+      "Discover job opportunities in Kerala, Kozhikode, Mukkam, Koduvally and nearby locations.",
+    url: SITE_URL,
+    images: [
+      {
+        url: "/images/logo.png",
+        alt: "JobMate Logo",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "JobMate - Find Jobs in Kerala",
+    description:
+      "Discover the latest job opportunities across Kerala with JobMate.",
+    images: ["/images/logo.png"],
+  },
 };
 
 // Just <html>, <body>, and app-wide providers. No nav, no chrome — that's
 // owned per-section by app/(user)/layout.tsx and app/mc-ops/(admin)/layout.tsx.
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "JobMate",
+  "url": SITE_URL,
+  "logo": `${SITE_URL}/images/logo.png`,
+};
 
 export default function RootLayout({
   children,
@@ -46,6 +104,10 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${fraunces.variable} ${ibmPlexMono.variable} bg-background text-foreground min-h-screen flex flex-col antialiased font-body`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <ReactQueryProvider>
           <ConfirmModalProvider>
             <ToastProvider>
