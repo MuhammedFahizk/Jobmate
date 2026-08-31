@@ -85,6 +85,8 @@ export const metadata: Metadata = {
     description:
       "Discover the latest job opportunities across Kerala with JobMate.",
     images: ["/images/logo.png"],
+    site: "@jobmate",
+    creator: "@jobmate",
   },
 };
 

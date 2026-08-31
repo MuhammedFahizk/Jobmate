@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { jobsService } from '@/lib/services/jobs.service';
 import { applicationsService, type ApplyResult } from '@/lib/services/applications.service';
-import type { AdminJob } from '@/lib/types/job.type';
+import type { AdminJob, AdminJobListResponse } from '@/lib/types/job.type';
 import { useAuth } from '@/hooks/useAuth';
 
 export type ApplyBlockReason = 'payment' | 'inactive' | null;
@@ -39,7 +39,7 @@ export const EMPTY_FILTERS: JobFiltersState = {
     salaryMin: '', salaryMax: '', dateFrom: '', dateTo: '', sort: SORT_OPTIONS[0].value,
 };
 
-export function useJobsListing() {
+export function useJobsListing(initialData?: AdminJobListResponse) {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -68,11 +68,12 @@ export function useJobsListing() {
 
     const [searchInput, setSearchInput] = useState(filters.search);
 
-    const [jobs, setJobs] = useState<AdminJob[]>([]);
-    const [total, setTotal] = useState(0);
-    const [initialLoading, setInitialLoading] = useState(true);
+    const [jobs, setJobs] = useState<AdminJob[]>(initialData?.data?.jobs || []);
+    const [total, setTotal] = useState(initialData?.total || 0);
+    const [initialLoading, setInitialLoading] = useState(!initialData);
     const [isFetching, setIsFetching] = useState(false);
     const [error, setError] = useState(false);
+    const isFirstRender = useRef(true);
 
     const [selectedJob, setSelectedJob] = useState<AdminJob | null>(null);
     const [isApplying, setIsApplying] = useState(false);
@@ -125,6 +126,11 @@ export function useJobsListing() {
     }, [searchInput, filters.search, pathname, router, searchParams]);
 
     const load = useCallback(() => {
+        if (isFirstRender.current && initialData) {
+            isFirstRender.current = false;
+            return;
+        }
+        isFirstRender.current = false;
         setIsFetching(true);
         if (page === 1) setInitialLoading(true);
         setError(false);
@@ -141,7 +147,7 @@ export function useJobsListing() {
                 ...(filters.isFeatured ? { isFeatured: filters.isFeatured === 'true' } : {}),
                 ...(filters.salaryMin ? { salaryMin: Number(filters.salaryMin) } : {}),
                 ...(filters.salaryMax ? { salaryMax: Number(filters.salaryMax) } : {}),
-                ...(filters.location ? { location: filters.location } : {}),   // ← add this
+                ...(filters.location ? { location: filters.location } : {}),
                 ...(filters.dateFrom ? { dateFrom: filters.dateFrom } : {}),
                 ...(filters.dateTo ? { dateTo: filters.dateTo } : {}),
             })
@@ -154,9 +160,10 @@ export function useJobsListing() {
                 setIsFetching(false);
                 setInitialLoading(false);
             });
-    }, [page, filters]);
+    }, [page, filters, initialData]);
 
     useEffect(load, [load]);
+
 
     useEffect(() => {
         const applyId = searchParams.get('apply');

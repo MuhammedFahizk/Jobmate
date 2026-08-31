@@ -1,11 +1,17 @@
-'use client';
-
 import { motion } from 'framer-motion';
 import { usePublicTestimonials } from '@/hooks/usepublictestimonials';
+import type { PublicTestimonial } from '@/lib/services/testimonials';
 import Image from 'next/image';
 
-export function TestimonialsSection() {
-  const { data: testimonials, isLoading } = usePublicTestimonials();
+interface TestimonialsSectionProps {
+  initialTestimonials?: PublicTestimonial[];
+}
+
+export function TestimonialsSection({ initialTestimonials }: TestimonialsSectionProps = {}) {
+  const { data: queryTestimonials, isLoading: queryLoading } = usePublicTestimonials();
+
+  const testimonials = initialTestimonials ?? queryTestimonials;
+  const isLoading = initialTestimonials ? false : queryLoading;
 
   // Fully hidden — not just an empty state — once we know there's
   // nothing to show. No point rendering the section header either.
