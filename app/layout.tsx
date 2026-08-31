@@ -54,8 +54,13 @@ export const metadata: Metadata = {
   ],
 
   icons: {
-    icon: "/images/logo.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/jobmate-icon.svg", type: "image/svg+xml" },
+      { url: "/images/logo.png", type: "image/png" },
+    ],
     apple: "/images/logo.png",
+    shortcut: "/favicon.ico",
   },
 
   openGraph: {
