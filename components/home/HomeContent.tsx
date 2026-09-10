@@ -45,26 +45,40 @@ interface HomeContentProps {
 }
 
 export function HomeContent({ initialJobs, initialTestimonials }: HomeContentProps) {
-  const [latestJobs, setLatestJobs] = useState<LatestJob[]>(initialJobs || []);
-  const [isLoadingJobs, setIsLoadingJobs] = useState<boolean>(!initialJobs);
+  const hasValidInitialJobs = Array.isArray(initialJobs) && initialJobs.length > 0;
+  const [latestJobs, setLatestJobs] = useState<LatestJob[]>(hasValidInitialJobs ? (initialJobs as LatestJob[]) : []);
+  const [isLoadingJobs, setIsLoadingJobs] = useState<boolean>(!hasValidInitialJobs);
   const router = useRouter();
   const { isAuthenticated, user } = useAuthStore();
 
   useEffect(() => {
-    // Only fetch client-side if server initialJobs was not provided
-    if (initialJobs) return;
+    // Only fetch client-side if server initialJobs was not provided or is empty
+    if (initialJobs && initialJobs.length > 0) {
+      setIsLoadingJobs(false);
+      return;
+    }
+
+    let isMounted = true;
     const fetchLatestJobs = async () => {
       try {
         setIsLoadingJobs(true);
         const res = await jobsService.getLatestJobs();
-        setLatestJobs(res.data.jobs || []);
+        if (isMounted) {
+          setLatestJobs(res.data?.jobs || []);
+        }
       } catch (err) {
         console.error("Failed to fetch latest jobs", err);
       } finally {
-        setIsLoadingJobs(false);
+        if (isMounted) {
+          setIsLoadingJobs(false);
+        }
       }
     };
     fetchLatestJobs();
+
+    return () => {
+      isMounted = false;
+    };
   }, [initialJobs]);
 
   const stackedAvatars = [
@@ -194,8 +208,8 @@ export function HomeContent({ initialJobs, initialTestimonials }: HomeContentPro
           </div>
 
           {isLoadingJobs ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {[1, 2, 3].map((i) => (
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+              {[1, 2, 3, 4].map((i) => (
                 <div key={i} className="bg-white border border-border rounded-[14px] p-6 pb-5 relative overflow-hidden flex flex-col min-h-[260px]">
                   <div className="absolute left-0 right-0 bottom-[46px] h-0 border-t-[1.5px] border-dashed border-border" />
                   <div className="flex justify-between items-start mb-4">
@@ -216,7 +230,7 @@ export function HomeContent({ initialJobs, initialTestimonials }: HomeContentPro
                 </div>
               ))}
             </div>
-          ) : (
+          ) : latestJobs.length > 0 ? (
             <>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
                 {latestJobs.slice(0, 4).map((job, idx) => {
@@ -260,7 +274,7 @@ export function HomeContent({ initialJobs, initialTestimonials }: HomeContentPro
                 })}
               </div>
 
-              {latestJobs.length > 3 && (
+              {latestJobs.length > 4 && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-5">
                   {latestJobs.slice(4, 7).map((job) => (
                     <motion.div
@@ -284,6 +298,15 @@ export function HomeContent({ initialJobs, initialTestimonials }: HomeContentPro
                 </div>
               )}
             </>
+          ) : (
+            <div className="bg-white border border-border rounded-[14px] p-8 text-center flex flex-col items-center justify-center">
+              <Briefcase className="w-10 h-10 text-muted/50 mb-3" strokeWidth={1.5} />
+              <h3 className="font-display font-semibold text-lg text-foreground mb-1">No active job openings right now</h3>
+              <p className="text-muted text-sm max-w-sm mb-4">New opportunities are added frequently. Check all listings in our job directory.</p>
+              <Link href="/jobs" className="font-mono text-xs font-semibold text-primary-600 hover:text-primary-700 uppercase tracking-wider flex items-center gap-1.5">
+                View Job Directory <ArrowRight size={14} />
+              </Link>
+            </div>
           )}
 
           <div className="relative my-16 border-t-[1.5px] border-dashed border-border before:content-[''] before:absolute before:-top-[7px] before:-left-[7px] before:w-3.5 before:h-3.5 before:rounded-full before:bg-background before:border-[1.5px] before:border-border after:content-[''] after:absolute after:-top-[7px] after:-right-[7px] after:w-3.5 after:h-3.5 after:rounded-full after:bg-background after:border-[1.5px] after:border-border" />

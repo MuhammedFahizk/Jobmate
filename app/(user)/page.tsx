@@ -7,12 +7,14 @@ import { HomeContent, LatestJob } from "@/components/home/HomeContent";
 export const revalidate = 60;
 
 export default async function Home() {
-  let initialJobs: LatestJob[] = [];
+  let initialJobs: LatestJob[] | undefined = undefined;
   let initialTestimonials = undefined;
 
   try {
     const res = await jobsService.getLatestJobs();
-    initialJobs = (res.data?.jobs || []) as LatestJob[];
+    if (res?.data?.jobs && Array.isArray(res.data.jobs) && res.data.jobs.length > 0) {
+      initialJobs = res.data.jobs as LatestJob[];
+    }
   } catch (err) {
     console.error("[SSR] Failed to fetch latest jobs on Homepage:", err);
   }
