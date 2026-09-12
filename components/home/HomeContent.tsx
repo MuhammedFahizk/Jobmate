@@ -475,7 +475,7 @@ export function HomeContent({ initialJobs, initialTestimonials }: HomeContentPro
                 Go to Dashboard <ArrowRight size={14} />
               </Link>
             ) : (
-              <Link href="/auth/register" className="inline-flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-wider bg-foreground text-white px-7 py-3 rounded hover:bg-primary-600 transition-colors duration-200">
+              <Link href="/register" className="inline-flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-wider bg-foreground text-white px-7 py-3 rounded hover:bg-primary-600 transition-colors duration-200">
                 Start Now <ArrowRight size={14} />
               </Link>
             )}
@@ -508,7 +508,7 @@ export function HomeContent({ initialJobs, initialTestimonials }: HomeContentPro
                   Go to Dashboard
                 </Link>
               ) : (
-                <Link href="/auth/register" className="mt-2 font-body font-medium bg-white hover:bg-background text-primary-700 hover:text-primary-700 px-8 py-3.5 rounded-pill shadow-card transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
+                <Link href="/register" className="mt-2 font-body font-medium bg-white hover:bg-background text-primary-700 hover:text-primary-700 px-8 py-3.5 rounded-pill shadow-card transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
                   Register as Candidate
                 </Link>
               )}

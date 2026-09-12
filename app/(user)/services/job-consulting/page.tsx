@@ -171,7 +171,7 @@ export default function JobConsulting() {
           >
             {!isAuthenticated && (
               <Link
-                href="/auth/register"
+                href="/register"
                 className="font-body font-medium bg-primary-500 hover:bg-primary-700 text-white px-8 py-3.5 rounded-pill shadow-card transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 text-center"
               >
                 Create Account
